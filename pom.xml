@@ -49,6 +49,13 @@
                 </exclusion>
             </exclusions>
         </dependency>
+
+        <!--添加mysql依赖-->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <scope>8.0.18</scope>
+        </dependency>
     </dependencies>
 
     <build>

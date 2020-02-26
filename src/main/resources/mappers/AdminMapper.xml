@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.programs.gis.dao.AdminDao">
+    <resultMap id="adminMap" type="com.programs.gis.entity.Admin">
+        <id property="adminId" column="adminId"/>
+        <result property="adminName" column="adminName"/>
+        <result property="password" column="password"/>
+        <result property="mail" column="mail"/>
+    </resultMap>
+    <insert id="save">
+        insert into admin(adminId, adminName, password, mail)
+        values(#{adminId}, #{adminName}, #{password}, #{mail});
+    </insert>
+    <delete id="deleteById">
+        delete from admin
+        where adminId = #{adminId}
+    </delete>
+    <select id="getAdminByNameAndPass" resultMap="adminMap">
+        select * from admin
+        where adminName = #{adminName}, password = #{password}
+    </select>
+    <select id="getAdminsByName" resultMap="adminMap">
+        select * from admin
+        where adminName = #{adminName}
+    </select>
+    <select id="getAllAdmins" resultMap="adminMap">
+        select * from admin
+    </select>
+</mapper>
