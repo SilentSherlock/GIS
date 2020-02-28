@@ -10,6 +10,13 @@ public class Admin {
     private String password;
     private String mail;
 
+    public Admin(){
+
+    }
+    public Admin(String name, String pass){
+        this.adminName = name;
+        this.password = pass;
+    }
     public Integer getAdminId() {
         return adminId;
     }

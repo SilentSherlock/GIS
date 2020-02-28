@@ -1,10 +1,12 @@
 package com.programs.gis.service;
 
+import com.mysql.cj.x.protobuf.MysqlxDatatypes;
 import com.programs.gis.dao.AdminDao;
 import com.programs.gis.entity.Admin;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Base64;
 import java.util.List;
 
 @Service
@@ -45,5 +47,10 @@ public class AdminService {
         System.out.println("Delete Admin");
         Admin admin = adminDao.getAdminByNameAndPass(adminName,password);
         adminDao.deleteById(admin.getAdminId());
+    }
+    public String base64Decoder(String adminString){
+        System.out.println("Decode The AdminString");
+        String result = new String(Base64.getDecoder().decode(adminString));
+        return result;
     }
 }

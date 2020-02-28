@@ -56,6 +56,12 @@
             <artifactId>mysql-connector-java</artifactId>
             <scope>8.0.18</scope>
         </dependency>
+        <!--添加json依赖-->
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20160810</version>
+        </dependency>
     </dependencies>
 
     <build>
