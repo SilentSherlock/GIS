@@ -8,7 +8,7 @@
     <h2>管理系统登录界面</h2>
     <form method="post" th:object="${loginAdmin}" th:action="@{/adminValidate}">
         <label>
-            <input th:field="*{adminName}"><br>
+            <input th:field="*{adminName}" th:text="*{adminName}"><br>
         </label>
         <label>
             <input th:field="*{password}"><br>
