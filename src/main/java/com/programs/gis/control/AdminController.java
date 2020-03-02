@@ -1,5 +1,6 @@
 package com.programs.gis.control;
 
+import ch.qos.logback.core.net.SyslogOutputStream;
 import com.programs.gis.entity.Admin;
 import com.programs.gis.service.AdminService;
 import org.json.JSONObject;
@@ -31,9 +32,10 @@ public class AdminController {
     /*登录验证*/
     @RequestMapping("/adminValidate")
     public String adminValidate(@RequestBody  String adminString, HttpSession session) throws Exception{
-        JSONObject adminjson = new JSONObject(adminService.base64Decoder(adminString));
-        String adminName = (String) adminjson.get("adminName");
-        String password = (String) adminjson.get("password");
+        System.out.println(adminString);
+        JSONObject adminjson = new JSONObject(adminString);
+        String adminName = adminService.base64Decoder((String) adminjson.get("adminName"));
+        String password = adminService.base64Decoder((String) adminjson.get("password"));
 
         Admin admin = adminService.adminValidate(adminName, password);
         if (admin!=null){
