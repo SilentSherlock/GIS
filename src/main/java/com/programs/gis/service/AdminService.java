@@ -3,8 +3,10 @@ package com.programs.gis.service;
 import com.programs.gis.dao.AdminDao;
 import com.programs.gis.entity.Admin;
 import org.springframework.stereotype.Service;
+import sun.misc.BASE64Decoder;
 
 import javax.annotation.Resource;
+import java.io.IOException;
 import java.util.Base64;
 import java.util.List;
 
@@ -47,9 +49,12 @@ public class AdminService {
         Admin admin = adminDao.getAdminByNameAndPass(adminName,password);
         adminDao.deleteById(admin.getAdminId());
     }
-    public String base64Decoder(String encodeString){
+    public String base64Decoder(String encodeString) throws IOException {
         System.out.println("Decode The encodeString");
-        String result = new String(Base64.getDecoder().decode(encodeString));
+        System.out.println(encodeString);
+        BASE64Decoder decoder = new BASE64Decoder();//待修改
+        String result = new String(decoder.decodeBuffer(encodeString));
+        System.out.println(result);
         return result;
     }
 }

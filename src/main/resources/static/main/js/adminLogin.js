@@ -22,7 +22,6 @@ $(document).ready(function () {
 
     //开启bootstrap工具提示插件
     $("[data-toggle='tooltip']").tooltip();
-    alert("What the Fuck");
     //开启bootstrapValidator进行表单验证
     $("#loginForm").bootstrapValidator({
         message: "*输入不合法",
@@ -67,9 +66,7 @@ $(document).ready(function () {
                 }
             }
         }
-    });
-    alert("I am here");
-    $("#loginForm").on("success.form.bv", function(e) {
+    }).on("success.form.bv", function(e) {
         //注册表单被提交后且验证成功的事件的监听函数以使用ajax提交表单数据
         //阻止正常提交表单
         e.preventDefault();
@@ -80,16 +77,21 @@ $(document).ready(function () {
         //用base64加密用户名和密码
         let base64_userName = window.btoa($form.userNameInput);
         let base64_password = window.btoa($form.passwordInput);
+        alert($form.userNameInput);
+        let model = {
+                adminName:base64_userName,
+                password: base64_password
+            };
+        let jsonObject = JSON.stringify(model);
         alert("fuck");
         //使用ajax提交表单验证用户名密码
         $.ajax({
             url: "adminValidate",
             type: "post",
-            data: {
-                adminName: base64_userName,
-                password: base64_password
-            },
-            dataType: "json",
+            data: jsonObject,
+            dataType: "text",
+            contentType:"application/json;charset=UTF-8",
+            async:false,
             success: function (data) {
                 alert("----ajax请求执行成功！----");
                 let checkResult = data.toString();

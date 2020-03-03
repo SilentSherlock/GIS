@@ -1,6 +1,5 @@
 package com.programs.gis.control;
 
-import ch.qos.logback.core.net.SyslogOutputStream;
 import com.programs.gis.entity.Admin;
 import com.programs.gis.service.AdminService;
 import org.json.JSONObject;
@@ -31,11 +30,12 @@ public class AdminController {
 
     /*登录验证*/
     @RequestMapping("/adminValidate")
-    public String adminValidate(@RequestBody  String adminString, HttpSession session) throws Exception{
+    public String adminValidate(@RequestBody String adminString, HttpSession session) throws Exception{
         System.out.println(adminString);
         JSONObject adminjson = new JSONObject(adminString);
-        String adminName = adminService.base64Decoder((String) adminjson.get("adminName"));
-        String password = adminService.base64Decoder((String) adminjson.get("password"));
+        System.out.println(adminjson.toString());
+        String adminName = adminService.base64Decoder((String) adminjson.getString("adminName"));
+        String password = adminService.base64Decoder((String) adminjson.getString("password"));
 
         Admin admin = adminService.adminValidate(adminName, password);
         if (admin!=null){
@@ -52,8 +52,8 @@ public class AdminController {
     /*增加管理员*/
     @RequestMapping("/addAdmin")
     @ResponseBody
-    public String addAdmin(@RequestBody String adminString) throws Exception{
-        JSONObject jsonObject = new JSONObject(adminString);
+    public String addAdmin(@RequestBody JSONObject jsonObject) throws Exception{
+        //JSONObject jsonObject = new JSONObject(adminString);
         String adminName = (String) jsonObject.get("adminName");
         String password = (String) jsonObject.get("password");
         String mail = (String) jsonObject.get("mail");
