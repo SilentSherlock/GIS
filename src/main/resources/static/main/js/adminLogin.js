@@ -3,13 +3,13 @@
  * 时间: 2020.2.26
  * 描述: 管理员登陆界面的相关初始化js
  */
-$(document).ready(function () {
+$(function () {
     //用来保存账号密码的cookie名称变量
     let cname = "savedAccInfo";
 
     //查询cookie是否存在记住的账号密码
     let base64_accInfo = getCookie(window.btoa(cname));
-    if (base64_accInfo !== null){
+    if (base64_accInfo !== null) {
         //存在记住的账号密码
         let arr = base64_accInfo.split("_");
         //解码获取账号密码
@@ -22,6 +22,14 @@ $(document).ready(function () {
 
     //开启bootstrap工具提示插件
     $("[data-toggle='tooltip']").tooltip();
+
+    //重置按钮的点击事件监听函数注册
+    $("#resetButton").click(function () {
+        $("#loginForm").data("bootstrapValidator").resetForm(true);
+        //取消记住密码的选择，因为记住密码的checkbox未添加bootstrapValidator验证
+        $("input[name='rememberCheckbox']").prop("checked", false);
+    });
+
     //开启bootstrapValidator进行表单验证
     $("#loginForm").bootstrapValidator({
         message: "*输入不合法",
@@ -70,28 +78,24 @@ $(document).ready(function () {
         //注册表单被提交后且验证成功的事件的监听函数以使用ajax提交表单数据
         //阻止正常提交表单
         e.preventDefault();
-        //获取表单实例
-        let $form = $(e.target);
-        //获取校验器实例
-        let bv = $form.data("bootstrapValidator");
+        //获取bootstrapValidator实例
+        let bv = $(e.target).data("bootstrapValidator");
         //用base64加密用户名和密码
-        let base64_userName = window.btoa($form.userNameInput);
-        let base64_password = window.btoa($form.passwordInput);
-        alert($form.userNameInput);
-        let model = {
-                adminName:base64_userName,
-                password: base64_password
-            };
-        let jsonObject = JSON.stringify(model);
-        alert("fuck");
+        let base64_userName = window.btoa($("input[name='userNameInput']").val());
+        let base64_password = window.btoa($("input[name='passwordInput']").val());
+        let jsonStr = JSON.stringify({
+            adminName: base64_userName,
+            password: base64_password
+        });
+        console.log(jsonStr);
         //使用ajax提交表单验证用户名密码
         $.ajax({
             url: "adminValidate",
             type: "post",
-            data: jsonObject,
+            data: jsonStr,
+            contentType: "application/json;charset=utf-8",
+            async: false,
             dataType: "text",
-            contentType:"application/json;charset=UTF-8",
-            async:false,
             success: function (data) {
                 alert("----ajax请求执行成功！----");
                 let checkResult = data.toString();
@@ -108,17 +112,18 @@ $(document).ready(function () {
                         setCookie(base64_cname, "", 0);
                     }
                     alert("登陆成功！");
-                    window.location.href = "index.html";
+                    $(window).attr({
+                        location:"index"
+                    })
                 }else if(checkResult === "0"){
                     //验证失败，加载并显示提示用户验证失败的模态框
                     loadModals();
                     $("#loginErrorModal").modal();
                     //更改用户名和密码的验证状态
-                    $("#loginErrorModal").on("hide.bs.modal", function ( e) {
+                    $("#loginErrorModal").on("hide.bs.modal", function (e) {
                         bv.updateStatus("userNameInput", "INVALID");
                         bv.updateStatus("passwordInput", "INVALID");
                     });
-                    alert("用户名或密码错误!");
                 }else{
                     alert("登录校验结果出错！");
                 }
@@ -127,13 +132,6 @@ $(document).ready(function () {
                 alert("----ajax请求校验账号密码执行出错！错误信息如下：----\n" + error.responseText);
             }
         });
-    });
-
-    //重置按钮的点击事件监听函数注册
-    $("#resetButton").click(function () {
-        $("#loginForm").data("bootstrapValidator").resetForm(true);
-        //取消记住密码的选择，因为记住密码的checkbox未添加bootstrapValidator验证
-        $("input[name='rememberCheckbox']").prop("checked", false);
     });
 });
 /**
@@ -149,8 +147,6 @@ function setCookie(cname, cvalue, exhours) {
      * Domain	    生成该 Cookie 的域名，如 domain="www.baidu.com"
      * Path	        该 Cookie 是在当前的哪个路径下生成的，如 path=/wp-admin/
      * Secure	    如果设置了这个属性，那么只会在 SSH 连接时才会回传该 Cookie
-     *
-     * 读取cookie时cookie的字符串结构为“name1=value1; name2=value2”
      */
     let cookieStr = cname + "=" + cvalue;
     //当hours>0时，该cookie存在指定时间；等于0时代表立即删除该cookie；小于0时该cookie会存在至会话结束
@@ -173,6 +169,7 @@ function setCookie(cname, cvalue, exhours) {
  * 描述: 获取指定名称的cookie的value值,失败返回null
  */
 function getCookie(cname) {
+    //读取cookie时cookie的字符串结构为“name1=value1; name2=value2”
     let reg = new RegExp("^| " + cname + "=(.*);|$");
     let cookieStr = document.cookie;
     if (cookieStr !== ""){
@@ -191,8 +188,9 @@ function getCookie(cname) {
 function loadModals() {
     //加载模态框
     $.ajax({
-        url: "adminLogin_modals.html",
+        url: "./adminLogin_modal.html",
         type: "get",
+        async: false,
         dataType: "html",
         success: function (data) {
             $(".container-fluid").append(data);

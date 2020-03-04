@@ -30,6 +30,7 @@ public class AdminController {
 
     /*登录验证*/
     @RequestMapping("/adminValidate")
+    @ResponseBody
     public String adminValidate(@RequestBody String adminString, HttpSession session) throws Exception{
         System.out.println(adminString);
         JSONObject adminjson = new JSONObject(adminString);
@@ -42,12 +43,17 @@ public class AdminController {
             session.setAttribute("adminInCharge", admin);
             session.setAttribute("loginState", "success");/*也可以转换为json字符串返回给前端*/
             System.out.println("admin login success");
-            return "index";
+            return "1";
         }
         session.setAttribute("loginState", "failure");
-        return "error";
+        return "0";
     }
 
+    /*测试*/
+    @RequestMapping("/index")
+    public String index(){
+        return "index";
+    }
     //以下方法的返回值有待修改
     /*增加管理员*/
     @RequestMapping("/addAdmin")
