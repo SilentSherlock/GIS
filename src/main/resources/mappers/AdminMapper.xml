@@ -17,7 +17,7 @@
     </delete>
     <select id="getAdminByNameAndPass" resultMap="adminMap">
         select * from admin
-        where adminName = #{adminName}, password = #{password}
+        where adminName = #{adminName} and password = #{password}
     </select>
     <select id="getAdminsByName" resultMap="adminMap">
         select * from admin

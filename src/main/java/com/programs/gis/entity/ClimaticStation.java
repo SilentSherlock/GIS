@@ -5,9 +5,9 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class climaticStation {
+public class ClimaticStation {
 
-    private Integer dataId;
+    private Integer dataId;//主键
     private Date recordDate;
     private Float airTemperature;
     private Float airHumidity;

@@ -3,9 +3,9 @@ package com.programs.gis.entity;
 import lombok.Data;
 
 @Data
-public class cornYield {
+public class CornYield {
 
-    private Float cornFieldId;//数据中田地的编号形式为*-*的形式，如1-2，代码中以浮点表示
+    private Float cornFieldId;//数据中田地的编号形式为*-*的形式，如1-2，代码中以浮点表示，主键
     private Double moistureYield;//湿重产量
     private Float boxWeight;
     private Float beforeDehydration;//湿重
