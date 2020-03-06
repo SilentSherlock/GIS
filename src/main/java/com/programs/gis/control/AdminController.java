@@ -51,15 +51,16 @@ public class AdminController {
 
     /*测试*/
     @RequestMapping("/index")
-    public String index(){
+    public String index(HttpSession session) throws Exception{
+        getAllAdmins(session);
         return "index";
     }
     //以下方法的返回值有待修改
     /*增加管理员*/
     @RequestMapping("/addAdmin")
     @ResponseBody
-    public String addAdmin(@RequestBody JSONObject jsonObject) throws Exception{
-        //JSONObject jsonObject = new JSONObject(adminString);
+    public String addAdmin(@RequestBody String adminString) throws Exception{
+        JSONObject jsonObject = new JSONObject(adminString);
         String adminName = (String) jsonObject.get("adminName");
         String password = (String) jsonObject.get("password");
         String mail = (String) jsonObject.get("mail");
