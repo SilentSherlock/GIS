@@ -8,7 +8,7 @@ import java.util.List;
 @Repository
 public interface CornYieldDao {
     void save(CornYield cornYield) throws Exception;
-    List<CornYield> getAllYield() throws Exception;
-    CornYield getYieldById(Float cornFieldId) throws Exception;
-    void delete(Float cornFieldId) throws Exception;
+    List<CornYield> getAll() throws Exception;
+    CornYield getById(Float cornFieldId) throws Exception;
+    void deleteById(Float cornFieldId) throws Exception;
 }
