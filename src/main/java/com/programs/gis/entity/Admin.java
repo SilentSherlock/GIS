@@ -8,7 +8,7 @@ public class Admin {
     private Integer adminId;
     private String adminName;
     private String password;
-    private String mail;
+    private String email;
 
     public Admin(){
 
@@ -41,11 +41,11 @@ public class Admin {
         this.password = password;
     }
 
-    public String getMail() {
-        return mail;
+    public String getEmail() {
+        return email;
     }
 
-    public void setMail(String mail) {
-        this.mail = mail;
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

@@ -7,7 +7,6 @@ import java.util.List;
 
 @Repository
 public interface CornYieldDao {
-
     void save(CornYield cornYield) throws Exception;
     List<CornYield> getAllYield() throws Exception;
     CornYield getYieldById(Float cornFieldId) throws Exception;

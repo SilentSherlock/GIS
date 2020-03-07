@@ -63,8 +63,8 @@ public class AdminController {
         JSONObject jsonObject = new JSONObject(adminString);
         String adminName = (String) jsonObject.get("adminName");
         String password = (String) jsonObject.get("password");
-        String mail = (String) jsonObject.get("mail");
-        adminService.addAdmin(adminName, password, mail);
+        String email = (String) jsonObject.get("email");
+        adminService.addAdmin(adminName, password, email);
         System.out.println("Add admin success");
         return "success";//返回前端
     }

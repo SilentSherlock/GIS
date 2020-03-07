@@ -40,7 +40,7 @@ public class AdminService {
         Admin admin = new Admin();
         admin.setAdminName(adminName);
         admin.setPassword(password);
-        admin.setMail(mail);
+        admin.setEmail(mail);
         adminDao.save(admin);
     }
     public void deleteAdmin(String adminName, String password) throws Exception{
