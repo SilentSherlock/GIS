@@ -1,0 +1,35 @@
+/**
+ * 作者: lwh
+ * 时间: 2020.3.6
+ */
+
+/*设置页面背景图片*/
+body {
+    background-image: url("../src/adminLogin_bg.jpg");
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+}
+/*设置登陆框部分*/
+#loginFormArea {
+    background-color: rgba(255,255,255, 0.8);
+    box-shadow:5px 5px 10px 5px rgba(0,0,0,0.3);
+    margin-top: 8%;
+    padding: 0;
+    border-radius: 5px;
+}
+/*设置登陆框标题*/
+#loginFormTitle {
+    background-color: #428bca;
+    font-family: SimSun-ExtB, serif;
+    font-weight: bold;
+    color: white;
+    font-size: x-large;
+    text-align: center;
+    line-height: 200%;
+    width: 100%;
+    margin-bottom: 8%;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px
+}

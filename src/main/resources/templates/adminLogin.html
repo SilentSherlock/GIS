@@ -9,70 +9,69 @@
     <!-- 设置页面初始化大小和缩放值 -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- 页面标题 -->
-    <title>请登录</title>
+    <title>玉米的生长及环境数据管理系统</title>
     <!-- 网页图标 -->
-    <link rel="icon" href="/../static/src/adminLogin_icon.png" sizes="32x32">
+    <link rel="icon" href="../static/src/adminLogin_icon.png" sizes="32x32">
     <!-- 引入bootstrap默认css样式 -->
-    <link href="../static/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../static/extlib/bootstrap-3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <!-- 引入bootstrapValidator默认css样式 -->
-    <link href="../static/lib/bootstrapValidator/css/bootstrapValidator.css" rel="stylesheet">
+    <link href="../static/extlib/bootstrapvalidator-0.5.3/css/bootstrapValidator.min.css" rel="stylesheet">
     <!-- 引入jquery和bootstrap的js插件 -->
     <!-- 注意：因为bootstrap和bootstrapValidator的js插件使用了jquery，所以jquery的引用必须放到bootstrap的js插件引用之前 -->
-    <script src="../static/lib/jquery/jquery-3.4.1.min.js"></script>
-    <script src="../static/lib/bootstrap/js/bootstrap.min.js"></script>
-    <script src="../static/lib/bootstrapValidator/js/bootstrapValidator.js"></script>
-    <!-- 引入jquery的md5加密插件
-    <script src="../../lib/jquerymd5/md5.pro.js"></script>-->
-    <!-- 引入自己的js/css库文件
-    <script src="../js/myLib.js"></script>-->
-    <link href="../static/main/css/adminLogin.css" rel="stylesheet">
-    <script type="text/javascript" src="../static/main/js/adminLogin.js"></script>
+    <script type="text/javascript" src="../static/extlib/jquery-3.4.1/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="../static/extlib/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../static/extlib/bootstrapvalidator-0.5.3/js/bootstrapValidator.min.js"></script>
+    <!-- 引入jquery的md5加密插件 -->
+    <!-- <script src="./extlib/jquerymd5/md5.pro.js"></script> -->
+    <!-- 引入自己的js/css库文件-->
+    <link href="../static/css/adminLogin.css" rel="stylesheet">
+    <script type="text/javascript" src="../static/js/adminLogin.js"></script>
+    <!-- <script src="./js/myLib.js"></script> -->
 </head>
 <body>
     <div class="container-fluid">
-        <!-- 标题 -->
-        <div class="row">
+        <!-- 标题
+        <div class="row" id="pageTitle">
             <div class="col-lg-6 col-lg-offset-1">
                 <span>玉米的生长及环境数据管理系统</span>
             </div>
-        </div>
+        </div>-->
         <!-- 登陆表单 -->
         <div class="row">
-            <div class="col-lg-3 col-lg-offset-4">
-                <form id="loginForm" class="form-horizontal">
-                    <fieldset>
-                        <legend>请登录</legend>
+            <div class="col-lg-3 col-lg-offset-8 col-xs-10 col-xs-offset-1" id="loginFormArea">
+                <form id="loginForm" class="form-horizontal" role="form">
+                    <div id="loginFormTitle">
+                    </div>
 
-                        <div class="form-group">
-                            <label class="col-lg-3 control-label">用户名</label>
-                            <div class="col-lg-8">
-                                <input type="text" class="form-control" name="userNameInput">
-                            </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">用户名</label>
+                        <div class="col-lg-8">
+                            <input type="text" class="form-control" name="userNameInput">
                         </div>
+                    </div>
 
-                        <div class="form-group">
-                            <label class="col-lg-3 control-label">密码</label>
-                            <div class="col-lg-8">
-                                <input type="password" class="form-control" name="passwordInput">
-                            </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">密码</label>
+                        <div class="col-lg-8">
+                            <input type="password" class="form-control" name="passwordInput">
                         </div>
+                    </div>
 
-                        <div class="form-group">
-                            <div class="col-lg-offset-4 checkbox">
-                                <label data-toggle="tooltip" data-placement="right" title="3天后失效">
-                                    <input type="checkbox" name="rememberCheckbox" value="1">记住我
-                                </label>
-                            </div>
+                    <div class="form-group">
+                        <div class="col-lg-offset-4  col-xs-offset-1 checkbox">
+                            <label data-toggle="tooltip" data-placement="right" title="退出浏览器后失效">
+                                <input type="checkbox" name="rememberCheckbox" value="1">记住我
+                            </label>
                         </div>
+                    </div>
 
-                        <div class="form-group">
-                            <div class="col-lg-offset-3">
-                                <button type="submit" class="btn btn-primary col-lg-3" data-toggle="modal" data-target=".bs-example-modal-lg">登录</button>
-                                <span class="col-lg-2"></span>
-                                <button type="button" class="btn btn-primary col-lg-3" id="resetButton">重置</button>
-                            </div>
+                    <div class="form-group">
+                        <div class="col-lg-offset-3 col-xs-offset-2">
+                            <button type="submit" class="btn btn-primary col-lg-3 col-xs-4">登录</button>
+                            <span class="col-lg-2 col-xs-2"></span>
+                            <button type="button" class="btn btn-primary col-lg-3 col-xs-4" id="resetButton">重置</button>
                         </div>
-                    </fieldset>
+                    </div>
                 </form>
             </div>
         </div>
