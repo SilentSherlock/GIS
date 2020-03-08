@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.programs.gis.dao.CornLeafDao">
+    <resultMap id="cornLeafMap" type="com.programs.gis.entity.CornLeaf">
+        <id property="DOY" column="DOY"/>
+        <id property="TRT" column="TRT"/>
+        <result property="leafArea" column="leafArea"/>
+        <result property="leafPerimeter" column="leafPerimeter"/>
+        <result property="leafNumber" column="leafNumber"/>
+        <result property="recordDay" column="recordDay"/>
+    </resultMap>
+    <insert id="save">
+        insert into cornLeaf(DOY, TRT, leafArea, leafPerimeter, leafNumber, recordDay)
+        values (#{DOY},#{TRT},#{leafArea},#{leafPerimeter},#{leafNumber},#{recordDay})
+    </insert>
+    <delete id="deleteByPrimaryKey">
+        delete from cornLeaf
+        where DOY = #{DOY} and TRT = #{TRT}
+    </delete>
+    <select id="getAll" resultMap="cornLeafMap">
+        select * from cornLeaf
+    </select>
+    <select id="getByPrimaryKey" resultMap="cornLeafMap">
+        select * from cornLeaf
+        where DOY = #{DOY} and TRT = #{TRT}
+    </select>
+</mapper>

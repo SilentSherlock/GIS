@@ -10,9 +10,9 @@
         <result property="moistureContent" column="moistureContent"></result>
         <result property="dryYield" column="dryYield"></result>
     </resultMap>
-    <insert id="save" useGeneratedKeys="true" keyProperty="cornFieldId">
-        insert into cornYield (moistureYield, boxWeight, beforeDehydration, afterDehydration, moistureContent, dryYield)
-        values (#{moistureYield}, #{boxWeight}, #{beforeDehydration}, #{afterDehydration}, #{moistureContent}, #{dryYield});
+    <insert id="save" >
+        insert into cornYield (cornFieldId,moistureYield, boxWeight, beforeDehydration, afterDehydration, moistureContent, dryYield)
+        values (#{cornFieldId},#{moistureYield}, #{boxWeight}, #{beforeDehydration}, #{afterDehydration}, #{moistureContent}, #{dryYield});
     </insert>
     <select id="getAllYield" resultMap="cornYieldMap">
         select * from cornYield

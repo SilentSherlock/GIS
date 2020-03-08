@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.programs.gis.dao.CornHeightAndChloDao">
+    <resultMap id="cornHeightAndChloMap" type="com.programs.gis.entity.CornHeightAndChlo">
+        <id property="DOY" column="DOY"/>
+        <id property="TRT" column="TRT"/>
+        <id property="NUM_1" column="NUM_1"/>
+        <id property="NUM_2" column="NUM_2"/>
+        <result property="NUM_3" column="NUM_3"/>
+        <result property="height" column="height"/>
+        <result property="chlorophyll" column="chlorophyll"/>
+    </resultMap>
+    <insert id="save">
+        insert into cornHeightAndChlo(DOY, TRT, NUM_1, NUM_2, NUM_3, height, chlorophyll)
+        values (#{DOY},#{TRT},#{NUM_1},#{NUM_2},#{NUM_3},#{height},#{chlorophyll})
+    </insert>
+    <select id="getAll" resultMap="cornHeightAndChloMap">
+        select * from cornHeightAndChlo
+    </select>
+    <delete id="deleteByPrimaryKey">
+        delete from cornHeightAndChlo
+        where DOY = #{DOY} and TRT = #{TRT} and NUM_1 = #{NUM_1} and NUM_2 = #{NUM_2}
+    </delete>
+    <select id="getByPrimaryKey" resultMap="cornHeightAndChloMap">
+        select * from cornHeightAndChlo
+        where DOY = #{DOY} and TRT = #{TRT} and NUM_1 = #{NUM_1} and NUM_2 = #{NUM_2}
+    </select>
+</mapper>

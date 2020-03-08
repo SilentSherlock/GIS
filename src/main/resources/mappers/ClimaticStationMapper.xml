@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.programs.gis.dao.ClimaticStationDao">
+    <resultMap id="climaticStationMap" type="com.programs.gis.entity.ClimaticStation">
+        <id property="dataId" column="dataId"/>
+        <result property="recordDate" column="recordDate"/>
+        <result property="airTemperature" column="airTemperature"/>
+        <result property="airHumidity" column="airHumidity"/>
+        <result property="radiationAmount" column="radiationAmount"/>
+        <result property="windSpeed" column="windSpeed"/>
+        <result property="rainfall" column="rainfall"/>
+    </resultMap>
+    <insert id="save">
+        insert into climaticStation(dataId,recordDate,airTemperature,airHumidity,radiationAmount,windSpeed,rainfall)
+        values (#{dataId},#{recordDate},#{airTemperature},#{airHumidity},#{radiationAmount},#{windSpeed},#{rainfall})
+    </insert>
+    <select id="getAll" resultMap="climaticStationMap">
+        select * from climaticStation
+    </select>
+    <delete id="deleteById">
+        delete from climaticStation
+        where dataId = #{dataId}
+    </delete>
+    <select id="getById" resultMap="climaticStationMap">
+        select * from climaticStation
+        where dataId = #{dataId}
+    </select>
+    <!--通过时间获取记录，尚未测试-->
+    <select id="getByDate" resultMap="climaticStationMap">
+        select * from climaticStation
+        where recordDate = #{recordDate}
+    </select>
+</mapper>

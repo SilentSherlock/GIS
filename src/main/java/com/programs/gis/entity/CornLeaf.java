@@ -10,7 +10,7 @@ public class CornLeaf {
     private Double leafArea;
     private Double leafPerimeter;
     private Integer leafNumber;
-    private Float day;//属性存疑
+    private Float recordDay;//属性存疑
 
     public Integer getDOY() {
         return DOY;
@@ -52,11 +52,11 @@ public class CornLeaf {
         this.leafNumber = leafNumber;
     }
 
-    public Float getDay() {
-        return day;
+    public Float getRecordDay() {
+        return recordDay;
     }
 
-    public void setDay(Float day) {
-        this.day = day;
+    public void setRecordDay(Float recordDay) {
+        this.recordDay = recordDay;
     }
 }
