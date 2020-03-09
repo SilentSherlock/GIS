@@ -1,9 +1,11 @@
 package com.programs.gis.dao;
 
 import com.programs.gis.entity.CornHeightAndChlo;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface CornHeightAndChloDao {
 
     void save(CornHeightAndChlo cornHeightAndChlo) throws Exception;

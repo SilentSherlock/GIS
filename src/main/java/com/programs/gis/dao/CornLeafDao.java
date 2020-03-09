@@ -1,9 +1,11 @@
 package com.programs.gis.dao;
 
 import com.programs.gis.entity.CornLeaf;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface CornLeafDao {
 
     void save(CornLeaf cornLeaf) throws Exception;

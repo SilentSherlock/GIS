@@ -1,10 +1,12 @@
 package com.programs.gis.dao;
 
 import com.programs.gis.entity.ClimaticStation;
+import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.List;
 
+@Repository
 public interface ClimaticStationDao {
 
     void save(ClimaticStation climaticStation) throws Exception;
