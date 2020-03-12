@@ -9,7 +9,7 @@
     <!-- 设置页面初始化大小和缩放值 -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- 页面标题 -->
-    <title>玉米的生长及环境数据管理系统</title>
+    <title>登录</title>
     <!-- 网页图标 -->
     <link rel="icon" href="../static/src/adminLogin_icon.png" sizes="32x32">
     <!-- 引入bootstrap默认css样式 -->
@@ -29,55 +29,46 @@
     <!-- <script src="./js/myLib.js"></script> -->
 </head>
 <body>
-    <div class="container-fluid">
-        <!-- 标题
-        <div class="row" id="pageTitle">
-            <div class="col-lg-6 col-lg-offset-1">
-                <span>玉米的生长及环境数据管理系统</span>
+<div class="container">
+    <!-- 登陆表单区域 -->
+    <div class="row">
+        <div class="col-lg-3 col-lg-offset-8
+                    col-md-4 col-md-offset-8
+                    col-xs-7 col-xs-offset-2" id="loginFormArea">
+
+            <div id="loginFormTitle">
+                <h4 id="loginFormTitleText">
+                    <strong>玉米的生长及环境数据管理系统</strong>
+                </h4>
             </div>
-        </div>-->
-        <!-- 登陆表单 -->
-        <div class="row">
-            <div class="col-lg-3 col-lg-offset-8 col-xs-10 col-xs-offset-1" id="loginFormArea">
-                <form id="loginForm" class="form-horizontal" role="form">
-                    <div id="loginFormTitle">
-                    </div>
 
-                    <div class="form-group">
-                        <label class="col-lg-3 control-label">用户名</label>
-                        <div class="col-lg-8">
-                            <input type="text" class="form-control" name="userNameInput">
-                        </div>
-                    </div>
+            <form id="loginForm">
 
-                    <div class="form-group">
-                        <label class="col-lg-3 control-label">密码</label>
-                        <div class="col-lg-8">
-                            <input type="password" class="form-control" name="passwordInput">
-                        </div>
-                    </div>
+                <div class="form-group">
+                    <label for="userNameInput">用户名</label>
+                    <input type="text" class="form-control" id="userNameInput" name="userNameInput">
+                </div>
 
-                    <div class="form-group">
-                        <div class="col-lg-offset-4  col-xs-offset-1 checkbox">
-                            <label data-toggle="tooltip" data-placement="right" title="退出浏览器后失效">
-                                <input type="checkbox" name="rememberCheckbox" value="1">记住我
-                            </label>
-                        </div>
-                    </div>
+                <div class="form-group">
+                    <label for="passwordInput">密码</label>
+                    <input type="password" class="form-control" id="passwordInput" name="passwordInput">
+                </div>
 
-                    <div class="form-group">
-                        <div class="col-lg-offset-3 col-xs-offset-2">
-                            <button type="submit" class="btn btn-primary col-lg-3 col-xs-4">登录</button>
-                            <span class="col-lg-2 col-xs-2"></span>
-                            <button type="button" class="btn btn-primary col-lg-3 col-xs-4" id="resetButton">重置</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
+                <div class="checkbox">
+                    <label data-toggle="tooltip" data-placement="right" title="退出浏览器后失效">
+                        <input type="checkbox" name="rememberCheckbox" value="1">记住我
+                    </label>
+                </div>
+
+                <button type="submit" class="btn btn-primary">登录</button>
+                <button type="button" class="btn btn-primary" id="resetButton">重置</button>
+
+            </form>
         </div>
-
-        <!-- 动态载入模态框 -->
-
     </div>
+
+    <!-- 动态载入模态框 -->
+
+</div>
 </body>
 </html>

@@ -11,25 +11,25 @@ body {
     background-attachment: fixed;
     background-size: cover;
 }
-/*设置登陆框部分*/
+/*设置登录框所在区域*/
 #loginFormArea {
-    background-color: rgba(255,255,255, 0.8);
+    margin-top: 50px;
+    background-color: white;
     box-shadow:5px 5px 10px 5px rgba(0,0,0,0.3);
-    margin-top: 8%;
-    padding: 0;
     border-radius: 5px;
+    padding-bottom: 20px;
+    padding-left: 30px;
+    padding-right: 30px;
 }
-/*设置登陆框标题*/
+/*设置登录框标题*/
 #loginFormTitle {
-    background-color: #428bca;
-    font-family: SimSun-ExtB, serif;
-    font-weight: bold;
-    color: white;
-    font-size: x-large;
-    text-align: center;
-    line-height: 200%;
+    border-bottom: 1px solid #e6e6e6;
+    margin-bottom: 20px;
+    margin-left: -20px;
+    margin-right: -20px;
+}
+/*设置按钮*/
+#loginForm button {
     width: 100%;
-    margin-bottom: 8%;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px
+    margin-top: 10px;
 }
