@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>管理界面</title>
-    <script type="text/javascript" src="../static/lib/jquery/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="../static/extlib/jquery-3.4.1/jquery-3.4.1.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
+
+            //测试添加用户功能
             $("#add").click(function () {
                 let model = {
                     adminName:"dick",
@@ -26,6 +28,8 @@
                     }
                 })
             });
+
+            //测试用户删除功能
             $("#delete").click(function () {
                 let model = {
                     adminName: "Tom",
@@ -45,6 +49,18 @@
                     }
                 })
             });
+
+            //测试读取excel文件内容
+            $("#saveToDatabase").click(function () {
+                $.ajax({
+                    url:"addToDatabaseByFile",
+                    type:"post",
+                    data:"admin.xlsx",
+                    dataType:"text",
+                    contentType:"application/json;charset=UTF-8",
+                    async:false
+                })
+            });
         })
     </script>
 </head>
@@ -56,9 +72,15 @@
     </ul>
     <button id="add">添加</button><br>
     <button id="delete">删除</button>
-    <form enctype="multipart/form-data" method="post" action="/fileUpload">
+    <form enctype="multipart/form-data" method="post" action="/templateUpload">
         <input type="file" name="template">
-        <button type="submit">上传文件</button>
-    </form>
+        <button type="submit">上传模板</button>
+    </form><br>
+    <a href="/templateDownload">下载模板</a>
+    <form enctype="multipart/form-data" method="post" action="/dataFileUpload">
+        <input type="file" name="dataFile">
+        <button type="submit">上传数据文件</button>
+    </form><br>
+    <button id="saveToDatabase" type="button">保存数据文件</button>
 </body>
 </html>

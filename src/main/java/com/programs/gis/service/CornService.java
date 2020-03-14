@@ -6,9 +6,17 @@ import com.programs.gis.dao.CornYieldDao;
 import com.programs.gis.entity.CornHeightAndChlo;
 import com.programs.gis.entity.CornLeaf;
 import com.programs.gis.entity.CornYield;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.omg.Messaging.SYNC_WITH_TRANSPORT;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -35,8 +43,30 @@ public class CornService {//合并玉米本身信息相关的Dao
         cornHeightAndChloDao.save(cornHeightAndChlo);
         System.out.println("save CornHeightAndChlo successfully");
     }
-    public void saveCornHeightAndChloByFile(){//待补全，通过文件保存
+    public boolean saveCornHeightAndChloByFile(String filePath) throws IOException, InvalidFormatException {//待补全，通过文件保存
+        File file = new File(filePath);
+        if (!file.exists()){
+            System.out.println("The wanted excel isn't exist");
+            return false;
+        }
 
+        //FileInputStream fileInputStream = new FileInputStream(file);
+        Workbook workbook = WorkbookFactory.create(file);
+        int numberOfSheets = workbook.getNumberOfSheets();//excel文件中sheet的数量
+        for (int i = 0;i < numberOfSheets;i++){
+            Sheet sheet = workbook.getSheetAt(i);//获得当前工作表
+            for (int row = 1;row < sheet.getPhysicalNumberOfRows();row++){//跳过表头
+                System.out.println("Excel表行数:" + sheet.getPhysicalNumberOfRows());
+                Row tmpRow = sheet.getRow(row);//获取当前行
+                if (tmpRow != null){
+                    for (int col = 0;col < tmpRow.getPhysicalNumberOfCells();col++){
+                        String content = tmpRow.getCell(col).toString();//获取当前行的每一个单元格
+                        System.out.println(content);
+                    }
+                }
+            }
+        }
+        return true;
     }
 
     public List<CornHeightAndChlo> getAllCornHeightAndChlo() throws Exception{
