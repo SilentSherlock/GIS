@@ -92,14 +92,30 @@ public class FileController {
     * */
     @RequestMapping("/addToDatabaseByFile")
     @ResponseBody
-    public String addToDatabaseByFile(@RequestBody String dataFileName) throws IOException, InvalidFormatException {
+    public String addToDatabaseByFile(@RequestBody String dataFileName) throws Exception {
         String path = ResourceUtils.getURL("classpath:").getPath() + "static/file/dataFile/";
         String dataPath = path + dataFileName;
-
-        if (cornService.saveCornHeightAndChloByFile(dataPath)){
-            System.out.println("Add To Database By File Success");
+        if (dataFileName!=null){
+            switch (dataFileName) {
+                case "玉米产量.xlsx":
+                    if (cornService.saveCornYieldByFile(dataPath)) {
+                        System.out.println("Add To Corn Yield Database By File Success");
+                    }
+                    break;
+                case "叶面积数据统计.xlsx":
+                    if (cornService.saveCornLeafByFile(dataPath)) {
+                        System.out.println("Add To Corn Leaf Database By File Success");
+                    }
+                    break;
+                case "株高和叶绿素.xlsx":
+                    if (cornService.saveCornHeightAndChloByFile(dataPath)) {
+                        System.out.println("Add To Corn Height And Chlo Database By File Success");
+                    }
+                    break;
+            }
             return "success";
         }
+
         return "failed";
     }
 
@@ -109,6 +125,5 @@ public class FileController {
     public String addToDatabase(){
         return "success";
     }
-
 
 }

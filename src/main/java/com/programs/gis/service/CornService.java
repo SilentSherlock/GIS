@@ -28,6 +28,64 @@ public class CornService {//合并玉米本身信息相关的Dao
     @Resource
     private CornYieldDao cornYieldDao;
 
+    /*根据不同daoType确定哪个dao进行数据库操作
+    * 0-----cornHeightAndChloDao
+    * 1-----cornLeafDao
+    * 2-----cornYieldDao*/
+    private boolean saveByFile(String filePath, int daoType) throws Exception {
+        File file = new File(filePath);
+        if (!file.exists()){
+            System.out.println("The wanted excel isn't exist");
+            return false;
+        }
+
+        //FileInputStream fileInputStream = new FileInputStream(file);
+        Workbook workbook = WorkbookFactory.create(file);
+        int numberOfSheets = workbook.getNumberOfSheets();//excel文件中sheet的数量
+        for (int i = 0;i < numberOfSheets;i++){
+            Sheet sheet = workbook.getSheetAt(i);//获得当前工作表
+            if (sheet != null){
+                for (int row = 1;row < sheet.getPhysicalNumberOfRows();row++){//跳过表头
+                    System.out.println("Excel表行数:" + sheet.getPhysicalNumberOfRows());
+                    Row tmpRow = sheet.getRow(row);//获取当前行
+                    if (tmpRow != null){
+                        switch (daoType){//根据不同的daoType,确定是哪个dao要进行数据库操作
+                            case 0:
+                                Integer DOY = Integer.valueOf(tmpRow.getCell(0).toString());
+                                Integer TRT = Integer.valueOf(tmpRow.getCell(1).toString());
+                                Float NUM_1 = Float.valueOf(tmpRow.getCell(2).toString());
+                                Float NUM_2 = Float.valueOf(tmpRow.getCell(3).toString());
+                                Integer NUM_3 = Integer.valueOf(tmpRow.getCell(4).toString());
+                                Float height = Float.valueOf(tmpRow.getCell(5).toString());
+                                Float chlo = Float.valueOf(tmpRow.getCell(6).toString());
+                                saveCornHeightAndChlo(DOY, TRT, NUM_1, NUM_2, NUM_3, height, chlo);
+                                break;
+                            case 1:
+                                Integer DOY1 = Integer.valueOf(tmpRow.getCell(0).toString());
+                                Float TRT1 = Float.valueOf(tmpRow.getCell(1).toString());
+                                Double leafArea = Double.valueOf(tmpRow.getCell(2).toString());
+                                Double leafPerimeter = Double.valueOf(tmpRow.getCell(3).toString());
+                                Integer leafNumber = Integer.valueOf(tmpRow.getCell(4).toString());
+                                Float recordDay = Float.valueOf(tmpRow.getCell(5).toString());
+                                saveCornLeaf(DOY1, TRT1, leafArea, leafPerimeter, leafNumber, recordDay);
+                                break;
+                            case 2:
+                                Float cornFieldId = Float.valueOf(tmpRow.getCell(0).toString());
+                                Double moistureYield = Double.valueOf(tmpRow.getCell(1).toString());
+                                Float boxWeight = Float.valueOf(tmpRow.getCell(2).toString());
+                                Float beforeDehydration = Float.valueOf(tmpRow.getCell(3).toString());
+                                Float afterDehydration = Float.valueOf(tmpRow.getCell(4).toString());
+                                Float moistureContent = Float.valueOf(tmpRow.getCell(5).toString());
+                                Double dryYield = Double.valueOf(tmpRow.getCell(6).toString());
+                                saveCornYield(cornFieldId, moistureYield, boxWeight, beforeDehydration, afterDehydration, moistureContent, dryYield);
+                                break;
+                        }
+                    }
+                }
+            }
+        }
+        return true;
+    }
     /*株高和叶绿素*/
     public void saveCornHeightAndChlo(Integer DOY, Integer TRT, Float NUM_1, Float NUM_2, Integer NUM_3,
                                       Float height, Float chlo) throws Exception{
@@ -43,30 +101,8 @@ public class CornService {//合并玉米本身信息相关的Dao
         cornHeightAndChloDao.save(cornHeightAndChlo);
         System.out.println("save CornHeightAndChlo successfully");
     }
-    public boolean saveCornHeightAndChloByFile(String filePath) throws IOException, InvalidFormatException {//待补全，通过文件保存
-        File file = new File(filePath);
-        if (!file.exists()){
-            System.out.println("The wanted excel isn't exist");
-            return false;
-        }
-
-        //FileInputStream fileInputStream = new FileInputStream(file);
-        Workbook workbook = WorkbookFactory.create(file);
-        int numberOfSheets = workbook.getNumberOfSheets();//excel文件中sheet的数量
-        for (int i = 0;i < numberOfSheets;i++){
-            Sheet sheet = workbook.getSheetAt(i);//获得当前工作表
-            for (int row = 1;row < sheet.getPhysicalNumberOfRows();row++){//跳过表头
-                System.out.println("Excel表行数:" + sheet.getPhysicalNumberOfRows());
-                Row tmpRow = sheet.getRow(row);//获取当前行
-                if (tmpRow != null){
-                    for (int col = 0;col < tmpRow.getPhysicalNumberOfCells();col++){
-                        String content = tmpRow.getCell(col).toString();//获取当前行的每一个单元格
-                        System.out.println(content);
-                    }
-                }
-            }
-        }
-        return true;
+    public boolean saveCornHeightAndChloByFile(String filePath) throws Exception {//待补全，通过文件保存
+        return saveByFile(filePath, 0);
     }
 
     public List<CornHeightAndChlo> getAllCornHeightAndChlo() throws Exception{
@@ -100,8 +136,8 @@ public class CornService {//合并玉米本身信息相关的Dao
         System.out.println("Save CornLeaf Successfully");
     }
 
-    public void saveCornLeafByFile(){//待补全
-
+    public boolean saveCornLeafByFile(String filePath) throws Exception {//待补全
+        return saveByFile(filePath, 1);
     }
 
     public void deleteCornLeaf(Integer DOY, Float TRT) throws Exception{
@@ -136,8 +172,8 @@ public class CornService {//合并玉米本身信息相关的Dao
         System.out.println("Save CornYield Successfully");
     }
 
-    public void saveCornYieldByFile(){//待补全
-
+    public boolean saveCornYieldByFile(String filePath) throws Exception{//待补全
+        return saveByFile(filePath, 2);
     }
 
     public List<CornYield> getAllCornYield() throws Exception{
@@ -154,4 +190,5 @@ public class CornService {//合并玉米本身信息相关的Dao
         System.out.println("Delete CornYield By Primary Key");
         cornYieldDao.deleteById(cornFieldId);
     }
+
 }
