@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>管理界面</title>
     <script type="text/javascript" src="../static/extlib/jquery-3.4.1/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="../static/extlib/echarts/echarts.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
 
@@ -63,6 +64,12 @@
             });
         })
     </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            let chartDom = $("#testChart");
+            let testChart = echarts.init(chartDom);
+        })
+    </script>
 </head>
 <body>
     <h1>This is a fucking manage html</h1>
@@ -82,5 +89,6 @@
         <button type="submit">上传数据文件</button>
     </form><br>
     <button id="saveToDatabase" type="button">保存数据文件</button>
+    <div id="testChart"></div>
 </body>
 </html>
