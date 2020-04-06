@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chart</title>
+    <script type="text/javascript" src="../static/extlib/echarts/echarts.js"></script>
+</head>
+<body>
+    <div id="testChart" style="width: 1000px; height: 600px"></div>
+    <script type="text/javascript">
+        let chartDom = document.getElementById("testChart");
+        let testChart = echarts.init(chartDom, "light");
+        testChart.setOption({
+            xAxis: {
+                type: "category"
+            },
+            yAxis: {},
+            dataset: {
+                source: [
+                    ["Mon", 345],
+                    ["Tue", 383],
+                    ["Wed", 897],
+                    ["Thu", 645],
+                    ["Fri", 244],
+                    ["Sta", 989],
+                    ["Sun", 235]
+                ]
+            },
+            series: [
+                {
+                    type: "bar",
+                    encode: {
+                        x: 0,
+                        y: 1
+                    }
+                },
+                {
+                    type: "line",
+                    encode: {
+                        x: 0,
+                        y: 1
+                    }
+                }
+            ]
+        })
+    </script>
+</body>
+</html>

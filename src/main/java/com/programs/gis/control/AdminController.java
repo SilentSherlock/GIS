@@ -20,6 +20,11 @@ public class AdminController {
     @Resource
     private AdminService adminService;
 
+    /*echarts测试*/
+    @RequestMapping(value = "/echarts")
+    public String getEcharts(){
+        return "chartShow";
+    }
     /*登录请求*/
     @RequestMapping("/adminLogin")
     public String adminLogin(Model model){

@@ -65,17 +65,52 @@
         })
     </script>
     <script type="text/javascript">
+        //图表渲染
         $(document).ready(function () {
             let chartDom = $("#testChart");
-            let testChart = echarts.init(chartDom);
+            let testChart = echarts.init(chartDom[0], "dark");
+            testChart.setOption({
+                xAxis: {
+                    type: "category"
+                },
+                yAxis: {},
+                dataset: {
+                    source: [
+                        ["Mon", 345],
+                        ["Thu", 383],
+                        ["Wed", 897],
+                        ["The", 645],
+                        ["Fri", 244],
+                        ["Sta", 989],
+                        ["Sun", 235]
+                    ]
+                },
+                series: [
+                    {
+                        type: "bar",
+                        encode: {
+                            x: 0,
+                            y: 1
+                        }
+                    },
+                    {
+                        type: "line",
+                        encode: {
+                            x: 0,
+                            y: 1
+                        }
+                    }
+                ]
+            })
         })
     </script>
 </head>
 <body>
     <h1>This is a fucking manage html</h1>
     <ul th:each="tmpAdmin, adminStat:${session.allAdmins}">
-        <li th:text="${tmpAdmin.adminName}"></li>
-        <li th:text="${tmpAdmin.email}"></li>
+        <!--/*@thymesVar id="tmpAdmin" type=""*/-->
+        <!--<li th:text="${tmpAdmin.adminName}"></li>
+        <li th:text="${tmpAdmin.email}"></li>-->
     </ul>
     <button id="add">添加</button><br>
     <button id="delete">删除</button>
@@ -89,6 +124,6 @@
         <button type="submit">上传数据文件</button>
     </form><br>
     <button id="saveToDatabase" type="button">保存数据文件</button>
-    <div id="testChart"></div>
+    <div id="testChart" style="width: 1000px;height: 600px"></div>
 </body>
 </html>
