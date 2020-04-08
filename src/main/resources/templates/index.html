@@ -2,9 +2,16 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <!--bootstrap针对移动设备优化，设置页面宽度和初始缩放-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>管理界面</title>
+    <!--引入bootstrap文件-->
+    <link rel="stylesheet" href="../static/extlib/bootstrap-3.3.7/css/bootstrap.css">
+    <link rel="stylesheet" href="../static/extlib/bootstrap-3.3.7/css/bootstrap-theme.css">
+
     <script type="text/javascript" src="../static/extlib/jquery-3.4.1/jquery-3.4.1.min.js"></script>
     <script type="text/javascript" src="../static/extlib/echarts/echarts.js"></script>
+    <!--jquery提交测试-->
     <script type="text/javascript">
         $(document).ready(function () {
 
@@ -64,16 +71,27 @@
             });
         })
     </script>
+    <!--echarts图表测试-->
     <script type="text/javascript">
         //图表渲染
         $(document).ready(function () {
             let chartDom = $("#testChart");
             let testChart = echarts.init(chartDom[0], "dark");
             testChart.setOption({
-                xAxis: {
-                    type: "category"
-                },
-                yAxis: {},
+                legend: {},
+                tooltip: {},
+                grid: [
+                    {bottom: "55%"},//第一个坐标系在echarts容器中的相对位置
+                    {top: "55%"}//第二个坐标系在echarts容器中的相对位置
+                ],
+                xAxis: [
+                    {type: "category", gridIndex: 0, name: "week", nameLocation: "end"},//指定第一个坐标系的x轴
+                    {type: "category", gridIndex: 1}//指定第二个坐标系的x轴
+                ],
+                yAxis: [
+                    {gridIndex: 0},//指定坐标系的y轴
+                    {gridIndex: 1}
+                ],
                 dataset: {
                     source: [
                         ["Mon", 345],
@@ -91,14 +109,18 @@
                         encode: {
                             x: 0,
                             y: 1
-                        }
+                        },
+                        xAxisIndex: 0,//指定图在哪个坐标系中
+                        yAxisIndex: 0
                     },
                     {
                         type: "line",
                         encode: {
                             x: 0,
                             y: 1
-                        }
+                        },
+                        xAxisIndex: 1,
+                        yAxisIndex: 1
                     }
                 ]
             })
@@ -106,24 +128,34 @@
     </script>
 </head>
 <body>
-    <h1>This is a fucking manage html</h1>
-    <ul th:each="tmpAdmin, adminStat:${session.allAdmins}">
-        <!--/*@thymesVar id="tmpAdmin" type=""*/-->
-        <!--<li th:text="${tmpAdmin.adminName}"></li>
-        <li th:text="${tmpAdmin.email}"></li>-->
-    </ul>
-    <button id="add">添加</button><br>
-    <button id="delete">删除</button>
-    <form enctype="multipart/form-data" method="post" action="/templateUpload">
-        <input type="file" name="template">
-        <button type="submit">上传模板</button>
-    </form><br>
-    <a href="/templateDownload">下载模板</a>
-    <form enctype="multipart/form-data" method="post" action="/dataFileUpload">
-        <input type="file" name="dataFile">
-        <button type="submit">上传数据文件</button>
-    </form><br>
-    <button id="saveToDatabase" type="button">保存数据文件</button>
-    <div id="testChart" style="width: 1000px;height: 600px"></div>
+    <!--导航条-->
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-brand">Admin System</div>
+        </div>
+    </nav>
+
+    <div>
+        <h1>This is a fucking manage html</h1>
+        <ul th:each="tmpAdmin, adminStat:${session.allAdmins}">
+            <!--/*@thymesVar id="tmpAdmin" type=""*/-->
+            <!--<li th:text="${tmpAdmin.adminName}"></li>
+            <li th:text="${tmpAdmin.email}"></li>-->
+        </ul>
+        <button id="add">添加</button><br>
+        <button id="delete">删除</button>
+        <form enctype="multipart/form-data" method="post" action="/templateUpload">
+            <input type="file" name="template">
+            <button type="submit">上传模板</button>
+        </form><br>
+        <a href="/templateDownload">下载模板</a>
+        <form enctype="multipart/form-data" method="post" action="/dataFileUpload">
+            <input type="file" name="dataFile">
+            <button type="submit">上传数据文件</button>
+        </form><br>
+        <button id="saveToDatabase" type="button">保存数据文件</button>
+        <div id="testChart" style="width: 1000px;height: 600px"></div>
+    </div>
+
 </body>
 </html>
