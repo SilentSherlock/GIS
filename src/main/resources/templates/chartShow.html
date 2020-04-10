@@ -1,37 +1,109 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Chart</title>
+    <!--bootstrap针对移动设备优化，设置页面宽度和初始缩放-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>管理界面</title>
+    <!--引入bootstrap文件-->
+    <link rel="stylesheet" href="../static/extlib/bootstrap-3.3.7/css/bootstrap.css">
+    <link rel="stylesheet" href="../static/extlib/bootstrap-3.3.7/css/bootstrap-theme.css">
+    <!--js插件引用-->
+    <script type="text/javascript" src="../static/extlib/jquery-3.4.1/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="../static/extlib/bootstrap-3.3.7/js/bootstrap.js"></script>
+
+    <!--引入echarts-->
     <script type="text/javascript" src="../static/extlib/echarts/echarts.js"></script>
+    <style rel="stylesheet">
+        body {
+            padding-top: 70px;
+        }
+        .chartShow-row {
+
+        }
+    </style>
 </head>
 <body>
-    <div id="testChart" style="width: 600px; height: 400px"></div>
-    <script type="text/javascript">
-        let chartDom = document.getElementById("testChart");
-        let testChart = echarts.init(chartDom, "light");
-        let chartData = [345, 383, 897, 645, 244, 989, 235];
-        testChart.setOption({
-            legend: {},
-            tooltip: {},
-            xAxis: {
-                type: "category",
-                data: [
-                    "Mon", "Tue", "Wed", "Thu", "Fri", "Sta", "Sun"
-                ]
-            },
-            yAxis: {},
-            series: [
-                {
-                    type: "bar",
-                    data: chartData
-                },
-                {
-                    type: "line",
-                    data: chartData
-                }
+<!--导航条-->
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">Brand</a>
+        </div>
+
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="#">首页</a></li>
+                <li><a href="#">地图</a></li>
+                <li><a href="#">图表</a></li>
+                <li class="dropdown">
+                    <a role="button" href="#" class="dropdown-toggle" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">其他<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">新建用户</a></li>
+                        <li><a href="#">添加数据</a></li>
+                    </ul>
+                </li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a role="button" href="#" class="dropdown-toggle" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">用户名<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">用户信息</a></li>
+                        <li><a href="#">退出登录</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="chartShow-row container-fluid row">
+    <!--左侧竖直导航栏-->
+    <div class="col-md-2">
+        <nav>
+            <ul class="nav nav-pills nav-stacked">
+                <li role="presentation"><a href="#">玉米作物</a></li>
+                <li role="presentation"><a href="#">气象相关</a></li>
+                <li role="presentation"><a href="#">土壤相关</a></li>
+            </ul>
+        </nav>
+    </div>
+    <!--右侧图表区域-->
+    <div class="col-md-10">
+        <div id="testChart" style="width: 600px; height: 400px"></div>
+    </div>
+
+</div>
+
+
+<script type="text/javascript">
+    let chartDom = document.getElementById("testChart");
+    let testChart = echarts.init(chartDom, "light");
+    let chartData = [345, 383, 897, 645, 244, 989, 235];
+    testChart.setOption({
+        legend: {},
+        tooltip: {},
+        xAxis: {
+            type: "category",
+            data: [
+                "Mon", "Tue", "Wed", "Thu", "Fri", "Sta", "Sun"
             ]
-        })
-    </script>
+        },
+        yAxis: {},
+        series: [
+            {
+                type: "bar",
+                data: chartData
+            },
+            {
+                type: "line",
+                data: chartData
+            }
+        ]
+    })
+</script>
 </body>
 </html>

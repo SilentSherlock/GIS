@@ -8,8 +8,10 @@
     <!--引入bootstrap文件-->
     <link rel="stylesheet" href="../static/extlib/bootstrap-3.3.7/css/bootstrap.css">
     <link rel="stylesheet" href="../static/extlib/bootstrap-3.3.7/css/bootstrap-theme.css">
-
+    <!--js插件引用-->
     <script type="text/javascript" src="../static/extlib/jquery-3.4.1/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="../static/extlib/bootstrap-3.3.7/js/bootstrap.js"></script>
+
     <script type="text/javascript" src="../static/extlib/echarts/echarts.js"></script>
     <!--jquery提交测试-->
     <script type="text/javascript">
@@ -18,20 +20,20 @@
             //测试添加用户功能
             $("#add").click(function () {
                 let model = {
-                    adminName:"dick",
-                    password:"123456",
-                    email:"shit"
+                    adminName: "dick",
+                    password: "123456",
+                    email: "shit"
                 };
                 let jsonStr = JSON.stringify(model);
                 alert(jsonStr);
                 $.ajax({
-                    url:"addAdmin",
-                    type:"post",
-                    data:jsonStr,
-                    dataType:"text",
-                    contentType:"application/json;charset=UTF-8",
-                    async:false,
-                    success:function () {
+                    url: "addAdmin",
+                    type: "post",
+                    data: jsonStr,
+                    dataType: "text",
+                    contentType: "application/json;charset=UTF-8",
+                    async: false,
+                    success: function () {
                         alert("添加成功");
                     }
                 })
@@ -50,9 +52,9 @@
                     type: "post",
                     data: jsonStr,
                     dataType: "text",
-                    contentType:"application/json;charset=UTF-8",
-                    async:false,
-                    success:function () {
+                    contentType: "application/json;charset=UTF-8",
+                    async: false,
+                    success: function () {
                         alert("删除成功");
                     }
                 })
@@ -61,12 +63,12 @@
             //测试读取excel文件内容
             $("#saveToDatabase").click(function () {
                 $.ajax({
-                    url:"addToDatabaseByFile",
-                    type:"post",
-                    data:"admin.xlsx",
-                    dataType:"text",
-                    contentType:"application/json;charset=UTF-8",
-                    async:false
+                    url: "addToDatabaseByFile",
+                    type: "post",
+                    data: "admin.xlsx",
+                    dataType: "text",
+                    contentType: "application/json;charset=UTF-8",
+                    async: false
                 })
             });
         })
@@ -126,36 +128,79 @@
             })
         })
     </script>
+
+    <style rel="stylesheet">
+        body {
+            padding-top: 70px;
+        }
+
+        iframe {
+            width: 100%;
+            height: 70px;
+        }
+    </style>
 </head>
 <body>
     <!--导航条-->
     <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container">
-            <div class="navbar-brand">Admin System</div>
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">Brand</a>
+            </div>
+
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="#">首页</a></li>
+                    <li><a href="#">地图</a></li>
+                    <li><a href="#">图表</a></li>
+                    <li class="dropdown">
+                        <a role="button" href="#" class="dropdown-toggle" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">其他<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">新建用户</a></li>
+                            <li><a href="#">添加数据</a></li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a role="button" href="#" class="dropdown-toggle" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">用户名<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">用户信息</a></li>
+                            <li><a href="#">退出登录</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
         </div>
     </nav>
 
-    <div>
-        <h1>This is a fucking manage html</h1>
-        <ul th:each="tmpAdmin, adminStat:${session.allAdmins}">
-            <!--/*@thymesVar id="tmpAdmin" type=""*/-->
-            <!--<li th:text="${tmpAdmin.adminName}"></li>
-            <li th:text="${tmpAdmin.email}"></li>-->
-        </ul>
-        <button id="add">添加</button><br>
-        <button id="delete">删除</button>
-        <form enctype="multipart/form-data" method="post" action="/templateUpload">
-            <input type="file" name="template">
-            <button type="submit">上传模板</button>
-        </form><br>
-        <a href="/templateDownload">下载模板</a>
-        <form enctype="multipart/form-data" method="post" action="/dataFileUpload">
-            <input type="file" name="dataFile">
-            <button type="submit">上传数据文件</button>
-        </form><br>
-        <button id="saveToDatabase" type="button">保存数据文件</button>
-        <div id="testChart" style="width: 1000px;height: 600px"></div>
-    </div>
+<div>
+    <h1>This is a fucking manage html</h1>
+    <ul th:each="tmpAdmin, adminStat:${session.allAdmins}">
+        <!--/*@thymesVar id="tmpAdmin" type=""*/-->
+        <!--<li th:text="${tmpAdmin.adminName}"></li>
+        <li th:text="${tmpAdmin.email}"></li>-->
+    </ul>
+    <button id="add">添加</button>
+    <br>
+    <button id="delete">删除</button>
+    <form enctype="multipart/form-data" method="post" action="/templateUpload">
+        <input type="file" name="template">
+        <button type="submit">上传模板</button>
+    </form>
+    <br>
+    <a href="/templateDownload">下载模板</a>
+    <form enctype="multipart/form-data" method="post" action="/dataFileUpload">
+        <input type="file" name="dataFile">
+        <button type="submit">上传数据文件</button>
+    </form>
+    <br>
+    <button id="saveToDatabase" type="button">保存数据文件</button>
+    <div id="testChart" style="width: 1000px;height: 600px"></div>
+</div>
 
 </body>
 </html>
