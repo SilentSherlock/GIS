@@ -62,7 +62,7 @@
 
 <div class="chartShow-row container-fluid row">
     <!--左侧竖直导航栏-->
-    <div class="col-md-2">
+    <div class="col-md-2 chart-kind-nav">
         <nav>
             <ul class="nav nav-pills nav-stacked">
                 <li role="presentation"><a href="#">玉米作物</a></li>
@@ -72,7 +72,16 @@
         </nav>
     </div>
     <!--右侧图表区域-->
-    <div class="col-md-10">
+    <div class="col-md-10 chart-show">
+        <!--玉米株高和叶绿素-->
+        <div class="row chart-show-cornHandCh" id="chart-show-cornHandCh">
+        </div>
+        <!--玉米叶-->
+        <div class="row chart-show-leaf" id="chart-show-leaf">
+            <button class="btn btn-block" id="testButton">Test</button>
+        </div>
+        <!--玉米产量-->
+        <div class="row chart-show-yield" id="chart-show-yield"></div>
         <div id="testChart" style="width: 600px; height: 400px"></div>
     </div>
 
@@ -80,8 +89,33 @@
 
 
 <script type="text/javascript">
-    let chartDom = document.getElementById("testChart");
-    let testChart = echarts.init(chartDom, "light");
+    $(document).ready(function () {
+        $("#testButton").click(function () {
+            getChartData("corn/cornLeaf");
+        })
+    });
+
+    /*初始化图表节点*/
+    function getAndInitChart(chartDomId, theme = "dark") {
+        let chartDom = document.getElementById(chartDomId);
+        return echarts.init(chartDom, theme)
+    }
+
+    /*向后台发送请求获取数据*/
+    function getChartData(requestUrl) {
+        if (requestUrl != null) {
+            $.ajax({
+                url: requestUrl,
+                type: "get",
+                contentType: "application/json;charset=UTF-8",
+                async: false,
+                success: function (data) {
+                    alert(data);
+                }
+            })
+        }
+    }
+    let testChart = getAndInitChart("testChart");
     let chartData = [345, 383, 897, 645, 244, 989, 235];
     testChart.setOption({
         legend: {},

@@ -1,17 +1,16 @@
 package com.programs.gis.control;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.programs.gis.entity.Admin;
 import com.programs.gis.service.AdminService;
-import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
@@ -38,17 +37,17 @@ public class AdminController {
     @ResponseBody
     public String adminValidate(@RequestBody String adminString, HttpSession session) throws Exception{
         System.out.println(adminString);
-        JSONObject adminjson = new JSONObject(adminString);
+        JSONObject adminjson = JSON.parseObject(adminString);
         System.out.println(adminjson.toString());
         String adminName = adminService.base64Decoder((String) adminjson.getString("adminName"));
         String password = adminService.base64Decoder((String) adminjson.getString("password"));
 
         Admin admin = adminService.adminValidate(adminName, password);
         if (admin!=null){
-            session.setAttribute("adminInCharge", admin);
+            //session.setAttribute("adminInCharge", admin);
             session.setAttribute("loginState", "success");/*也可以转换为json字符串返回给前端*/
             System.out.println("admin login success");
-            return "1";
+            return JSON.toJSONString(admin);
         }
         session.setAttribute("loginState", "failure");
         return "0";
@@ -65,7 +64,7 @@ public class AdminController {
     @RequestMapping("/addAdmin")
     @ResponseBody
     public String addAdmin(@RequestBody String adminString) throws Exception{
-        JSONObject jsonObject = new JSONObject(adminString);
+        JSONObject jsonObject = JSON.parseObject(adminString);
         String adminName = (String) jsonObject.get("adminName");
         String password = (String) jsonObject.get("password");
         String email = (String) jsonObject.get("email");
@@ -78,7 +77,7 @@ public class AdminController {
     @RequestMapping("/deleteAdmin")
     @ResponseBody
     public String deleteAdmin(@RequestBody String adminString) throws Exception{
-        JSONObject jsonObject = new JSONObject(adminString);
+        JSONObject jsonObject = JSON.parseObject(adminString);
         String adminName = (String) jsonObject.get("adminName");
         String password = (String) jsonObject.get("password");
 

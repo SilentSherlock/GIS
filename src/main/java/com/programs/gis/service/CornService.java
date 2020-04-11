@@ -6,6 +6,7 @@ import com.programs.gis.dao.CornYieldDao;
 import com.programs.gis.entity.CornHeightAndChlo;
 import com.programs.gis.entity.CornLeaf;
 import com.programs.gis.entity.CornYield;
+import com.programs.gis.function.Tools;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -28,7 +29,8 @@ public class CornService {//合并玉米本身信息相关的Dao
     /*根据不同daoType确定哪个dao进行数据库操作
     * 0-----cornHeightAndChloDao
     * 1-----cornLeafDao
-    * 2-----cornYieldDao*/
+    * 2-----cornYieldDao
+    * */
     private boolean saveByFile(String filePath, int daoType) throws Exception {
         File file = new File(filePath);
         if (!file.exists()){
@@ -38,6 +40,7 @@ public class CornService {//合并玉米本身信息相关的Dao
 
         //FileInputStream fileInputStream = new FileInputStream(file);
         Workbook workbook = WorkbookFactory.create(file);
+        Tools tools = new Tools();
         int numberOfSheets = workbook.getNumberOfSheets();//excel文件中sheet的数量
         for (int i = 0;i < numberOfSheets;i++){
             Sheet sheet = workbook.getSheetAt(i);//获得当前工作表
@@ -59,7 +62,7 @@ public class CornService {//合并玉米本身信息相关的Dao
                                 break;
                             case 1:
                                 Integer DOY1 = Integer.valueOf(tmpRow.getCell(0).toString());
-                                Float TRT1 = Float.valueOf(tmpRow.getCell(1).toString());
+                                Float TRT1 = tools.transSeparator2dot(tmpRow.getCell(1).toString());
                                 Double leafArea = Double.valueOf(tmpRow.getCell(2).toString());
                                 Double leafPerimeter = Double.valueOf(tmpRow.getCell(3).toString());
                                 Integer leafNumber = Integer.valueOf(tmpRow.getCell(4).toString());
@@ -67,7 +70,7 @@ public class CornService {//合并玉米本身信息相关的Dao
                                 saveCornLeaf(DOY1, TRT1, leafArea, leafPerimeter, leafNumber, recordDay);
                                 break;
                             case 2:
-                                Float cornFieldId = Float.valueOf(tmpRow.getCell(0).toString());
+                                Float cornFieldId = tools.transSeparator2dot(tmpRow.getCell(0).toString());
                                 Double moistureYield = Double.valueOf(tmpRow.getCell(1).toString());
                                 Float boxWeight = Float.valueOf(tmpRow.getCell(2).toString());
                                 Float beforeDehydration = Float.valueOf(tmpRow.getCell(3).toString());
@@ -144,7 +147,12 @@ public class CornService {//合并玉米本身信息相关的Dao
 
     public List<CornLeaf> getAllCornLeaf() throws Exception{
         System.out.println("Get All CornLeaf");
-        return cornLeafDao.getAll();
+        List<CornLeaf> cornLeafList = cornLeafDao.getAll();
+        if (cornLeafList != null){
+            System.out.println("Get All CornLeaf success");
+            return cornLeafList;
+        }
+        return null;
     }
 
     public CornLeaf getCornLeaf(Integer DOY, Float TRT) throws Exception{

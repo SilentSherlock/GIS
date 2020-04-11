@@ -57,10 +57,15 @@
             <scope>8.0.18</scope>
         </dependency>
         <!--添加json依赖-->
-        <dependency>
+        <!--<dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
             <version>20160810</version>
+        </dependency>-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.62</version>
         </dependency>
         <!--添加poi依赖-->
         <dependency>
