@@ -100,7 +100,7 @@ public class FileController {
                         System.out.println("Add To Corn Yield Database By File Success");
                     }
                     break;
-                case "叶面积数据统计.xlsx":
+                case "叶面积仪数据统计_R.xlsx":
                     if (cornService.saveCornLeafByFile(dataPath)) {
                         System.out.println("Add To Corn Leaf Database By File Success");
                     }

@@ -61,12 +61,12 @@ public class CornService {//合并玉米本身信息相关的Dao
                                 saveCornHeightAndChlo(DOY, TRT, NUM_1, NUM_2, NUM_3, height, chlo);
                                 break;
                             case 1:
-                                Integer DOY1 = Integer.valueOf(tmpRow.getCell(0).toString());
-                                Float TRT1 = tools.transSeparator2dot(tmpRow.getCell(1).toString());
-                                Double leafArea = Double.valueOf(tmpRow.getCell(2).toString());
-                                Double leafPerimeter = Double.valueOf(tmpRow.getCell(3).toString());
-                                Integer leafNumber = Integer.valueOf(tmpRow.getCell(4).toString());
-                                Float recordDay = Float.valueOf(tmpRow.getCell(5).toString());
+                                Integer DOY1 = (int)tmpRow.getCell(0).getNumericCellValue();
+                                Float TRT1 = tools.transSeparator2dot(tmpRow.getCell(1).getStringCellValue());
+                                Double leafArea = tmpRow.getCell(2).getNumericCellValue();
+                                Double leafPerimeter = tmpRow.getCell(3).getNumericCellValue();
+                                Integer leafNumber = (int)tmpRow.getCell(4).getNumericCellValue();
+                                Float recordDay = (float)tmpRow.getCell(5).getNumericCellValue();
                                 saveCornLeaf(DOY1, TRT1, leafArea, leafPerimeter, leafNumber, recordDay);
                                 break;
                             case 2:
@@ -132,6 +132,7 @@ public class CornService {//合并玉米本身信息相关的Dao
         cornLeaf.setLeafNumber(leafNumber);
         cornLeaf.setRecordDay(recordDay);
 
+        System.out.println(cornLeaf.toString());
         cornLeafDao.save(cornLeaf);
         System.out.println("Save CornLeaf Successfully");
     }

@@ -12,11 +12,17 @@ public class Tools {
 
     /*将数据中以"——"或"-"形式分割的数据转换为一小数点分割的形式，并返回浮点数*/
     public float transSeparator2dot(String DRT){
+        System.out.println("DRT: " + DRT);
         String[] characters;
         if (DRT.contains("-")){
-            characters = DRT.split("-");
+            characters = DRT.split("-");//半角的-
         }else{
-            characters = DRT.split("——");
+            characters = DRT.split("—");//全角的—
+        }
+
+        for (int i = 0;i < characters.length;i++){
+            System.out.println("character " + i + " is  " + characters[i]);
+            System.out.println(i + "——" + i);
         }
 
         StringBuilder resultStr = new StringBuilder();
