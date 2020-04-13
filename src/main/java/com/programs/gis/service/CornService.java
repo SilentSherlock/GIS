@@ -50,7 +50,7 @@ public class CornService {//合并玉米本身信息相关的Dao
                     Row tmpRow = sheet.getRow(row);//获取当前行
                     if (tmpRow != null){
                         switch (daoType){//根据不同的daoType,确定是哪个dao要进行数据库操作
-                            case 0:
+                            case 0://读取方法待修改
                                 Integer DOY = Integer.valueOf(tmpRow.getCell(0).toString());
                                 Integer TRT = Integer.valueOf(tmpRow.getCell(1).toString());
                                 Float NUM_1 = Float.valueOf(tmpRow.getCell(2).toString());
@@ -69,7 +69,7 @@ public class CornService {//合并玉米本身信息相关的Dao
                                 Float recordDay = (float)tmpRow.getCell(5).getNumericCellValue();
                                 saveCornLeaf(DOY1, TRT1, leafArea, leafPerimeter, leafNumber, recordDay);
                                 break;
-                            case 2:
+                            case 2://读取方法待修改
                                 Float cornFieldId = tools.transSeparator2dot(tmpRow.getCell(0).toString());
                                 Double moistureYield = Double.valueOf(tmpRow.getCell(1).toString());
                                 Float boxWeight = Float.valueOf(tmpRow.getCell(2).toString());

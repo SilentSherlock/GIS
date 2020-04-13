@@ -27,6 +27,6 @@ public class CornController {
             System.out.println(cornLeafJson);
             return cornLeafJson;
         }
-        return "fuck";
+        return JSON.toJSONString("0");
     }
 }

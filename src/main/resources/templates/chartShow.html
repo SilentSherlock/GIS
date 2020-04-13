@@ -21,7 +21,88 @@
         .chartShow-row {
 
         }
+        .chart-show-leaf {
+            width: inherit;
+            height: 600px;
+        }
     </style>
+    <!--获取图表-->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            let cornLeafData = extractAll(getChartData("corn/cornLeaf"));//待完成
+            let cornLeafOption = {
+                legend: {},
+                tooltip: {},
+                xAxis: {type: "category"},
+                yAxis: {},
+                dataset: {
+                    source: cornLeafData
+                },
+                series: [
+                    {
+                        type: "line",
+                        name: "LeafPerimeter"
+                    },
+                    {
+                        type: "line",
+                        name: "LeafArea"
+                    },
+                    {
+                        type: "line",
+                        name: "LeafNumber"
+                    }
+                ]
+            }
+        });
+
+        /*初始化图表节点*/
+        function getAndInitChart(chartDomId, theme = "dark") {
+            let chartDom = document.getElementById(chartDomId);
+            return echarts.init(chartDom, theme)
+        }
+
+        /*向后台发送请求获取数据*/
+        function getChartData(requestUrl) {
+            if (requestUrl != null) {
+                $.ajax({
+                    url: requestUrl,
+                    type: "get",
+                    contentType: "application/json;charset=UTF-8",
+                    async: false,
+                    success: function (data) {
+                        if (data === "0"){//获取数据失败
+                            alert("图表数据获取失败");
+                        }else {
+                            return JSON.parse(data);
+                        }
+                    }
+                })
+            }
+            return null;
+        }
+
+        /*提取JSON数组对象中的某一列数据*/
+        function extractCol(chartData, colName) {
+            let colData = [];
+            for (let row = 0;row < chartData.length;row++){
+                colData.push(chartData[row][colName]);
+            }
+            return colData
+        }
+
+        /*提取JSON数组对象中所有数据*/
+        function extractAll(chartData) {
+            let allData = [];
+            for (let row = 0;row < chartData.length;row++){
+                let rowData = [];
+                for (let x in chartData[row]){
+                    rowData.push(chartData[row][x]);
+                }
+                allData.push(rowData);
+            }
+            return allData;
+        }
+    </script>
 </head>
 <body>
 <!--导航条-->
@@ -77,8 +158,10 @@
         <div class="row chart-show-cornHandCh" id="chart-show-cornHandCh">
         </div>
         <!--玉米叶-->
-        <div class="row chart-show-leaf" id="chart-show-leaf">
-            <button class="btn btn-block" id="testButton">Test</button>
+        <div class="row chart-show-leaf">
+            <h3>玉米叶相关</h3><hr>
+            <div class="col-md-12 chart-show-leaf-chart" id="chart-show-leaf-chart"></div>
+            <!--<button class="btn btn-block" id="testButton">Test</button>-->
         </div>
         <!--玉米产量-->
         <div class="row chart-show-yield" id="chart-show-yield"></div>
@@ -95,26 +178,7 @@
         })
     });
 
-    /*初始化图表节点*/
-    function getAndInitChart(chartDomId, theme = "dark") {
-        let chartDom = document.getElementById(chartDomId);
-        return echarts.init(chartDom, theme)
-    }
 
-    /*向后台发送请求获取数据*/
-    function getChartData(requestUrl) {
-        if (requestUrl != null) {
-            $.ajax({
-                url: requestUrl,
-                type: "get",
-                contentType: "application/json;charset=UTF-8",
-                async: false,
-                success: function (data) {
-                    alert(data);
-                }
-            })
-        }
-    }
     let testChart = getAndInitChart("testChart");
     let chartData = [345, 383, 897, 645, 244, 989, 235];
     testChart.setOption({
