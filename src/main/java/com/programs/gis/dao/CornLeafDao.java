@@ -12,4 +12,5 @@ public interface CornLeafDao {
     void deleteByPrimaryKey(Integer DOY, Float TRT) throws Exception;
     List<CornLeaf> getAll() throws Exception;
     CornLeaf getByPrimaryKey(Integer DOY, Float TRT) throws Exception;
+    List<CornLeaf> getByTRT(Float TRT) throws Exception;
 }

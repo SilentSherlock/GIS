@@ -11,6 +11,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -161,6 +162,15 @@ public class CornService {//合并玉米本身信息相关的Dao
         return cornLeafDao.getByPrimaryKey(DOY, TRT);
     }
 
+    public List<CornLeaf> getByTRT(Float TRT) throws Exception{
+        System.out.println("Get CornLeafList By TRT");
+        List<CornLeaf> cornLeafList = cornLeafDao.getByTRT(TRT);
+        if (cornLeafList != null){
+            System.out.println("Get CornLeafList By TRT success");
+            return cornLeafList;
+        }
+        return null;
+    }
     /*玉米产量*/
     public void saveCornYield(Float cornFieldId, Double moistureYield, Float boxWeight, Float beforeDehydration,
                               Float afterDehydration, Float moistureContent, Double dryYield) throws Exception{

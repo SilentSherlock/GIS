@@ -24,4 +24,8 @@
         select * from cornLeaf
         where DOY = #{DOY} and TRT = #{TRT}
     </select>
+    <select id="getByTRT" resultMap="cornLeafMap">
+        select * from cornLeaf
+        where TRT = #{TRT}
+    </select>
 </mapper>

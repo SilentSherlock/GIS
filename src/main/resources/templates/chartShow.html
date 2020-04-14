@@ -21,38 +21,54 @@
         .chartShow-row {
 
         }
-        .chart-show-leaf {
+        .chart-show-leaf-chart {
             width: inherit;
-            height: 600px;
+            height: 500px;
         }
     </style>
     <!--获取图表-->
     <script type="text/javascript">
         $(document).ready(function () {
-            let cornLeafData = extractAll(getChartData("corn/cornLeaf"));//待完成
+            let cornLeafData = getChartData("corn/cornLeafTRT", JSON.stringify({TRT: "1.1"}), 1);
+            alert(cornLeafData);
+            let extractData = extractAll(cornLeafData);//待完成
             let cornLeafOption = {
                 legend: {},
                 tooltip: {},
                 xAxis: {type: "category"},
                 yAxis: {},
                 dataset: {
-                    source: cornLeafData
+                    source: extractData
                 },
                 series: [
                     {
                         type: "line",
-                        name: "LeafPerimeter"
+                        name: "LeafPerimeter",
+                        encode: {
+                            x: 0,
+                            y: 3
+                        }
                     },
                     {
                         type: "line",
-                        name: "LeafArea"
+                        name: "LeafArea",
+                        encode: {
+                            x: 0,
+                            y: 1
+                        }
                     },
                     {
                         type: "line",
-                        name: "LeafNumber"
+                        name: "LeafNumber",
+                        encode: {
+                            x: 0,
+                            y: 2
+                        }
                     }
                 ]
-            }
+            };
+            let cornLeafChart = getAndInitChart("chart-show-leaf-chart");
+            cornLeafChart.setOption(cornLeafOption)
         });
 
         /*初始化图表节点*/
@@ -62,23 +78,43 @@
         }
 
         /*向后台发送请求获取数据*/
-        function getChartData(requestUrl) {
-            if (requestUrl != null) {
+        function getChartData(requestUrl, jsonStr, flag = 0) {
+            let chartData = [];
+            if (requestUrl != null && flag === 1) {
                 $.ajax({
                     url: requestUrl,
-                    type: "get",
+                    type: "post",
+                    data: jsonStr,
+                    dataType: "text",
                     contentType: "application/json;charset=UTF-8",
                     async: false,
-                    success: function (data) {
+                    success: data => {
+                        if (data === "0"){
+                            alert("获取图表数据失败");
+                        }else {
+                            alert(data);
+                            chartData = JSON.parse(data);
+                        }
+                    }
+                })
+            }else if(requestUrl != null && flag === 0){
+                $.ajax({
+                    url: requestUrl,
+                    type: "post",
+                    contentType: "application/json;charset=UTF-8",
+                    async: false,
+                    success: data => {
                         if (data === "0"){//获取数据失败
                             alert("图表数据获取失败");
                         }else {
-                            return JSON.parse(data);
+                            alert(data);
+                            chartData = JSON.parse(data);
                         }
                     }
                 })
             }
-            return null;
+
+            return chartData?chartData:null;
         }
 
         /*提取JSON数组对象中的某一列数据*/
@@ -93,7 +129,8 @@
         /*提取JSON数组对象中所有数据*/
         function extractAll(chartData) {
             let allData = [];
-            for (let row = 0;row < chartData.length;row++){
+            alert(chartData);
+            for (let row = 0;row < chartData.length ;row++){
                 let rowData = [];
                 for (let x in chartData[row]){
                     rowData.push(chartData[row][x]);
@@ -174,7 +211,7 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $("#testButton").click(function () {
-            getChartData("corn/cornLeaf");
+            getChartData("corn/cornLeafTRT", JSON.stringify({TRT:"1.1"}), 1);
         })
     });
 
