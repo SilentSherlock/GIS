@@ -1,8 +1,8 @@
 package com.programs.gis.control;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.programs.gis.entity.CornHeightAndChlo;
 import com.programs.gis.entity.CornLeaf;
 import com.programs.gis.service.CornService;
 import org.springframework.stereotype.Controller;
@@ -32,18 +32,34 @@ public class CornController {
         return JSON.toJSONString("0");
     }
 
-    /*根据TRT获取数据*/
+    /*根据TRT获取cornLeaf数据*/
     @RequestMapping("/corn/cornLeafTRT")
     @ResponseBody
     public String getCornLeafByTRT(@RequestBody String strTRT) throws Exception{
         JSONObject jsonObject = JSON.parseObject(strTRT);
         Float TRT = Float.valueOf(jsonObject.getString("TRT"));
 
-        List<CornLeaf> cornLeafList = cornService.getByTRT(TRT);
+        List<CornLeaf> cornLeafList = cornService.getCornLeafByAttr(TRT, "TRT");
         if (cornLeafList != null){
             String cornLeafJson = JSON.toJSONString(cornLeafList);
             System.out.println(cornLeafJson);
             return cornLeafJson;
+        }
+        return JSON.toJSONString("0");
+    }
+
+    /*根据DOY获取cornHeightAndChlo数据*/
+    @RequestMapping("/corn/cornHeightAndChloDOY")
+    @ResponseBody
+    public String getCornHeightAndChloByDOY(@RequestBody String strDOY) throws Exception{
+        JSONObject jsonObject = JSON.parseObject(strDOY);
+        Integer DOY = jsonObject.getInteger("DOY");
+
+        List<CornHeightAndChlo> cornHeightAndChloList = cornService.getCornHandChByAttr(DOY, "DOY");
+        if (cornHeightAndChloList != null){
+            String cornHeightAndChloJson = JSON.toJSONString(cornHeightAndChloList);
+            System.out.println(cornHeightAndChloJson);
+            return cornHeightAndChloJson;
         }
         return JSON.toJSONString("0");
     }

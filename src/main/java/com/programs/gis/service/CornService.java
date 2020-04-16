@@ -11,7 +11,6 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -51,14 +50,14 @@ public class CornService {//合并玉米本身信息相关的Dao
                     Row tmpRow = sheet.getRow(row);//获取当前行
                     if (tmpRow != null){
                         switch (daoType){//根据不同的daoType,确定是哪个dao要进行数据库操作
-                            case 0://读取方法待修改
-                                Integer DOY = Integer.valueOf(tmpRow.getCell(0).toString());
-                                Integer TRT = Integer.valueOf(tmpRow.getCell(1).toString());
-                                Float NUM_1 = Float.valueOf(tmpRow.getCell(2).toString());
-                                Float NUM_2 = Float.valueOf(tmpRow.getCell(3).toString());
-                                Integer NUM_3 = Integer.valueOf(tmpRow.getCell(4).toString());
-                                Float height = Float.valueOf(tmpRow.getCell(5).toString());
-                                Float chlo = Float.valueOf(tmpRow.getCell(6).toString());
+                            case 0:
+                                Integer DOY = (int)tmpRow.getCell(0).getNumericCellValue();
+                                Integer TRT = (int)tmpRow.getCell(1).getNumericCellValue();
+                                Float NUM_1 = tools.transSeparator2dot(tmpRow.getCell(2).getStringCellValue());
+                                Float NUM_2 = tools.transSeparator2dot(tmpRow.getCell(3).getStringCellValue());
+                                Integer NUM_3 = (int)tmpRow.getCell(4).getNumericCellValue();
+                                Float height = (float)tmpRow.getCell(5).getNumericCellValue();
+                                Float chlo = (float)tmpRow.getCell(6).getNumericCellValue();
                                 saveCornHeightAndChlo(DOY, TRT, NUM_1, NUM_2, NUM_3, height, chlo);
                                 break;
                             case 1:
@@ -97,7 +96,7 @@ public class CornService {//合并玉米本身信息相关的Dao
         cornHeightAndChlo.setNUM_1(NUM_1);
         cornHeightAndChlo.setNUM_2(NUM_2);
         cornHeightAndChlo.setNUM_3(NUM_3);
-        cornHeightAndChlo.setCornHeight(height);
+        cornHeightAndChlo.setHeight(height);
         cornHeightAndChlo.setChlorophyll(chlo);
         cornHeightAndChloDao.save(cornHeightAndChlo);
         System.out.println("save CornHeightAndChlo successfully");
@@ -111,14 +110,24 @@ public class CornService {//合并玉米本身信息相关的Dao
         return cornHeightAndChloDao.getAll();
     }
 
-    public void deleteCornHeightAndChlo(Integer DOY, Integer TRT, Float NUM_1, Float NUM_2) throws Exception{
+    public void deleteCornHeightAndChlo(Integer DOY, Float NUM_2) throws Exception{
         System.out.println("Delete CornHeightAndChlo By Primary Key");
-        cornHeightAndChloDao.deleteByPrimaryKey(DOY, TRT, NUM_1, NUM_2);
+        cornHeightAndChloDao.deleteByPrimaryKey(DOY, NUM_2);
     }
 
-    public CornHeightAndChlo getCornHeightAndChlo(Integer DOY, Integer TRT, Float NUM_1, Float NUM_2) throws Exception{
+    public CornHeightAndChlo getCornHeightAndChlo(Integer DOY, Float NUM_2) throws Exception{
         System.out.println("Get CornHeightAndChlo By Primary Key");
-        return cornHeightAndChloDao.getByPrimaryKey(DOY, TRT, NUM_1, NUM_2);
+        return cornHeightAndChloDao.getByPrimaryKey(DOY, NUM_2);
+    }
+
+    public List<CornHeightAndChlo> getCornHandChByAttr(Object attr, String attrName) throws Exception{
+        System.out.println("Get CornHeightAndChlo By " + attrName);
+        List<CornHeightAndChlo> cornHeightAndChloList = cornHeightAndChloDao.getByAttr(attr, attrName);
+        if (cornHeightAndChloList != null){
+            System.out.println("Get CornHeightAndChlo By "+ attrName + " success");
+            return cornHeightAndChloList;
+        }
+        return null;
     }
 
     /*玉米叶参数*/
@@ -162,15 +171,17 @@ public class CornService {//合并玉米本身信息相关的Dao
         return cornLeafDao.getByPrimaryKey(DOY, TRT);
     }
 
-    public List<CornLeaf> getByTRT(Float TRT) throws Exception{
-        System.out.println("Get CornLeafList By TRT");
-        List<CornLeaf> cornLeafList = cornLeafDao.getByTRT(TRT);
+    /*传递属性名来获取全部或部分数据*/
+    public List<CornLeaf> getCornLeafByAttr(Object attr, String attrName) throws Exception{
+        System.out.println("Get CornLeaf By " + attrName);
+        List<CornLeaf> cornLeafList = cornLeafDao.getByAttr(attr, attrName);
         if (cornLeafList != null){
-            System.out.println("Get CornLeafList By TRT success");
+            System.out.println("Get CornLeafList By " + attrName + " success");
             return cornLeafList;
         }
         return null;
     }
+
     /*玉米产量*/
     public void saveCornYield(Float cornFieldId, Double moistureYield, Float boxWeight, Float beforeDehydration,
                               Float afterDehydration, Float moistureContent, Double dryYield) throws Exception{

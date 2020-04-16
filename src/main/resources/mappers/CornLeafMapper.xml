@@ -24,8 +24,9 @@
         select * from cornLeaf
         where DOY = #{DOY} and TRT = #{TRT}
     </select>
-    <select id="getByTRT" resultMap="cornLeafMap">
+    <!--${parameter}会被直接替换成参数值,#{Parameter}则会被替换成？预处理-->
+    <select id="getByAttr" resultMap="cornLeafMap">
         select * from cornLeaf
-        where TRT = #{TRT}
+        where ${attrName} = #{attr}
     </select>
 </mapper>

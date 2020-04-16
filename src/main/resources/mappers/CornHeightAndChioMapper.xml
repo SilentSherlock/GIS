@@ -19,10 +19,14 @@
     </select>
     <delete id="deleteByPrimaryKey">
         delete from cornHeightAndChlo
-        where DOY = #{DOY} and TRT = #{TRT} and NUM_1 = #{NUM_1} and NUM_2 = #{NUM_2}
+        where DOY = #{DOY} and NUM_2 = #{NUM_2}
     </delete>
     <select id="getByPrimaryKey" resultMap="cornHeightAndChloMap">
         select * from cornHeightAndChlo
-        where DOY = #{DOY} and TRT = #{TRT} and NUM_1 = #{NUM_1} and NUM_2 = #{NUM_2}
+        where DOY = #{DOY} and NUM_2 = #{NUM_2}
+    </select>
+    <select id="getByAttr" resultMap="cornHeightAndChloMap">
+        select * from cornHeightAndChlo
+        where ${attrName} = #{attr}
     </select>
 </mapper>

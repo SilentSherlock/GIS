@@ -22,16 +22,15 @@
 
         }
         .chart-show-leaf-chart {
-            width: inherit;
-            height: 500px;
+            height: 550px;
         }
     </style>
     <!--获取图表-->
     <script type="text/javascript">
         $(document).ready(function () {
-            let cornLeafData = getChartData("corn/cornLeafTRT", JSON.stringify({TRT: "1.1"}), 1);
-            alert(cornLeafData);
-            let extractData = extractAll(cornLeafData);//待完成
+            let extractData = extractAll(getChartData("corn/cornLeafTRT", JSON.stringify({TRT: "1.1"}), 1));
+            let test = getChartData("corn/cornHeightAndChloDOY", JSON.stringify({DOY: "177"}), 1);
+            alert(test);
             let cornLeafOption = {
                 legend: {},
                 tooltip: {},
@@ -80,7 +79,7 @@
         /*向后台发送请求获取数据*/
         function getChartData(requestUrl, jsonStr, flag = 0) {
             let chartData = [];
-            if (requestUrl != null && flag === 1) {
+            if (requestUrl != null && flag === 1) {//带请求参数
                 $.ajax({
                     url: requestUrl,
                     type: "post",
@@ -193,15 +192,34 @@
     <div class="col-md-10 chart-show">
         <!--玉米株高和叶绿素-->
         <div class="row chart-show-cornHandCh" id="chart-show-cornHandCh">
+            <h3>株高和叶绿素</h3>
+            <div></div>
         </div>
         <!--玉米叶-->
         <div class="row chart-show-leaf">
-            <h3>玉米叶相关</h3><hr>
+            <div>
+                <ul class="nav nav-tabs">
+                    <li><H3>玉米叶相关</H3></li>
+                    <li class="dropdown navbar-right">
+                        <a role="button" href="#" class="dropdown-toggle" data-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false">选择TRT<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#" class="btn btn-block">1-1</a></li>
+                            <li><a href="#" class="btn btn-block">1-2</a></li>
+                            <li><a href="#" class="btn btn-block">1-3</a></li>
+                            <li><a href="#" class="btn btn-block">1-2</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
             <div class="col-md-12 chart-show-leaf-chart" id="chart-show-leaf-chart"></div>
             <!--<button class="btn btn-block" id="testButton">Test</button>-->
         </div>
         <!--玉米产量-->
-        <div class="row chart-show-yield" id="chart-show-yield"></div>
+        <div class="row chart-show-yield" id="chart-show-yield">
+            <h3>产量相关</h3>
+            <div></div>
+        </div>
         <div id="testChart" style="width: 600px; height: 400px"></div>
     </div>
 

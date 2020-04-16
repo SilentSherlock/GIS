@@ -20,6 +20,10 @@ public class FileController {
     @Resource
     private CornService cornService;
 
+    /*
+    * 上传中一直存在的问题
+    * 1.第一次上传成功后，再上传不能覆盖原来文件，会报错
+    * 2.写入数据库时，如写入1000条数据，写入500条时出错，事务不会回滚，导致再次重写时会报错主键重复*/
     /*上传模板文件并保存*/
     @RequestMapping("/templateUpload")
     @ResponseBody
@@ -95,7 +99,7 @@ public class FileController {
         String dataPath = path + dataFileName;
         if (dataFileName!=null){
             switch (dataFileName) {
-                case "玉米产量.xlsx":
+                case "玉米产量_R.xlsx":
                     if (cornService.saveCornYieldByFile(dataPath)) {
                         System.out.println("Add To Corn Yield Database By File Success");
                     }
@@ -105,7 +109,7 @@ public class FileController {
                         System.out.println("Add To Corn Leaf Database By File Success");
                     }
                     break;
-                case "株高和叶绿素.xlsx":
+                case "株高和叶绿素_R.xlsx":
                     if (cornService.saveCornHeightAndChloByFile(dataPath)) {
                         System.out.println("Add To Corn Height And Chlo Database By File Success");
                     }

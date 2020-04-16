@@ -7,11 +7,11 @@ import lombok.Data;
 public class CornHeightAndChlo {
 
     private Integer DOY;//复合主键
-    private Integer TRT;//复合主键
-    private Float NUM_1;//*-* -> *.* 复合主键
+    private Integer TRT;
+    private Float NUM_1;
     private Float NUM_2;//*-*-* -> *.** 复合主键
     private Integer NUM_3;
-    private Float cornHeight;
+    private Float height;
     private Float chlorophyll;//叶绿素
 
     public Integer getDOY() {
@@ -54,12 +54,12 @@ public class CornHeightAndChlo {
         this.NUM_3 = NUM_3;
     }
 
-    public Float getCornHeight() {
-        return cornHeight;
+    public Float getHeight() {
+        return height;
     }
 
-    public void setCornHeight(Float cornHeight) {
-        this.cornHeight = cornHeight;
+    public void setHeight(Float height) {
+        this.height = height;
     }
 
     public Float getChlorophyll() {
