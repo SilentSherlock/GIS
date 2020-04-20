@@ -28,14 +28,8 @@ public class FileController {
     @RequestMapping("/templateUpload")
     @ResponseBody
     public String templateUpload(@RequestParam("template") MultipartFile file) throws IOException {
-        System.out.println(file.getOriginalFilename());
         String path = ResourceUtils.getURL("classpath:").getPath() + "static/file/fileTemplates/";
-        System.out.println(path);
-        File test = new File(path);
-        if (!test.exists()){
-            test.mkdirs();
-        }
-        file.transferTo(new File(path  + file.getOriginalFilename()));
+        fileUpload(path, file);
         return "success";
     }
     /*下载文件模板*/
@@ -80,12 +74,7 @@ public class FileController {
     @ResponseBody
     public String dataFileUpload(@RequestParam("dataFile") MultipartFile multipartFile) throws IOException {
         String path = ResourceUtils.getURL("classpath:").getPath() + "static/file/dataFile/";
-        System.out.println(path);
-        File test = new File(path);
-        if (!test.exists()){
-            test.mkdirs();
-        }
-        multipartFile.transferTo(new File(path + multipartFile.getOriginalFilename()));
+        fileUpload(path, multipartFile);
         return "success";
     }
     /*保存上传的数据文件到数据库
@@ -128,4 +117,18 @@ public class FileController {
         return "success";
     }
 
+    public void fileUpload(String filePath, MultipartFile multipartFile) throws IOException {
+
+        /*先进入到文件夹,文件夹不存在就创建*/
+        File test = new File(filePath);
+        if (!test.exists()){
+            test.mkdirs();
+        }
+        /*如果文件存在,先删除再保存*/
+        File uploadFilePath = new File(filePath + multipartFile.getOriginalFilename());
+        if (uploadFilePath.exists()){
+            uploadFilePath.delete();
+        }
+        multipartFile.transferTo(uploadFilePath);
+    }
 }
