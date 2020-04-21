@@ -28,46 +28,8 @@
     <!--获取图表-->
     <script type="text/javascript">
         $(document).ready(function () {
-            let extractData = extractAll(getChartData("corn/cornLeafTRT", JSON.stringify({TRT: "1.1"}), 1));
-            let test = getChartData("corn/cornHeightAndChloDOY", JSON.stringify({DOY: "177"}), 1);
-            alert(test);
-            let cornLeafOption = {
-                legend: {},
-                tooltip: {},
-                xAxis: {type: "category"},
-                yAxis: {},
-                dataset: {
-                    source: extractData
-                },
-                series: [
-                    {
-                        type: "line",
-                        name: "LeafPerimeter",
-                        encode: {
-                            x: 0,
-                            y: 3
-                        }
-                    },
-                    {
-                        type: "line",
-                        name: "LeafArea",
-                        encode: {
-                            x: 0,
-                            y: 1
-                        }
-                    },
-                    {
-                        type: "line",
-                        name: "LeafNumber",
-                        encode: {
-                            x: 0,
-                            y: 2
-                        }
-                    }
-                ]
-            };
-            let cornLeafChart = getAndInitChart("chart-show-leaf-chart");
-            cornLeafChart.setOption(cornLeafOption)
+
+            cornLeafChart();
         });
 
         /*初始化图表节点*/
@@ -137,6 +99,67 @@
                 allData.push(rowData);
             }
             return allData;
+        }
+
+        /*从JSON数组对象中根据某个属性值筛选部分对象*/
+        function screenDataByAttr(chartData, attrName, attrValue) {
+            let result = [];
+            for (let row = 0;row < chartData.length;row++){
+                if (chartData[row][attrName] != null && attrValue === chartData[row][attrName]){
+                    result[row] = chartData[row];
+                }
+            }
+            return result;
+        }
+
+        /*画玉米株高和叶绿素图
+        * 函数根据DOY属性一次获得多条数据
+        * 画图时则根据TRT属性,确定一个地块,画三个图*/
+        function cornHeightAndChloChart() {
+            let test = getChartData("corn/cornHeightAndChloDOY", JSON.stringify({DOY: "177"}), 1);
+        }
+
+        /*画玉米叶数据
+        * 函数根据TRT一次获得多条数据并画图*/
+        function cornLeafChart(TRT = "1.1") {
+            let extractData = extractAll(getChartData("corn/cornLeafTRT", JSON.stringify({TRT: TRT}), 1));
+            let cornLeafOption = {
+                legend: {},
+                tooltip: {},
+                xAxis: {type: "category"},
+                yAxis: {},
+                dataset: {
+                    source: extractData
+                },
+                series: [
+                    {
+                        type: "line",
+                        name: "LeafPerimeter",
+                        encode: {
+                            x: 0,
+                            y: 3
+                        }
+                    },
+                    {
+                        type: "line",
+                        name: "LeafArea",
+                        encode: {
+                            x: 0,
+                            y: 1
+                        }
+                    },
+                    {
+                        type: "line",
+                        name: "LeafNumber",
+                        encode: {
+                            x: 0,
+                            y: 2
+                        }
+                    }
+                ]
+            };
+            let cornLeafChart = getAndInitChart("chart-show-leaf-chart");
+            cornLeafChart.setOption(cornLeafOption)
         }
     </script>
 </head>
