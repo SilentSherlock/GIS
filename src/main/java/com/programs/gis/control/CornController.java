@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.programs.gis.entity.CornHeightAndChlo;
 import com.programs.gis.entity.CornLeaf;
+import com.programs.gis.function.Tools;
 import com.programs.gis.service.CornService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,7 +38,7 @@ public class CornController {
     @ResponseBody
     public String getCornLeafByTRT(@RequestBody String strTRT) throws Exception{
         JSONObject jsonObject = JSON.parseObject(strTRT);
-        Float TRT = Float.valueOf(jsonObject.getString("TRT"));
+        Float TRT = new Tools().transSeparator2dot(jsonObject.getString("TRT"));
 
         List<CornLeaf> cornLeafList = cornService.getCornLeafByAttr(TRT, "TRT");
         if (cornLeafList != null){
