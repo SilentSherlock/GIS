@@ -16,20 +16,41 @@
     <script type="text/javascript" src="../static/extlib/echarts/echarts.js"></script>
     <style rel="stylesheet">
         body {
-            padding-top: 70px;
+            padding-top: 60px;
+            background: #262626;
         }
-        ._chart-show {
+
+
+        ._sidebar{
+            position: fixed;
+            z-index: 10;
+            width: 16.7%;
+            height: 90%;
+            border: dotted 3px;
+            border-radius: 20px;
+            margin-left: 10px;
+        }
+        ._sidebar ul{
 
         }
+        ._sidebar li:hover{
+            background: none;
+        }
+        ._chart-row{
+            margin-left: 20%;
+            position: relative;
+            height: 100%;
+
+            border: 2px double;
+            padding: 20px;
+        }
+
         ._chart-show-part{
             height: 550px;
         }
 
         ._attr-choose{
             padding-top: 10px;
-        }
-        ._chart-kind-nav{
-
         }
     </style>
     <!--获取图表-->
@@ -193,7 +214,7 @@
 </head>
 <body>
 <!--导航条-->
-<nav class="navbar navbar-default navbar-fixed-top">
+<nav class="navbar navbar-default navbar-fixed-top _topbar">
     <div class="container">
         <div class="navbar-header">
             <a class="navbar-brand" href="#">Brand</a>
@@ -228,98 +249,97 @@
     </div>
 </nav>
 
-<div class="container-fluid">
-    <div class="_chartShow-row row">
-        <!--左侧竖直导航栏-->
-        <div class="col-md-2 _chart-kind-nav">
-            <nav>
-                <ul class="nav nav-pills nav-stacked">
-                    <li role="presentation"><a href="#">玉米作物</a></li>
-                    <li role="presentation"><a href="#">气象相关</a></li>
-                    <li role="presentation"><a href="#">土壤相关</a></li>
-                </ul>
-            </nav>
-        </div>
+<aside>
 
+</aside>
+<!--左侧竖直导航栏-->
+<div class="_sidebar">
+    <ul class="nav nav-pills nav-stacked">
+        <li role="presentation"><a href="#">类别</a></li>
+        <li role="presentation"><a href="#">玉米作物</a></li>
+        <li role="presentation"><a href="#">气象相关</a></li>
+        <li role="presentation"><a href="#">土壤相关</a></li>
+    </ul>
+</div>
 
+<div class=" _chart-row">
+    <div class="container-fluid">
         <!--右侧图表区域-->
-        <div class="col-md-10 _chart-show ">
-            <!--玉米株高和叶绿素-->
-            <div class="row _chart-show-cornHandCh" id="chart-show-cornHandCh">
-                <div>
-                    <ul class="nav nav-tabs">
-                        <li><H3>株高和叶绿素相关</H3></li>
-                        <div class="navbar-right">
-                            <div class="dropdown btn-group _attr-choose">
-                                <button type="button" class="btn btn-default">选择DOY</button>
-                                <button type="button" href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
-                                        aria-haspopup="true" aria-expanded="false">
-                                    <span class="caret"></span>
-                                    <span class="sr-only"></span>
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <li><a class="_menu-item">1-1</a></li>
-                                    <li><a class="_menu-item">1-2</a></li>
-                                    <li><a class="_menu-item">1-3</a></li>
-                                    <li><a class="_menu-item">2-1</a></li>
-                                </ul>
-                            </div>
-                            <div class="dropdown btn-group _attr-choose">
-                                <button type="button" class="btn btn-default">选择TRT</button>
-                                <button type="button" href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
-                                        aria-haspopup="true" aria-expanded="false">
-                                    <span class="caret"></span>
-                                    <span class="sr-only"></span>
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <li><a class="_menu-item">1-1</a></li>
-                                    <li><a class="_menu-item">1-2</a></li>
-                                    <li><a class="_menu-item">1-3</a></li>
-                                    <li><a class="_menu-item">2-1</a></li>
-                                </ul>
-                            </div>
+        <!--玉米株高和叶绿素-->
+        <div class="row _chart-show-cornHandCh" id="chart-show-cornHandCh">
+            <div>
+                <ul class="nav nav-tabs">
+                    <li><H3>株高和叶绿素相关</H3></li>
+                    <div class="navbar-right">
+                        <div class="dropdown btn-group _attr-choose">
+                            <button type="button" class="btn btn-default">选择DOY</button>
+                            <button type="button" href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false">
+                                <span class="caret"></span>
+                                <span class="sr-only"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="_menu-item">1-1</a></li>
+                                <li><a class="_menu-item">1-2</a></li>
+                                <li><a class="_menu-item">1-3</a></li>
+                                <li><a class="_menu-item">2-1</a></li>
+                            </ul>
                         </div>
-                    </ul>
-                </div>
-                <div class="col-md-12 _chart-show-part _chart-show-HandCh-chart" id="chart-show-HandCh-chart">
-                    <div class="col-md-4" id="chart-show-HandCh-chart-1"></div>
-                    <div class="col-md-4" id="chart-show-HandCh-chart-2"></div>
-                    <div class="col-md-4" id="chart-show-HandCh-chart-3"></div>
-                </div>
-            </div>
-            <!--玉米叶-->
-            <div class="row _chart-show-leaf">
-                <div>
-                    <ul class="nav nav-tabs">
-                        <li><H3>玉米叶相关</H3></li>
-                        <div class="navbar-right">
-                            <div class="dropdown btn-group _attr-choose">
-                                <button type="button" class="btn btn-default">选择TRT</button>
-                                <button type="button" href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
-                                        aria-haspopup="true" aria-expanded="false">
-                                    <span class="caret"></span>
-                                    <span class="sr-only"></span>
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <li><a class="_menu-item">1-1</a></li>
-                                    <li><a class="_menu-item">1-2</a></li>
-                                    <li><a class="_menu-item">1-3</a></li>
-                                    <li><a class="_menu-item">2-1</a></li>
-                                </ul>
-                            </div>
+                        <div class="dropdown btn-group _attr-choose">
+                            <button type="button" class="btn btn-default">选择TRT</button>
+                            <button type="button" href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false">
+                                <span class="caret"></span>
+                                <span class="sr-only"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="_menu-item">1-1</a></li>
+                                <li><a class="_menu-item">1-2</a></li>
+                                <li><a class="_menu-item">1-3</a></li>
+                                <li><a class="_menu-item">2-1</a></li>
+                            </ul>
                         </div>
-                    </ul>
-                </div>
-                <div class="col-md-12 _chart-show-part _chart-show-leaf-chart" id="chart-show-leaf-chart"></div>
-                <!--<button class="btn btn-block" id="testButton">Test</button>-->
+                    </div>
+                </ul>
             </div>
-            <!--玉米产量-->
-            <div class="row _chart-show-yield" id="chart-show-yield">
-                <h3>产量相关</h3>
-                <div></div>
+            <div class="col-md-12 _chart-show-part _chart-show-HandCh-chart" id="chart-show-HandCh-chart">
+                <div class="col-md-4" id="chart-show-HandCh-chart-1"></div>
+                <div class="col-md-4" id="chart-show-HandCh-chart-2"></div>
+                <div class="col-md-4" id="chart-show-HandCh-chart-3"></div>
             </div>
-            <div id="testChart" style="width: 600px; height: 400px"></div>
         </div>
+        <!--玉米叶-->
+        <div class="row _chart-show-leaf">
+            <div>
+                <ul class="nav nav-tabs">
+                    <li><H3>玉米叶相关</H3></li>
+                    <div class="navbar-right">
+                        <div class="dropdown btn-group _attr-choose">
+                            <button type="button" class="btn btn-default">选择TRT</button>
+                            <button type="button" href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false">
+                                <span class="caret"></span>
+                                <span class="sr-only"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="_menu-item">1-1</a></li>
+                                <li><a class="_menu-item">1-2</a></li>
+                                <li><a class="_menu-item">1-3</a></li>
+                                <li><a class="_menu-item">2-1</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </ul>
+            </div>
+            <div class="col-md-12 _chart-show-part _chart-show-leaf-chart" id="chart-show-leaf-chart"></div>
+            <!--<button class="btn btn-block" id="testButton">Test</button>-->
+        </div>
+        <!--玉米产量-->
+        <div class="row _chart-show-yield" id="chart-show-yield">
+            <h3>产量相关</h3>
+            <div></div>
+        </div>
+        <div id="testChart" style="width: 600px; height: 400px"></div>
     </div>
 </div>
 
