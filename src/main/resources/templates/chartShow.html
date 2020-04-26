@@ -17,27 +17,49 @@
     <style rel="stylesheet">
         body {
             padding-top: 60px;
-            background: #262626;
+            background: #1e1e2f;
+            /*background: rgba(41, 52, 65, 1);*/
+            font-family: 'Roboto', sans-serif;
+            font-size: 16px;
         }
 
-
+        ._topbar {
+            background: #1e1e2f;
+            border-bottom-color: #398439;
+        }
+        ._topbar .nav a {
+            color: #f7f7f7;
+        }
         ._sidebar{
             position: fixed;
             z-index: 10;
             width: 16.7%;
-            height: 90%;
-            border: dotted 3px;
-            border-radius: 20px;
-            margin-left: 10px;
+            height: 85%;
+            margin-top: 10px;
+            margin-left: 20px;
+            border-radius: 10px;
+            background: #389466;
         }
         ._sidebar ul{
 
         }
-        ._sidebar li:hover{
+        ._sidebar .nav a{
+            color: #f7f7f7;
+            border-bottom: 1px solid #555555;
+            padding: 16px 24px;
+            font-size: 14px;
+            display: block;
+        }
+        ._sidebar .nav a:hover{
             background: none;
+            color: white;
+        }
+        ._sidebar li{
+            padding-bottom: 1px;
         }
         ._chart-row{
             margin-left: 20%;
+            margin-top: 10px;
             position: relative;
             height: 100%;
 
