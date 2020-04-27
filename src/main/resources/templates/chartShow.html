@@ -18,18 +18,62 @@
         body {
             padding-top: 60px;
             background: #1e1e2f;
-            /*background: rgba(41, 52, 65, 1);*/
             font-family: 'Roboto', sans-serif;
             font-size: 16px;
         }
-
+        /*  样式中使用颜色
+        背景色: #1e1e2f
+        侧边栏色: #389466
+        文字色: #cccccc
+        高亮色: #ffffff
+        选项色:
+        */
+        /*顶端导航栏样式*/
         ._topbar {
             background: #1e1e2f;
-            border-bottom-color: #398439;
+            border-bottom-color: #389466;
         }
-        ._topbar .nav a {
-            color: #f7f7f7;
+        ._topbar .navbar-nav > li > a {
+            color: #cccccc;
         }
+        ._topbar .navbar-nav > li > a:hover{
+            background: none;
+            color: #ffffff;
+        }
+        ._topbar .navbar-nav > li > a:focus{
+            background: none;
+            color: #ffffff;
+        }
+        ._topbar .navbar-brand {
+            color: #389466;
+        }
+        ._topbar .navbar-brand:hover{
+            color: #389466;
+        }
+        ._topbar .navbar-brand:focus{
+            color: #389466;
+        }
+        ._topbar .navbar-nav .open > a{
+            background: none;
+            color: #cccccc;
+        }
+        ._topbar .navbar-nav .open > a:focus{
+            background: none;
+            color: #ffffff;
+            /*border: ;*/
+        }
+        ._topbar .dropdown-menu {
+            background: #1e1e2f;
+        }
+        ._topbar .dropdown-menu a {
+            color: #cccccc;
+        }
+        ._topbar .dropdown-menu a:hover{
+            background: none;
+            color: #ffffff;
+        }
+
+        /*侧边栏样式*/
         ._sidebar{
             position: fixed;
             z-index: 10;
@@ -43,36 +87,45 @@
         ._sidebar ul{
 
         }
-        ._sidebar .nav a{
-            color: #f7f7f7;
-            border-bottom: 1px solid #555555;
+        ._sidebar .nav a {
+            color: #cccccc;
+            border-bottom: 1px solid #222a42;
             padding: 16px 24px;
             font-size: 14px;
             display: block;
         }
         ._sidebar .nav a:hover{
             background: none;
-            color: white;
+            color: #ffffff;
         }
-        ._sidebar li{
-            padding-bottom: 1px;
+        ._sidebar .nav a:focus{
+            background: none;
+            color: #ffffff;
         }
+        ._sidebar .nav ._sidebar-header {
+            font-size: 16px;
+            text-align: center;
+            line-height: 32px;
+            color: #ffffff;
+        }
+
+        /*表格区域样式*/
         ._chart-row{
             margin-left: 20%;
             margin-top: 10px;
             position: relative;
             height: 100%;
-
             border: 2px double;
-            padding: 20px;
+            padding: 5px 20px;
         }
-
+        ._chart-row .navbar-right {
+            padding: 13px 13px 0 0;
+        }
         ._chart-show-part{
             height: 550px;
         }
 
         ._attr-choose{
-            padding-top: 10px;
         }
     </style>
     <!--获取图表-->
@@ -271,13 +324,10 @@
     </div>
 </nav>
 
-<aside>
-
-</aside>
 <!--左侧竖直导航栏-->
 <div class="_sidebar">
-    <ul class="nav nav-pills nav-stacked">
-        <li role="presentation"><a href="#">类别</a></li>
+    <ul class="nav">
+        <li role="presentation"><a href="#" class="_sidebar-header">类 别</a></li>
         <li role="presentation"><a href="#">玉米作物</a></li>
         <li role="presentation"><a href="#">气象相关</a></li>
         <li role="presentation"><a href="#">土壤相关</a></li>
