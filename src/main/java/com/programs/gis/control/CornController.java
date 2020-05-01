@@ -23,7 +23,7 @@ public class CornController {
     /*获取所有cornLeaf数据*/
     @RequestMapping("/corn/cornLeafAll")
     @ResponseBody
-    public String getCornLeaf() throws Exception {//待补全，需要将java对象转换为json对象
+    public String getCornLeaf() throws Exception {
         List<CornLeaf> cornLeafList = cornService.getAllCornLeaf();
         if (cornLeafList != null){
             String cornLeafJson = JSON.toJSONString(cornLeafList);
@@ -54,7 +54,7 @@ public class CornController {
     @ResponseBody
     public String getCornHeightAndChloByDOY(@RequestBody String strDOY) throws Exception{
         JSONObject jsonObject = JSON.parseObject(strDOY);
-        Integer DOY = jsonObject.getInteger("DOY");
+        Integer DOY = Integer.parseInt(jsonObject.getString("DOY"));
 
         List<CornHeightAndChlo> cornHeightAndChloList = cornService.getCornHandChByAttr(DOY, "DOY");
         if (cornHeightAndChloList != null){
@@ -64,4 +64,5 @@ public class CornController {
         }
         return JSON.toJSONString("0");
     }
+
 }

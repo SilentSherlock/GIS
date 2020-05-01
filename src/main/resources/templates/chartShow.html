@@ -14,6 +14,7 @@
 
     <!--引入echarts-->
     <script type="text/javascript" src="../static/extlib/echarts/echarts.js"></script>
+    <script type="text/javascript" src="../static/extlib/echarts/theme/purple.js"></script>
     <style rel="stylesheet">
         body {
             padding-top: 60px;
@@ -152,7 +153,9 @@
         ._chart-show-HandCh-chart {
             margin: 10px 0;
         }
-
+        #chart-show-HandCh-chart-1, #chart-show-HandCh-chart-2, #chart-show-HandCh-chart-3 {
+            height: 350px;
+        }
 
 
     </style>
@@ -169,6 +172,7 @@
         /*初始化界面图表，获取默认图表数据*/
         function chartInit() {
             cornLeafChart();
+            cornHeightAndChloChart();
         }
 
         /*玉米叶TRT选择监听*/
@@ -176,20 +180,114 @@
             $('._chart-show-leaf ._menu-item').click(function () {
                 //直接使用this并不能获得触发事件的对象，需要使用$(this)
                 let innerText = $(this).text();
+                let attrChooseNode = $(this).parent().parent().prev().children();//获得属性选择中第二个span
+                $(attrChooseNode[1]).text(innerText);//使用$表明这是一个jquery对象,防止使用方法时冲突
+
                 cornLeafChart(innerText);
             });
         }
 
         /*玉米株高和叶绿素选择监听*/
         function addCornHandChListener() {
+            $('._chart-show-cornHandCh ._menu-item').click(function () {
+                let innerText = $(this).text();
+                let attrChooseNode = $(this).parent().parent().prev().children();
+                $(attrChooseNode[1]).text(innerText);
 
+                let attrChooseButtons = $("._chart-show-cornHandCh ._attr-choose");
+                let dOYValue = $($(attrChooseButtons[0]).children()[1]).text();
+                let tRTValue = $($(attrChooseButtons[1]).children()[1]).text();
+                console.log("DOY: " + dOYValue + "\nTRT: " + tRTValue);
+                cornHeightAndChloChart(dOYValue, tRTValue);
+            })
         }
 
         /*画玉米株高和叶绿素图
         * 函数根据DOY属性一次获得多条数据
-        * 画图时则根据TRT属性,确定一个地块,画三个图*/
-        function cornHeightAndChloChart(DOY = "177") {
-            let test = getChartData("corn/cornHeightAndChloDOY", JSON.stringify({DOY: DOY}), 1);
+        * 画图时则根据TRT属性,确定一个扇形地块,分为三部分,画三个图*/
+        function cornHeightAndChloChart(DOY = "177", TRT = "1") {
+
+            let chartData = getChartData("corn/cornHeightAndChloDOY", JSON.stringify({DOY: DOY}), 1);//从后端取数据
+            let screenChartData = screenDataByAttr(chartData, "tRT", TRT);//提取出所需地块
+            let xAxisData = extractCol(screenDataByAttr(screenChartData, "nUM_1", TRT + ".1"), "nUM_3");//提取数据NUM_3列数据作为x轴
+            let partData1 = screenDataByAttr(screenChartData, "nUM_1", TRT + ".1");//提取第一部分
+            let partData2 = screenDataByAttr(screenChartData, "nUM_1", TRT + ".2");//提取第二部分
+            let partData3 = screenDataByAttr(screenChartData, "nUM_1", TRT + ".3");//提取第三部分
+
+            let partOption1 = {
+                legend: {
+                    show: true,
+                    id:
+                },
+                tooltip: {},
+                xAxis: {
+                    type: "category",
+                    data: xAxisData
+                },
+                yAxis: {},
+                series: [
+                    {
+                        type: "line",
+                        name: "Height",
+                        data: extractCol(partData1, "height")
+                    },
+                    {
+                        type: "line",
+                        name: "Chlorophyll",
+                        data: extractCol(partData1, "chlorophyll")
+                    }
+                ]
+            };
+            let partOption2 = {
+                legend: {},
+                tooltip: {},
+                xAxis: {
+                    type: "category",
+                    data: xAxisData
+                },
+                yAxis: {},
+                series: [
+                    {
+                        type: "line",
+                        name: "Height",
+                        data: extractCol(partData2, "height")
+                    },
+                    {
+                        type: "line",
+                        name: "Chlorophyll",
+                        data: extractCol(partData2, "chlorophyll")
+                    }
+                ]
+            };
+            let partOption3 = {
+                legend: {},
+                tooltip: {},
+                xAxis: {
+                    type: "category",
+                    data: xAxisData
+                },
+                yAxis: {},
+                series: [
+                    {
+                        type: "line",
+                        name: "Height",
+                        data: extractCol(partData3, "height")
+                    },
+                    {
+                        type: "line",
+                        name: "Chlorophyll",
+                        data: extractCol(partData3, "chlorophyll")
+                    }
+                ]
+            };
+
+            let cornHandChChart1 = getAndInitChart("chart-show-HandCh-chart-1");
+            let cornHandChChart2 = getAndInitChart("chart-show-HandCh-chart-2");
+            let cornHandChChart3 = getAndInitChart("chart-show-HandCh-chart-3");
+
+            cornHandChChart1.setOption(partOption1);
+            cornHandChChart2.setOption(partOption2);
+            cornHandChChart3.setOption(partOption3);
         }
 
         /*画玉米叶数据
@@ -235,13 +333,13 @@
             cornLeafChart.setOption(cornLeafOption)
         }
         /*初始化图表节点*/
-        function getAndInitChart(chartDomId, theme = "dark") {
+        function getAndInitChart(chartDomId, theme = "purple") {
             let chartDom = document.getElementById(chartDomId);
             return echarts.init(chartDom, theme)
         }
 
-        /*向后台发送请求获取数据*/
-        function getChartData(requestUrl, jsonStr, flag = 0) {
+        /*向后台发送请求获取数据,默认带请求数据*/
+        function getChartData(requestUrl, jsonStr, flag = 1) {
             let chartData = [];
             if (requestUrl != null && flag === 1) {//带请求参数
                 $.ajax({
@@ -284,9 +382,13 @@
         function extractCol(chartData, colName) {
             let colData = [];
             for (let row = 0;row < chartData.length;row++){
-                colData.push(chartData[row][colName]);
+                for(let x in chartData[row]){
+                    if (x === colName){
+                        colData.push(chartData[row][x]);
+                    }
+                }
             }
-            return colData
+            return colData;
         }
 
         /*提取JSON数组对象中所有数据*/
@@ -304,11 +406,13 @@
         }
 
         /*从JSON数组对象中根据某个属性值筛选部分对象*/
-        function screenDataByAttr(chartData, attrName, attrValue) {
+        function screenDataByAttr(chartData, attrName, attrValue) {//attrValue传递进来的是String要转换为Number
             let result = [];
             for (let row = 0;row < chartData.length;row++){
-                if (chartData[row][attrName] != null && attrValue === chartData[row][attrName]){
-                    result[row] = chartData[row];
+                for (let x in chartData[row]){
+                    if (chartData[row][x] != null && Number(attrValue) === chartData[row][x]){
+                        result[row] = chartData[row];
+                    }
                 }
             }
             return result;
@@ -374,26 +478,30 @@
                     <li class="navbar-right">
                         <div class="dropdown btn-group ">
                             <a type="button" href="#" class="btn dropdown-toggle _attr-choose" data-toggle="dropdown"
-                                    aria-haspopup="true" aria-expanded="false">选择DOY
+                                    aria-haspopup="true" aria-expanded="false">
+                                <span>DOY:</span>
+                                <span>177</span>
                                 <span class="caret"></span>
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a class="_menu-item">1-1</a></li>
-                                <li><a class="_menu-item">1-2</a></li>
+                                <li><a class="_menu-item">177</a></li>
+                                <li><a class="_menu-item">182</a></li>
                                 <li><a class="_menu-item">1-3</a></li>
                                 <li><a class="_menu-item">2-1</a></li>
                             </ul>
                         </div>
                         <div class="dropdown btn-group ">
                             <a type="button" href="#" class="btn dropdown-toggle _attr-choose" data-toggle="dropdown"
-                                    aria-haspopup="true" aria-expanded="false">选择TRT
+                                    aria-haspopup="true" aria-expanded="false">
+                                <span>TRT:</span>
+                                <span>1</span>
                                 <span class="caret"></span>
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a class="_menu-item">1-1</a></li>
-                                <li><a class="_menu-item">1-2</a></li>
-                                <li><a class="_menu-item">1-3</a></li>
-                                <li><a class="_menu-item">2-1</a></li>
+                                <li><a class="_menu-item">1</a></li>
+                                <li><a class="_menu-item">2</a></li>
+                                <li><a class="_menu-item">3</a></li>
+                                <li><a class="_menu-item">4</a></li>
                             </ul>
                         </div>
                     </li>
@@ -423,13 +531,16 @@
         </div>
         <!--玉米叶-->
         <div class="container-fluid _chart-show-leaf" id="_chart-show-leaf">
+            <!--信息头-->
             <div class="row">
                 <ul class="col-md-12 nav nav-tabs">
                     <li><H3>玉米叶</H3></li>
                     <div class="navbar-right">
                         <div class="dropdown btn-group ">
                             <a type="button" href="#" class="btn dropdown-toggle _attr-choose" data-toggle="dropdown"
-                                    aria-haspopup="true" aria-expanded="false">选择TRT
+                                    aria-haspopup="true" aria-expanded="false">
+                                <span>TRT:</span>
+                                <span>1-1</span>
                                 <span class="caret"></span>
                             </a>
                             <ul class="dropdown-menu">
@@ -442,6 +553,7 @@
                     </div>
                 </ul>
             </div>
+            <!--表格-->
             <div class="row">
                 <div class="col-md-12 _chart-show-part _chart-show-leaf-chart" id="chart-show-leaf-chart">
                 </div>
