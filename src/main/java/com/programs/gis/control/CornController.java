@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.programs.gis.entity.CornHeightAndChlo;
 import com.programs.gis.entity.CornLeaf;
+import com.programs.gis.entity.CornYield;
 import com.programs.gis.function.Tools;
 import com.programs.gis.service.CornService;
 import org.springframework.stereotype.Controller;
@@ -49,6 +50,22 @@ public class CornController {
         return JSON.toJSONString("0");
     }
 
+    /*根据DOY获取cornLeaf数据*/
+    @RequestMapping("/corn/cornLeafDOY")
+    @ResponseBody
+    public String getCornLeafByDOY(@RequestBody String strDOY) throws Exception {
+        JSONObject jsonObject = JSON.parseObject(strDOY);
+        Integer DOY = Integer.parseInt(jsonObject.getString("DOY"));
+
+        List<CornLeaf> cornLeafList = cornService.getCornLeafByAttr(DOY, "DOY");
+        if (cornLeafList != null){
+            String cornLeafJson = JSON.toJSONString(cornLeafList);
+            System.out.println(cornLeafJson);
+            return cornLeafJson;
+        }
+        return JSON.toJSONString("0");
+    }
+
     /*根据DOY获取cornHeightAndChlo数据*/
     @RequestMapping("/corn/cornHeightAndChloDOY")
     @ResponseBody
@@ -65,4 +82,16 @@ public class CornController {
         return JSON.toJSONString("0");
     }
 
+    /*获取cornYield所有数据*/
+    @RequestMapping("/corn/cornYield")
+    @ResponseBody
+    public String getCornYield() throws Exception {
+        List<CornYield> cornYieldList = cornService.getAllCornYield();
+        if (cornYieldList != null) {
+            String cornYieldJson = JSON.toJSONString(cornYieldList);
+            System.out.println(cornYieldJson);
+            return cornYieldJson;
+        }
+        return JSON.toJSONString("0");
+    }
 }

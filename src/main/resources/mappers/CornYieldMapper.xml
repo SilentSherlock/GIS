@@ -14,14 +14,14 @@
         insert into cornYield (cornFieldId,moistureYield, boxWeight, beforeDehydration, afterDehydration, moistureContent, dryYield)
         values (#{cornFieldId},#{moistureYield}, #{boxWeight}, #{beforeDehydration}, #{afterDehydration}, #{moistureContent}, #{dryYield});
     </insert>
-    <select id="getAllYield" resultMap="cornYieldMap">
+    <select id="getAll" resultMap="cornYieldMap">
         select * from cornYield
     </select>
-    <select id="getYieldById" resultMap="cornYieldMap">
+    <select id="getById" resultMap="cornYieldMap">
         select * from cornYield
         where cornFieldId = #{cornFieldId}
     </select>
-    <delete id="delete">
+    <delete id="deleteById">
         delete from cornYield
         where cornFieldId = #{cornFieldId}
     </delete>

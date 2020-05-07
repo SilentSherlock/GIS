@@ -89,7 +89,7 @@ public class FileController {
         String dataPath = path + dataFileName;
         if (dataFileName!=null){
             switch (dataFileName) {
-                case "玉米产量_R.xlsx":
+                case "产量_R.xlsx":
                     if (cornService.saveCornYieldByFile(dataPath)) {
                         System.out.println("Add To Corn Yield Database By File Success");
                     }

@@ -23,6 +23,16 @@
             font-size: 16px;
             color: #cccccc;
         }
+        ::-webkit-scrollbar {
+            background-color: #1c1e1f;
+            color: #c5c1b9;
+        }
+        ::-webkit-scrollbar-corner {
+            background-color: #181a1b;
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: #2a2c2e;
+        }
         /*  样式中使用颜色
         背景色: #1e1e2f
         侧边栏色: #389466
@@ -157,6 +167,16 @@
             height: 350px;
         }
 
+        ._chart-show-leaf-chart {
+            margin: 10px 0;
+            height: 390px;
+        }
+
+        #_chart-show-yield-chart {
+            margin: 10px;
+            height: 380px;
+            overflow: scroll;
+        }
 
     </style>
     <!--获取图表-->
@@ -171,8 +191,9 @@
 
         /*初始化界面图表，获取默认图表数据*/
         function chartInit() {
-            cornLeafChart();
+            cornLeafChart2();
             cornHeightAndChloChart();
+            cornYieldChart();
         }
 
         /*玉米叶TRT选择监听*/
@@ -183,7 +204,7 @@
                 let attrChooseNode = $(this).parent().parent().prev().children();//获得属性选择中第二个span
                 $(attrChooseNode[1]).text(innerText);//使用$表明这是一个jquery对象,防止使用方法时冲突
 
-                cornLeafChart(innerText);
+                cornLeafChart2(innerText);
             });
         }
 
@@ -217,7 +238,7 @@
             let partOption1 = {
                 legend: {
                     show: true,
-                    id:
+                    /*id:*/
                 },
                 tooltip: {},
                 xAxis: {
@@ -330,7 +351,113 @@
                 ]
             };
             let cornLeafChart = getAndInitChart("chart-show-leaf-chart");
-            cornLeafChart.setOption(cornLeafOption)
+            cornLeafChart.setOption(cornLeafOption);
+        }
+
+        /*画玉米叶数据
+        * 通过DOY获取数据*/
+        function cornLeafChart2(DOY = "177") {
+            let extractData = extractAll(getChartData("corn/cornLeafDOY", JSON.stringify({DOY: DOY}), 1));
+            let cornLeafOption = {
+                legend: {},
+                tooltip: {},
+                xAxis: {type: "category"},
+                yAxis: {},
+                dataset: {
+                    source: extractData
+                },
+                series: [
+                    {
+                        type: "line",
+                        name: "LeafPerimeter",
+                        encode: {
+                            x: 5,
+                            y: 3
+                        }
+                    },
+                    {
+                        type: "line",
+                        name: "LeafArea",
+                        encode: {
+                            x: 5,
+                            y: 1
+                        }
+                    },
+                    {
+                        type: "line",
+                        name: "LeafNumber",
+                        encode: {
+                            x: 5,
+                            y: 2
+                        }
+                    }
+                ]
+            };
+            let cornLeafChart = getAndInitChart("chart-show-leaf-chart");
+            cornLeafChart.setOption(cornLeafOption);
+        }
+
+        /*js动态生成玉米产量表格*/
+        function cornYieldChart() {//通过循环逐列添加数据
+            let chartData = getChartData("corn/cornYield", null, 0);
+
+            $("#_chart-show-yield-chart").append("<table></table>");
+            let tableDom = $("#_chart-show-yield-chart").children();
+            $(tableDom[0]).addClass("table");
+            $(tableDom[0]).append("<thead></thead><tbody></tbody>");
+
+            let tableChildren = $(tableDom[0]).children();
+
+            /*设置表头*/
+            $(tableChildren[0]).append("<tr></tr>");
+            for (let i = 0;i < Object.keys(chartData[0]).length;i++) {
+                $(tableChildren[0]).children().append("<th></th>");
+            }
+            let thDoms = $(tableChildren[0]).children().children();
+            $(thDoms[0]).text("编号");
+            $(thDoms[1]).text("产量（湿重）kg/hm2");
+            $(thDoms[2]).text("盒重g");
+            $(thDoms[3]).text("湿重g");
+            $(thDoms[4]).text("干重g");
+            $(thDoms[5]).text("含水率");
+            $(thDoms[6]).text("产量（干重）kg/hm2");
+
+            /*设置数据*/
+            function setData(trDoms, colData) {
+                for (let row = 0;row < colData.length;row++){
+                    let content = "<td>" + colData[row] + "</td>";
+                    $(trDoms[row]).append(content);
+                }
+            }
+            for (let row = 0;row < chartData.length;row++) $(tableChildren[1]).append("<tr></tr>");
+            for (let col = 0;col < Object.keys(chartData[0]).length;col++) {
+                let colData = [];
+                let trDoms = $(tableChildren[1]).children();
+                switch (col) {
+                    case 0:
+                        colData = extractCol(chartData, "cornFieldId");
+                        break;
+                    case 1:
+                        colData = extractCol(chartData, "moistureYield");
+                        break;
+                    case 2:
+                        colData = extractCol(chartData, "boxWeight");
+                        break;
+                    case 3:
+                        colData = extractCol(chartData, "beforeDehydration");
+                        break;
+                    case 4:
+                        colData = extractCol(chartData, "afterDehydration");
+                        break;
+                    case 5:
+                        colData = extractCol(chartData, "moistureContent");
+                        break;
+                    case 6:
+                        colData = extractCol(chartData, "dryYield");
+                        break;
+                }
+                setData(trDoms, colData);
+            }
         }
         /*初始化图表节点*/
         function getAndInitChart(chartDomId, theme = "purple") {
@@ -466,6 +593,7 @@
     </ul>
 </div>
 
+<!--内容区域-->
 <div class=" _chart-row">
     <div>
         <!--右侧图表区域-->
@@ -485,9 +613,7 @@
                             </a>
                             <ul class="dropdown-menu">
                                 <li><a class="_menu-item">177</a></li>
-                                <li><a class="_menu-item">182</a></li>
-                                <li><a class="_menu-item">1-3</a></li>
-                                <li><a class="_menu-item">2-1</a></li>
+                                <li><a class="_menu-item">185</a></li>
                             </ul>
                         </div>
                         <div class="dropdown btn-group ">
@@ -539,15 +665,13 @@
                         <div class="dropdown btn-group ">
                             <a type="button" href="#" class="btn dropdown-toggle _attr-choose" data-toggle="dropdown"
                                     aria-haspopup="true" aria-expanded="false">
-                                <span>TRT:</span>
-                                <span>1-1</span>
+                                <span>DOY:</span>
+                                <span>177</span>
                                 <span class="caret"></span>
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a class="_menu-item">1-1</a></li>
-                                <li><a class="_menu-item">1-2</a></li>
-                                <li><a class="_menu-item">1-3</a></li>
-                                <li><a class="_menu-item">2-1</a></li>
+                                <li><a class="_menu-item">177</a></li>
+                                <li><a class="_menu-item">185</a></li>
                             </ul>
                         </div>
                     </div>
@@ -555,17 +679,35 @@
             </div>
             <!--表格-->
             <div class="row">
-                <div class="col-md-12 _chart-show-part _chart-show-leaf-chart" id="chart-show-leaf-chart">
+                <div class="col-md-12">
+                    <div class="_chart-show-part">
+                        <div class="_content-block _chart-show-leaf-chart" id="chart-show-leaf-chart"></div>
+                    </div>
                 </div>
             </div>
+        </div>
 
-        </div>
         <!--玉米产量-->
-        <div class="row _content-block _chart-show-yield" id="chart-show-yield">
-            <h3>产量</h3>
-            <div></div>
+        <div class="container-fluid _chart-show-yield" id="_chart-show-yield">
+            <!--信息头-->
+            <div class="row">
+                <ul class="col-md-12 nav nav-tabs">
+                    <li><H3>玉米产量</H3></li>
+                </ul>
+            </div>
+            <!--表格-->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="_chart-show-part">
+                        <!--js动态生成表格-->
+                        <div class="_content-block _chart-show-yield-chart" >
+                            <div id="_chart-show-yield-chart" class="table-responsive">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div id="testChart" style="width: 600px; height: 400px"></div>
     </div>
 </div>
 

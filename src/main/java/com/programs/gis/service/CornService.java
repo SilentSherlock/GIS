@@ -71,13 +71,13 @@ public class CornService {//合并玉米本身信息相关的Dao
                                 saveCornLeaf(DOY1, TRT1, leafArea, leafPerimeter, leafNumber, recordDay);
                                 break;
                             case 2://读取方法待修改
-                                Float cornFieldId = tools.transSeparator2dot(tmpRow.getCell(0).toString());
-                                Double moistureYield = Double.valueOf(tmpRow.getCell(1).toString());
-                                Float boxWeight = Float.valueOf(tmpRow.getCell(2).toString());
-                                Float beforeDehydration = Float.valueOf(tmpRow.getCell(3).toString());
-                                Float afterDehydration = Float.valueOf(tmpRow.getCell(4).toString());
-                                Float moistureContent = Float.valueOf(tmpRow.getCell(5).toString());
-                                Double dryYield = Double.valueOf(tmpRow.getCell(6).toString());
+                                Float cornFieldId = tools.transSeparator2dot(tmpRow.getCell(0).getStringCellValue());
+                                Double moistureYield = tmpRow.getCell(1).getNumericCellValue();
+                                Float boxWeight = (float) tmpRow.getCell(2).getNumericCellValue();
+                                Float beforeDehydration = (float) tmpRow.getCell(3).getNumericCellValue();
+                                Float afterDehydration = (float) tmpRow.getCell(4).getNumericCellValue();
+                                Float moistureContent = (float) tmpRow.getCell(5).getNumericCellValue();
+                                Double dryYield = tmpRow.getCell(6).getNumericCellValue();
                                 saveCornYield(cornFieldId, moistureYield, boxWeight, beforeDehydration, afterDehydration, moistureContent, dryYield);
                                 break;
                         }
@@ -206,7 +206,13 @@ public class CornService {//合并玉米本身信息相关的Dao
 
     public List<CornYield> getAllCornYield() throws Exception{
         System.out.println("Get All CornYield");
-        return cornYieldDao.getAll();
+        List<CornYield> cornYieldList = cornYieldDao.getAll();
+
+        if (cornYieldList != null) {
+            System.out.println("Get All CornYield Successfully");
+            return cornYieldList;
+        }
+        return null;
     }
 
     public CornYield getCornYield(Float cornFieldId) throws Exception{
