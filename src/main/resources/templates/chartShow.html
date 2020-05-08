@@ -16,6 +16,15 @@
     <script type="text/javascript" src="../static/extlib/echarts/echarts.js"></script>
     <script type="text/javascript" src="../static/extlib/echarts/theme/purple.js"></script>
     <style rel="stylesheet">
+        /*  样式中使用颜色
+        背景色: #1e1e2f
+        侧边栏色: #389466
+        文字色: #cccccc
+        高亮色: #ffffff
+        选项色: #e14eca
+        分块内容背景色: #27293d
+        */
+        /*其他页面可复用样式*/
         body {
             padding-top: 60px;
             background: #1e1e2f;
@@ -33,14 +42,6 @@
         ::-webkit-scrollbar-thumb {
             background-color: #2a2c2e;
         }
-        /*  样式中使用颜色
-        背景色: #1e1e2f
-        侧边栏色: #389466
-        文字色: #cccccc
-        高亮色: #ffffff
-        选项色: #e14eca
-        分块内容背景色: #27293d
-        */
         /*顶端导航栏样式*/
         ._topbar {
             background: #1e1e2f;
@@ -83,12 +84,13 @@
         ._sidebar{
             position: fixed;
             z-index: 10;
-            width: 16.7%;
+            width: 17%;
             height: 85%;
             margin-top: 10px;
             margin-left: 20px;
             border-radius: 6px;
             background: #389466;
+            overflow-y: scroll;
             box-shadow: rgba(0, 0, 0, 0.1) 0 1px 20px 0;
         }
         ._sidebar .nav a {
@@ -123,6 +125,14 @@
             font-size: 1.25rem;
             line-height: 1.8;
         }
+
+        /*内容块*/
+        ._content-block {
+            background: #27293d;
+            border-radius: 6px;
+            box-shadow: rgba(0, 0, 0, 0.1) 0 1px 20px 0;
+        }
+
         /*表格区域样式*/
         ._chart-row{
             margin-left: 20%;
@@ -131,12 +141,7 @@
             height: 100%;
             padding-right: 20px;
         }
-        /*内容块*/
-        ._content-block {
-            background: #27293d;
-            border-radius: 6px;
-            box-shadow: rgba(0, 0, 0, 0.1) 0 1px 20px 0;
-        }
+
         ._chart-row .nav .dropdown-menu {
             background: #1e1e2f;
         }
@@ -162,11 +167,11 @@
         ._chart-row .nav-tabs h3 {
             color: #ced4da;
         }
-
-
         ._card-title h5{
             padding: 15px 15px 0 15px;
         }
+
+        /*本页面独有样式*/
         ._chart-show-part {
             height: 400px;
         }
@@ -186,6 +191,8 @@
             margin: 10px;
             height: 380px;
             overflow: scroll;
+            line-height: 1.5;
+            color: #cccccc;
         }
 
     </style>
@@ -622,7 +629,7 @@
                                 <span class="caret"></span>
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a class="_menu-item">177</a></li>
+                                <li><a class="_menu-item">177</a></li><!--下拉标签均仅作测试，后续添加js根据数据动态生成-->
                                 <li><a class="_menu-item">185</a></li>
                             </ul>
                         </div>
@@ -696,7 +703,6 @@
                 </div>
             </div>
         </div>
-
         <!--玉米产量-->
         <div class="container-fluid _chart-show-yield" id="_chart-show-yield">
             <!--信息头-->
