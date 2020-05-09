@@ -1,9 +1,11 @@
 package com.programs.gis.service;
 
 import com.programs.gis.dao.CornHeightAndChloDao;
+import com.programs.gis.dao.CornLAIDao;
 import com.programs.gis.dao.CornLeafDao;
 import com.programs.gis.dao.CornYieldDao;
 import com.programs.gis.entity.CornHeightAndChlo;
+import com.programs.gis.entity.CornLAI;
 import com.programs.gis.entity.CornLeaf;
 import com.programs.gis.entity.CornYield;
 import com.programs.gis.function.Tools;
@@ -14,22 +16,26 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+
 import java.io.File;
 import java.util.List;
 
 @Service
 public class CornService {//合并玉米本身信息相关的Dao
+
     @Resource
     private CornHeightAndChloDao cornHeightAndChloDao;
     @Resource
     private CornLeafDao cornLeafDao;
     @Resource
     private CornYieldDao cornYieldDao;
-
+    @Resource
+    private CornLAIDao cornLAIDao;
     /*根据不同daoType确定哪个dao进行数据库操作
     * 0-----cornHeightAndChloDao
     * 1-----cornLeafDao
     * 2-----cornYieldDao
+    * 3-----cornLAIDao
     * */
 
     private boolean saveByFile(String filePath, int daoType) throws Exception {
@@ -86,6 +92,38 @@ public class CornService {//合并玉米本身信息相关的Dao
             }
         }
         return true;
+    }
+    /*LAI*/
+    public void saveCornLAI(Integer DOY, Integer TRT, Float NUM_1, Float NUM_2, Integer NUM_3, Float LAI) throws Exception {
+
+        CornLAI cornLAI = new CornLAI();
+        System.out.println("Save CornLAI");
+        cornLAI.setDOY(DOY);
+        cornLAI.setTRT(TRT);
+        cornLAI.setNUM_1(NUM_1);
+        cornLAI.setNUM_2(NUM_2);
+        cornLAI.setNUM_3(NUM_3);
+        cornLAI.setLAI(LAI);
+        cornLAIDao.save(cornLAI);
+    }
+    public Boolean saveCornByFile(String filePath) throws Exception {
+        return saveByFile(filePath, 3);
+    }
+    public List<CornLAI> getAllCornLAI() throws Exception {
+        List<CornLAI> cornLAIList = cornLAIDao.getAll();
+        if (cornLAIList != null) {
+            System.out.println("Get All cornLAI successfully");
+            return cornLAIList;
+        }
+        return null;
+    }
+    public List<CornLAI> getCornLAIByAttr(Object attrValue, String attrName) throws Exception {
+        List<CornLAI> cornLAIList = cornLAIDao.getByAttr(attrValue, attrName);
+        if (cornLAIList != null) {
+            System.out.println("Get cornLAI by " + attrName + " successfully");
+            return cornLAIList;
+        }
+        return null;
     }
     /*株高和叶绿素*/
     public void saveCornHeightAndChlo(Integer DOY, Integer TRT, Float NUM_1, Float NUM_2, Integer NUM_3,

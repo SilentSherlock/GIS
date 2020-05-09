@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.programs.gis.dao.CornLAIDao">
+    <resultMap id="cornLAIMap" type="com.programs.gis.entity.CornLAI">
+        <id property="DOY" column="DOY"></id>
+        <id property="NUM_2" column="NUM_2"></id>
+        <result property="TRT" column="TRT"></result>
+        <result property="NUM_1" column="NUM_1"></result>
+        <result property="NUM_3" column="NUM_3"></result>
+        <result property="LAI" column="LAI"></result>
+    </resultMap>
+
+    <insert id="save">
+        insert into cornLAI(DOY, TRT, NUM_1, NUM_2, NUM_3, LAI)
+        values (#{DOY}, #{TRT}, #{NUM_1}, #{NUM_2}, #{NUM_3}, #{LAI})
+    </insert>
+    <delete id="deleteByPrimaryKey">
+        delete from cornLAI
+        where DOY = #{DOY} and NUM_2 = #{NUM_2}
+    </delete>
+    <select id="getAll" resultMap="cornLAIMap">
+        select * from cornLAI
+    </select>
+    <select id="getByAttr" resultMap="cornLAIMap">
+        select * from cornLAI
+        where ${attrName} = #{attrValue}
+    </select>
+</mapper>
