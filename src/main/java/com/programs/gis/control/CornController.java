@@ -3,6 +3,7 @@ package com.programs.gis.control;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.programs.gis.entity.CornHeightAndChlo;
+import com.programs.gis.entity.CornLAI;
 import com.programs.gis.entity.CornLeaf;
 import com.programs.gis.entity.CornYield;
 import com.programs.gis.function.Tools;
@@ -91,6 +92,22 @@ public class CornController {
             String cornYieldJson = JSON.toJSONString(cornYieldList);
             System.out.println(cornYieldJson);
             return cornYieldJson;
+        }
+        return JSON.toJSONString("0");
+    }
+
+    /*根据DOY获取cornLAI数据*/
+    @RequestMapping(value = "/corn/cornLAIDOY")
+    @ResponseBody
+    public String getCornLAIByDOY(@RequestBody String strDOY) throws Exception {
+        JSONObject jsonObject = JSON.parseObject(strDOY);
+        Integer DOY = Integer.parseInt(jsonObject.getString("DOY"));
+
+        List<CornLAI> cornLAIList = cornService.getCornLAIByAttr(DOY, "DOY");
+        if (cornLAIList != null) {
+            String cornLAIJson = JSON.toJSONString(cornLAIList);
+            System.out.println(cornLAIJson);
+            return cornLAIJson;
         }
         return JSON.toJSONString("0");
     }

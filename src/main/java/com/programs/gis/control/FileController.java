@@ -104,10 +104,13 @@ public class FileController {
                         System.out.println("Add To Corn Height And Chlo Database By File Success");
                     }
                     break;
+                case "LAI_R.xlsx":
+                    if (cornService.saveCornLAIByFile(dataPath)) {
+                        System.out.println("Add To Corn LAI Database By File Success");
+                    }
             }
             return "success";
         }
-
         return "failed";
     }
 

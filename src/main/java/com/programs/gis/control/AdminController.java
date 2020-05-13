@@ -24,6 +24,7 @@ public class AdminController {
     public String getEcharts(){
         return "chartShow";
     }
+
     /*登录请求*/
     @RequestMapping("/adminLogin")
     public String adminLogin(Model model){

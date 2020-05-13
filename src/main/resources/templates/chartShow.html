@@ -182,6 +182,9 @@
             height: 350px;
         }
 
+        #chart-show-LAI-chart-1, #chart-show-LAI-chart-2, #chart-show-LAI-chart-3 {
+            height: 350px;
+        }
         ._chart-show-leaf-chart {
             margin: 10px 0;
             height: 390px;
@@ -203,7 +206,7 @@
 
             addCornHandChListener();
             addCornLeafListener();
-
+            addCornLAIListener();
         });
 
         /*初始化界面图表，获取默认图表数据*/
@@ -211,6 +214,7 @@
             cornLeafChart2();
             cornHeightAndChloChart();
             cornYieldChart();
+            cornLAIChart();
         }
 
         /*玉米叶TRT选择监听*/
@@ -240,17 +244,33 @@
             })
         }
 
-        /*画玉米株高和叶绿素图
-        * 函数根据DOY属性一次获得多条数据
-        * 画图时则根据TRT属性,确定一个扇形地块,分为三部分,画三个图*/
-        function cornHeightAndChloChart(DOY = "177", TRT = "1") {
+        /*LAI选择监听*/
+        function addCornLAIListener() {
+            $('._chart-show-cornLAI ._menu-item').click(function () {
+                let innerText = $(this).text();
+                let attrChooseNode = $(this).parent().parent().prev().children();
+                $(attrChooseNode[1]).text(innerText);
 
-            let chartData = getChartData("corn/cornHeightAndChloDOY", JSON.stringify({DOY: DOY}), 1);//从后端取数据
+                let attrChooseButtons = $("._chart-show-cornLAI ._attr-choose");
+                let dOYValue = $($(attrChooseButtons[0]).children()[1]).text();
+                let tRTValue = $($(attrChooseButtons[1]).children()[1]).text();
+                console.log("DOY: " + dOYValue + "\nTRT: " + tRTValue);
+                cornLAIChart(dOYValue, tRTValue);
+            });
+        }
+
+        /*画LAI数据*/
+        function cornLAIChart(DOY = "177", TRT = "1") {
+
+            let chartData = getChartData("corn/cornLAIDOY", JSON.stringify({DOY: DOY}), 1);//从后端取数据
             let screenChartData = screenDataByAttr(chartData, "tRT", TRT);//提取出所需地块
-            let xAxisData = extractCol(screenDataByAttr(screenChartData, "nUM_1", TRT + ".1"), "nUM_3");//提取数据NUM_3列数据作为x轴
-            let partData1 = screenDataByAttr(screenChartData, "nUM_1", TRT + ".1");//提取第一部分
-            let partData2 = screenDataByAttr(screenChartData, "nUM_1", TRT + ".2");//提取第二部分
-            let partData3 = screenDataByAttr(screenChartData, "nUM_1", TRT + ".3");//提取第三部分
+            console.log("screenChart is " + screenChartData.toString());
+            let xAxisData = extractCol(screenDataByAttr(screenChartData, "nUM_1", TRT + "-1", 1), "nUM_3");//提取数据NUM_3列数据作为x轴
+            console.log("NUM_1 is"+ screenDataByAttr(screenChartData, "nUM_1", TRT + "-1"));
+            console.log("xAxisData is " + xAxisData.toString());
+            let partData1 = screenDataByAttr(screenChartData, "nUM_1", TRT + "-1", 1);//提取第一部分
+            let partData2 = screenDataByAttr(screenChartData, "nUM_1", TRT + "-2", 1);//提取第二部分
+            let partData3 = screenDataByAttr(screenChartData, "nUM_1", TRT + "-3", 1);//提取第三部分
 
             let partOption1 = {
                 legend: {
@@ -263,18 +283,11 @@
                     data: xAxisData
                 },
                 yAxis: {},
-                series: [
-                    {
+                series: {
                         type: "line",
-                        name: "Height",
-                        data: extractCol(partData1, "height")
-                    },
-                    {
-                        type: "line",
-                        name: "Chlorophyll",
-                        data: extractCol(partData1, "chlorophyll")
+                        name: "LAI",
+                        data: extractCol(partData1, "lAI")
                     }
-                ]
             };
             let partOption2 = {
                 legend: {},
@@ -284,18 +297,11 @@
                     data: xAxisData
                 },
                 yAxis: {},
-                series: [
-                    {
-                        type: "line",
-                        name: "Height",
-                        data: extractCol(partData2, "height")
-                    },
-                    {
-                        type: "line",
-                        name: "Chlorophyll",
-                        data: extractCol(partData2, "chlorophyll")
-                    }
-                ]
+                series: {
+                    type: "line",
+                    name: "LAI",
+                    data: extractCol(partData2, "lAI")
+                }
             };
             let partOption3 = {
                 legend: {},
@@ -305,6 +311,91 @@
                     data: xAxisData
                 },
                 yAxis: {},
+                series: {
+                    type: "line",
+                    name: "LAI",
+                    data: extractCol(partData3, "lAI")
+                }
+            };
+
+            let cornLAIChart1 = getAndInitChart("chart-show-LAI-chart-1");
+            let cornLAIChart2 = getAndInitChart("chart-show-LAI-chart-2");
+            let cornLAIChart3 = getAndInitChart("chart-show-LAI-chart-3");
+
+            cornLAIChart1.setOption(partOption1);
+            cornLAIChart2.setOption(partOption2);
+            cornLAIChart3.setOption(partOption3);
+        }
+        /*画玉米株高和叶绿素图
+        * 函数根据DOY属性一次获得多条数据
+        * 画图时则根据TRT属性,确定一个扇形地块,分为三部分,画三个图*/
+        function cornHeightAndChloChart(DOY = "177", TRT = "1") {
+
+            let chartData = getChartData("corn/cornHeightAndChloDOY", JSON.stringify({DOY: DOY}), 1);//从后端取数据
+            let screenChartData = screenDataByAttr(chartData, "tRT", TRT);//提取出所需地块
+            let xAxisData = extractCol(screenDataByAttr(screenChartData, "nUM_1", TRT + ".1"), "nUM_3");//提取数据NUM_3列数据作为x轴
+            let partData1 = screenDataByAttr(screenChartData, "nUM_1", TRT + ".1");//提取第一部分
+            let partData2 = screenDataByAttr(screenChartData, "nUM_1", TRT + ".2");//提取第二部分
+            let partData3 = screenDataByAttr(screenChartData, "nUM_1", TRT + ".3");//提取第三部分
+
+            let xAxisCfg = {
+                type: "category",
+                data: xAxisData,
+                name: "测量次",
+                nameLocation: "center",
+                nameGap:20
+            };
+            let yAxisCfg = [
+                {gridIndex: 0, name: "Height/cm"},
+                {gridIndex: 0, name: "Chlo/ddp"}
+            ];
+
+            let partOption1 = {
+                legend: {
+                    show: true,
+                    /*id:*/
+                },
+                tooltip: {},
+                xAxis: xAxisCfg,
+                yAxis: yAxisCfg,
+                series: [
+                    {
+                        type: "line",
+                        name: "Height",
+                        data: extractCol(partData1, "height")
+                    },
+                    {
+                        type: "line",
+                        name: "Chlorophyll",
+                        data: extractCol(partData1, "chlorophyll"),
+                        yAxisIndex: 1
+                    }
+                ]
+            };
+            let partOption2 = {
+                legend: {},
+                tooltip: {},
+                xAxis: xAxisCfg,
+                yAxis: yAxisCfg,
+                series: [
+                    {
+                        type: "line",
+                        name: "Height",
+                        data: extractCol(partData2, "height")
+                    },
+                    {
+                        type: "line",
+                        name: "Chlorophyll",
+                        data: extractCol(partData2, "chlorophyll"),
+                        yAxisIndex: 1
+                    }
+                ]
+            };
+            let partOption3 = {
+                legend: {},
+                tooltip: {},
+                xAxis: xAxisCfg,
+                yAxis: yAxisCfg,
                 series: [
                     {
                         type: "line",
@@ -314,7 +405,8 @@
                     {
                         type: "line",
                         name: "Chlorophyll",
-                        data: extractCol(partData3, "chlorophyll")
+                        data: extractCol(partData3, "chlorophyll"),
+                        yAxisIndex: 1
                     }
                 ]
             };
@@ -322,7 +414,7 @@
             let cornHandChChart1 = getAndInitChart("chart-show-HandCh-chart-1");
             let cornHandChChart2 = getAndInitChart("chart-show-HandCh-chart-2");
             let cornHandChChart3 = getAndInitChart("chart-show-HandCh-chart-3");
-
+            
             cornHandChChart1.setOption(partOption1);
             cornHandChChart2.setOption(partOption2);
             cornHandChChart3.setOption(partOption3);
@@ -550,12 +642,15 @@
         }
 
         /*从JSON数组对象中根据某个属性值筛选部分对象*/
-        function screenDataByAttr(chartData, attrName, attrValue) {//attrValue传递进来的是String要转换为Number
+        function screenDataByAttr(chartData, attrName, attrValue, attrType = 0) {//attrType为0代表attrValue需要转换，为1不需要
             let result = [];
             for (let row = 0;row < chartData.length;row++){
                 for (let x in chartData[row]){
-                    if (chartData[row][x] != null && Number(attrValue) === chartData[row][x]){
-                        result[row] = chartData[row];
+                    if (chartData[row][x] != null){
+                        if (attrType === 0 && Number(attrValue) === chartData[row][x] ||
+                            attrType === 1 && attrValue === chartData[row][x]) {
+                            result[row] = chartData[row];
+                        }
                     }
                 }
             }
@@ -720,6 +815,64 @@
                             <div id="_chart-show-yield-chart" class="table-responsive">
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--玉米LAI-->
+        <div class="container-fluid _chart-show-cornLAI" id="chart-show-cornLAI">
+            <!--内容块信息头和选项-->
+            <div class="row">
+                <ul class="nav nav-tabs col-md-12">
+                    <li><H3>LAI</H3></li>
+                    <li class="navbar-right">
+                        <div class="dropdown btn-group ">
+                            <a type="button" href="#" class="btn dropdown-toggle _attr-choose" data-toggle="dropdown"
+                               aria-haspopup="true" aria-expanded="false">
+                                <span>DOY:</span>
+                                <span>177</span>
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="_menu-item">177</a></li><!--下拉标签均仅作测试，后续添加js根据数据动态生成-->
+                                <li><a class="_menu-item">185</a></li>
+                            </ul>
+                        </div>
+                        <div class="dropdown btn-group ">
+                            <a type="button" href="#" class="btn dropdown-toggle _attr-choose" data-toggle="dropdown"
+                               aria-haspopup="true" aria-expanded="false">
+                                <span>TRT:</span>
+                                <span>1</span>
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="_menu-item">1</a></li>
+                                <li><a class="_menu-item">2</a></li>
+                                <li><a class="_menu-item">3</a></li>
+                                <li><a class="_menu-item">4</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <!--表格区域-->
+            <div class="row _chart-show-part" id="chart-show-LAI-chart">
+                <div class="col-md-4 ">
+                    <div class="_content-block _chart-show-HandCh-chart">
+                        <div class="_card-title"><h5>Part 1</h5></div>
+                        <div id="chart-show-LAI-chart-1"></div>
+                    </div>
+                </div>
+                <div class="col-md-4 ">
+                    <div class="_content-block _chart-show-HandCh-chart" >
+                        <div class="_card-title"><h5>Part 2</h5></div>
+                        <div id="chart-show-LAI-chart-2"></div>
+                    </div>
+                </div>
+                <div class="col-md-4 ">
+                    <div class="_content-block _chart-show-HandCh-chart">
+                        <div class="_card-title"><h5>Part 3</h5></div>
+                        <div id="chart-show-LAI-chart-3"></div>
                     </div>
                 </div>
             </div>

@@ -9,8 +9,8 @@ public class CornLAI {
 
     private Integer DOY;//primary key
     private Integer TRT;
-    private Float NUM_1;
-    private Float NUM_2;//primary key
+    private String NUM_1;
+    private String NUM_2;//primary key
     private Integer NUM_3;
     private Float LAI;
 
@@ -30,19 +30,19 @@ public class CornLAI {
         this.TRT = TRT;
     }
 
-    public Float getNUM_1() {
+    public String getNUM_1() {
         return NUM_1;
     }
 
-    public void setNUM_1(Float NUM_1) {
+    public void setNUM_1(String NUM_1) {
         this.NUM_1 = NUM_1;
     }
 
-    public Float getNUM_2() {
+    public String getNUM_2() {
         return NUM_2;
     }
 
-    public void setNUM_2(Float NUM_2) {
+    public void setNUM_2(String NUM_2) {
         this.NUM_2 = NUM_2;
     }
 
