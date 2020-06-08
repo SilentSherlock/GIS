@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.programs.gis.dao.ClimaticStationDao">
-    <resultMap id="climaticStationMap" type="com.programs.gis.entity.ClimaticStation">
+<mapper namespace="com.programs.gis.dao.climatic.ClimaticStationDao">
+    <resultMap id="climaticStationMap" type="com.programs.gis.entity.climatic.ClimaticStation">
         <id property="dataId" column="dataId"/>
         <result property="recordDate" column="recordDate"/>
         <result property="airTemperature" column="airTemperature"/>

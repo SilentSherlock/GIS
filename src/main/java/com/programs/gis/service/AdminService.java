@@ -1,7 +1,7 @@
 package com.programs.gis.service;
 
-import com.programs.gis.dao.AdminDao;
-import com.programs.gis.entity.Admin;
+import com.programs.gis.dao.admin.AdminDao;
+import com.programs.gis.entity.admin.Admin;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

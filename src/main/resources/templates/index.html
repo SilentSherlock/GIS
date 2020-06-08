@@ -62,10 +62,11 @@
 
             //测试读取excel文件内容
             $("#saveToDatabase").click(function () {
+                let fileName = $("#saveFile").val();
                 $.ajax({
                     url: "addToDatabaseByFile",
                     type: "post",
-                    data: "LAI_R.xlsx",
+                    data: fileName,
                     dataType: "text",
                     contentType: "application/json;charset=UTF-8",
                     async: false
@@ -203,6 +204,7 @@
         <button type="submit">上传数据文件</button>
     </form>
     <br>
+    <input type="text" id="saveFile">
     <button id="saveToDatabase" type="button">保存数据文件</button>
     <div id="testChart" style="width: 1000px;height: 600px"></div>
 </div>

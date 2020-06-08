@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.programs.gis.dao.field.FieldWaterHoldDao">
+    <resultMap id="fieldWaterHoldMapper" type="com.programs.gis.entity.field.FieldWaterHold">
+        <id property="NUM_2" column="NUM_2"/>
+        <result property="TRT" column="TRT"/>
+        <result property="NUM_1" column="NUM_1"/>
+        <result property="massWaterContent" column="massWaterContent"/>
+        <result property="volumeWaterContent" column="volumeWaterContent"/>
+        <result property="contentWeight" column="contentWeight"/>
+    </resultMap>
+    <insert id="save">
+        insert into fieldWaterHold(TRT, NUM_1, NUM_2, massWaterContent, volumeWaterContent, contentWeight)
+        values (#{TRT}, #{NUM_1}, #{NUM_2}, #{massWaterContent}, #{volumeWaterContent}, #{contentWeight});
+    </insert>
+    <delete id="deleteByPrimaryKey">
+        delete from fieldWaterHold
+        where NUM_2 = #{NUM_2};
+    </delete>
+    <select id="getAll" resultMap="fieldWaterHoldMapper">
+        select *
+        from fieldWaterHold;
+    </select>
+    <select id="getByAttr" resultMap="fieldWaterHoldMapper">
+        select * from fieldWaterHold
+        where ${attrName} = #{attrValue}
+    </select>
+</mapper>

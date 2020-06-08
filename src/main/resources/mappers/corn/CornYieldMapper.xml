@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.programs.gis.dao.CornYieldDao">
-    <resultMap id="cornYieldMap" type="com.programs.gis.entity.CornYield">
+<mapper namespace="com.programs.gis.dao.corn.CornYieldDao">
+    <resultMap id="cornYieldMap" type="com.programs.gis.entity.corn.CornYield">
         <id property="cornFieldId" column="cornFieldId"></id>
         <result property="moistureYield" column="moistureYield"></result>
         <result property="boxWeight" column="boxWeight"></result>

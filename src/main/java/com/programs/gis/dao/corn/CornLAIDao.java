@@ -1,6 +1,6 @@
-package com.programs.gis.dao;
+package com.programs.gis.dao.corn;
 
-import com.programs.gis.entity.CornLAI;
+import com.programs.gis.entity.corn.CornLAI;
 import java.util.List;
 
 /**

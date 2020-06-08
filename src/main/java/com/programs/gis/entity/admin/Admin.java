@@ -1,4 +1,4 @@
-package com.programs.gis.entity;
+package com.programs.gis.entity.admin;
 
 import lombok.Data;
 

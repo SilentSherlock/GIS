@@ -2,7 +2,7 @@ package com.programs.gis.control;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.programs.gis.entity.Admin;
+import com.programs.gis.entity.admin.Admin;
 import com.programs.gis.service.AdminService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

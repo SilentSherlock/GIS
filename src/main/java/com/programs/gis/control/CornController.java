@@ -2,10 +2,10 @@ package com.programs.gis.control;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.programs.gis.entity.CornHeightAndChlo;
-import com.programs.gis.entity.CornLAI;
-import com.programs.gis.entity.CornLeaf;
-import com.programs.gis.entity.CornYield;
+import com.programs.gis.entity.corn.CornHeightAndChlo;
+import com.programs.gis.entity.corn.CornLAI;
+import com.programs.gis.entity.corn.CornLeaf;
+import com.programs.gis.entity.corn.CornYield;
 import com.programs.gis.function.Tools;
 import com.programs.gis.service.CornService;
 import org.springframework.stereotype.Controller;

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.programs.gis.dao.CornLAIDao">
-    <resultMap id="cornLAIMap" type="com.programs.gis.entity.CornLAI">
+<mapper namespace="com.programs.gis.dao.corn.CornLAIDao">
+    <resultMap id="cornLAIMap" type="com.programs.gis.entity.corn.CornLAI">
         <id property="DOY" column="DOY"></id>
         <id property="NUM_2" column="NUM_2"></id>
         <result property="TRT" column="TRT"></result>

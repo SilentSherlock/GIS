@@ -1,6 +1,7 @@
 package com.programs.gis.control;
 
 import com.programs.gis.service.CornService;
+import com.programs.gis.service.FieldService;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,6 +20,8 @@ public class FileController {
 
     @Resource
     private CornService cornService;
+    @Resource
+    private FieldService fieldService;
 
     /*
     * 上传中一直存在的问题
@@ -108,6 +111,19 @@ public class FileController {
                     if (cornService.saveCornLAIByFile(dataPath)) {
                         System.out.println("Add To Corn LAI Database By File Success");
                     }
+                    break;
+                case "SWC_R.xlsx":
+                    if (fieldService.saveSWCByFile(dataPath)) {
+                        System.out.println("Add To SWC Database By File Success");
+                    }
+                    break;
+                case "田间持水量_R.xlsx":
+                    if (fieldService.saveFieldWaterHoldByFile(dataPath)) {
+                        System.out.println("Add To FieldWaterHold Database By File Success");
+                    }
+                    break;
+                default:
+                    throw new Exception("Can't Find File With Name ---- "+ dataFileName);
             }
             return "success";
         }

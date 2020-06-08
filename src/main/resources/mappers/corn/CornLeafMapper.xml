@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.programs.gis.dao.CornLeafDao">
-    <resultMap id="cornLeafMap" type="com.programs.gis.entity.CornLeaf">
+<mapper namespace="com.programs.gis.dao.corn.CornLeafDao">
+    <resultMap id="cornLeafMap" type="com.programs.gis.entity.corn.CornLeaf">
         <id property="DOY" column="DOY"/>
         <id property="TRT" column="TRT"/>
         <result property="leafArea" column="leafArea"/>

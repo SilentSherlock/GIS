@@ -1,6 +1,6 @@
-package com.programs.gis.dao;
+package com.programs.gis.dao.climatic;
 
-import com.programs.gis.entity.ClimaticStation;
+import com.programs.gis.entity.climatic.ClimaticStation;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;

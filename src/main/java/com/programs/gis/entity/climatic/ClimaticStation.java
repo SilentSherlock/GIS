@@ -1,4 +1,4 @@
-package com.programs.gis.entity;
+package com.programs.gis.entity.climatic;
 
 import lombok.Data;
 

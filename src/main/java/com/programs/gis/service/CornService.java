@@ -1,13 +1,13 @@
 package com.programs.gis.service;
 
-import com.programs.gis.dao.CornHeightAndChloDao;
-import com.programs.gis.dao.CornLAIDao;
-import com.programs.gis.dao.CornLeafDao;
-import com.programs.gis.dao.CornYieldDao;
-import com.programs.gis.entity.CornHeightAndChlo;
-import com.programs.gis.entity.CornLAI;
-import com.programs.gis.entity.CornLeaf;
-import com.programs.gis.entity.CornYield;
+import com.programs.gis.dao.corn.CornHeightAndChloDao;
+import com.programs.gis.dao.corn.CornLAIDao;
+import com.programs.gis.dao.corn.CornLeafDao;
+import com.programs.gis.dao.corn.CornYieldDao;
+import com.programs.gis.entity.corn.CornHeightAndChlo;
+import com.programs.gis.entity.corn.CornLAI;
+import com.programs.gis.entity.corn.CornLeaf;
+import com.programs.gis.entity.corn.CornYield;
 import com.programs.gis.function.Tools;
 import org.apache.poi.ss.usermodel.*;
 import org.springframework.stereotype.Service;
@@ -53,7 +53,7 @@ public class CornService {//合并玉米本身信息相关的Dao
                 for (int row = 1;row < rows;row++){//跳过表头
                     System.out.println("读取到Excel表第" + row + "行");
                     Row tmpRow = sheet.getRow(row);//获取当前行
-                    Row.MissingCellPolicy policy = Row.RETURN_NULL_AND_BLANK;//将空白单元格作为空值处理
+                    Row.MissingCellPolicy policy = Row.RETURN_NULL_AND_BLANK;//将空单元格和空指分别返回
                     if (!rowSolution(tmpRow, policy, daoType)) continue;
                 }
             }
