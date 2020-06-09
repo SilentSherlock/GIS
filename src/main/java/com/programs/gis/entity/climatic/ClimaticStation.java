@@ -7,7 +7,7 @@ import java.util.Date;
 @Data
 public class ClimaticStation {
 
-    private Integer dataId;//主键
+
     private Date recordDate;
     private Float airTemperature;
     private Float airHumidity;
@@ -15,13 +15,6 @@ public class ClimaticStation {
     private Float windSpeed;
     private Float rainfall;
 
-    public Integer getDataId() {
-        return dataId;
-    }
-
-    public void setDataId(Integer dataId) {
-        this.dataId = dataId;
-    }
 
     public Date getRecordDate() {
         return recordDate;

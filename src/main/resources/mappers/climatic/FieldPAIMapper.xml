@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.programs.gis.dao.climatic.FieldPAIDao">
+    <resultMap id="fieldPAIMapper" type="com.programs.gis.entity.climatic.FieldPAI">
+        <id property="DOY" column="DOY"/>
+        <id property="TRT" column="TRT"/>
+        <result property="precipitation" column="precipitation"/>
+        <result property="irrigation" column="irrigation"/>
+        <result property="recordDate" column="recordDate"/>
+    </resultMap>
+    <insert id="save">
+        insert into fieldPAI(DOY, TRT, precipitation, irrigation, recordDate)
+        values (#{DOY}, #{TRT}, #{precipitation}, #{irrigation}, #{recordDate});
+    </insert>
+    <select id="getAll" resultMap="fieldPAIMapper">
+        select * from fieldPAI;
+    </select>
+    <select id="getByAttr" resultMap="fieldPAIMapper">
+        select * from fieldPAI
+        where ${attrName} = #{attrValue}
+    </select>
+    <delete id="deleteByPrimaryKey">
+        delete from fieldPAI
+        where DOY = #{DOY} and TRT = #{TRT}
+    </delete>
+</mapper>
