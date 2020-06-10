@@ -11,8 +11,8 @@ import java.util.Date;
 @Data
 public class FieldPAI {
 
-    private Integer DOY;
-    private Integer TRT;
+    private Integer DOY;//primary key
+    private Integer TRT;//primary key
     private Integer precipitation;
     private Integer irrigation;
     private Date recordDate;

@@ -1,5 +1,7 @@
 package com.programs.gis.control;
 
+import com.programs.gis.entity.climatic.ClimaticStation;
+import com.programs.gis.service.ClimaticService;
 import com.programs.gis.service.CornService;
 import com.programs.gis.service.FieldService;
 import org.springframework.stereotype.Controller;
@@ -22,6 +24,8 @@ public class FileController {
     private CornService cornService;
     @Resource
     private FieldService fieldService;
+    @Resource
+    private ClimaticService climaticService;
 
     /*
     * 上传中一直存在的问题
@@ -120,6 +124,16 @@ public class FileController {
                 case "田间持水量_R.xlsx":
                     if (fieldService.saveFieldWaterHoldByFile(dataPath)) {
                         System.out.println("Add To FieldWaterHold Database By File Success");
+                    }
+                    break;
+                case "标准气象站_R.xlsx":
+                    if (climaticService.saveClimaticStationByFile(dataPath)) {
+                        System.out.println("Add To ClimaticStation Database By File Success");
+                    }
+                    break;
+                case "降雨量+灌溉量_R.xlsx":
+                    if (climaticService.saveFieldPAIByFile(dataPath)) {
+                        System.out.println("Add To FieldPAI Database By File Success");
                     }
                     break;
                 default:
