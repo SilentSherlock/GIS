@@ -1,0 +1,42 @@
+/**
+ * 作者: lwh
+ * 时间: 2020.5.2
+ * 描述：添加管理员定制css
+ */
+
+/*高度*/
+#index-body-addAdmin {
+    height: 750px;
+}
+
+/*标题*/
+#index-body-addAdmin #addAdmin-title-text {
+    height: 72px;
+    line-height: 72px;
+}
+
+/*表单文字*/
+#index-body-addAdmin #addAdmin-form {
+    color: #dddddd;
+    margin: 20px auto;
+}
+
+/*按钮*/
+#index-body-addAdmin #addAdmin-buttons {
+    margin-top: 50px;
+}
+
+#index-body-addAdmin #addAdmin-buttons button {
+    width: 100%;
+    margin-top: 10px;
+}
+
+#index-body-addAdmin #addAdmin-buttons button.btn-sec {
+    background-color: #383855;
+}
+
+#index-body-addAdmin #addAdmin-buttons button.btn-sec:hover,
+#index-body-addAdmin #addAdmin-buttons button.btn-sec:active,
+#index-body-addAdmin #addAdmin-buttons button.btn-sec:focus {
+    background-color: #474769;
+}

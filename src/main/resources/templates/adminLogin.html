@@ -3,30 +3,40 @@
  时间: 2020.2.26
 -->
 <!DOCTYPE html>
-<html lang="en">
+<!-- 此处采用了html原生的引入方式并结合thymeleaf的引入方式：
+    1.html原生的引入方式:相对路径，方便直接打开html进行设计.
+    2.thymeleaf的引入方式:动态生成引入路径(相当于Jsp的老方法${pageContext.request.contextPath})，
+方便部署到服务器中运行时自动获取引入的静态资源路径而不用考虑静态资源匹配路径static-path-pattern.
+-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <!-- 设置页面初始化大小和缩放值 -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- 页面标题 -->
-    <title>登录</title>
-    <!-- 网页图标 -->
-    <link rel="icon" href="../static/src/adminLogin_icon.png" sizes="32x32">
+    <title>登录 — 玉米的生长及环境数据管理系统</title>
+    <!-- 引入网页图标 -->
+    <link rel="icon" href="../static/src/icon.png" th:href="@{/src/icon.png}">
     <!-- 引入bootstrap默认css样式 -->
-    <link href="../static/extlib/bootstrap-3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../static/extlib/bootstrap-3.3.7/css/bootstrap.min.css"
+          th:href="@{/extlib/bootstrap-3.3.7/css/bootstrap.min.css}">
     <!-- 引入bootstrapValidator默认css样式 -->
-    <link href="../static/extlib/bootstrapvalidator-0.5.3/css/bootstrapValidator.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../static/extlib/bootstrapvalidator-0.5.3/css/bootstrapValidator.min.css"
+          th:href="@{/extlib/bootstrapvalidator-0.5.3/css/bootstrapValidator.min.css}">
     <!-- 引入jquery和bootstrap的js插件 -->
     <!-- 注意：因为bootstrap和bootstrapValidator的js插件使用了jquery，所以jquery的引用必须放到bootstrap的js插件引用之前 -->
-    <script type="text/javascript" src="../static/extlib/jquery-3.4.1/jquery-3.4.1.min.js"></script>
-    <script type="text/javascript" src="../static/extlib/bootstrap-3.3.7/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="../static/extlib/bootstrapvalidator-0.5.3/js/bootstrapValidator.min.js"></script>
-    <!-- 引入jquery的md5加密插件 -->
-    <!-- <script src="./extlib/jquerymd5/md5.pro.js"></script> -->
-    <!-- 引入自己的js/css库文件-->
-    <link href="../static/css/adminLogin.css" rel="stylesheet">
-    <script type="text/javascript" src="../static/js/adminLogin.js"></script>
-    <!-- <script src="./js/myLib.js"></script> -->
+    <script type="text/javascript" src="../static/extlib/jquery-3.4.1/jquery-3.4.1.min.js"
+            th:src="@{/extlib/jquery-3.4.1/jquery-3.4.1.min.js}"></script>
+    <script type="text/javascript" src="../static/extlib/bootstrap-3.3.7/js/bootstrap.min.js"
+            th:src="@{/extlib/bootstrap-3.3.7/js/bootstrap.min.js}"></script>
+    <script type="text/javascript" src="../static/extlib/bootstrapvalidator-0.5.3/js/bootstrapValidator.min.js"
+            th:src="@{/extlib/bootstrapvalidator-0.5.3/js/bootstrapValidator.min.js}"></script>
+    <!-- 引入自己的css库文件-->
+    <link rel="stylesheet" href="../static/css/index.css" th:href="@{/css/index.css}">
+    <link rel="stylesheet" href="../static/css/adminLogin.css" th:href="@{/css/adminLogin.css}">
+    <!-- 引入自己的js库文件-->
+    <script type="text/javascript" src="../static/js/myLib.js" th:src="@{/js/myLib.js}"></script>
+    <script type="text/javascript" src="../static/js/adminLogin.js" th:src="@{/js/adminLogin.js}"></script>
 </head>
 <body>
 <div class="container">
@@ -45,28 +55,29 @@
             <form id="loginForm">
 
                 <div class="form-group">
-                    <label for="userNameInput">用户名</label>
-                    <input type="text" class="form-control" id="userNameInput" name="userNameInput">
+                    <label class="control-label" for="userNameInput">用户名</label>
+                    <input type="text" class="form-control ipt-dark" id="userNameInput" name="userNameInput">
                 </div>
 
                 <div class="form-group">
-                    <label for="passwordInput">密码</label>
-                    <input type="password" class="form-control" id="passwordInput" name="passwordInput">
+                    <label class="control-label" for="passwordInput">密码</label>
+                    <input type="password" class="form-control ipt-dark" id="passwordInput" name="passwordInput">
                 </div>
 
                 <div class="checkbox">
-                    <label data-toggle="tooltip" data-placement="right" title="退出浏览器后失效">
+                    <label class="control-label" data-toggle="tooltip" data-placement="right" title="退出浏览器后失效">
                         <input type="checkbox" name="rememberCheckbox" value="1">记住我
                     </label>
                 </div>
 
-                <button type="submit" class="btn btn-primary">登录</button>
-                <button type="button" class="btn btn-primary" id="resetButton">重置</button>
+                <button type="submit" class="btn btn-main" id="loginButton" data-loading-text="正在登录...">
+                    登录
+                </button>
+                <button type="button" class="btn btn-sec" id="resetButton">重置</button>
 
             </form>
         </div>
     </div>
-
     <!-- 动态载入模态框 -->
 
 </div>

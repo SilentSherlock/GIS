@@ -1,0 +1,69 @@
+<div class="modal fade" id="adminInfo-resetPassword-modal" tabindex="-1" role="dialog"
+     aria-labelledby="adminInfo-password-editModal-title"
+     aria-describedby="管理员密码修改">
+    <!--
+     作者: lwh
+     时间: 2020.4.25
+     描述: 修改密码的模态框
+    -->
+    <div class="modal-dialog modal-sm" role="document" aria-hidden="true">
+        <div class="modal-content modal-content-dark">
+            <div class="modal-header modal-header-green">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="adminInfo-password-editModal-title">修改密码</h4>
+            </div>
+            <div class="modal-body">
+                <form id="adminInfo-resetPassword-modal-form">
+                    <div class="form-group">
+                        <label class="control-label" for="adminInfo-newPasswordInput">新密码</label>
+                        <input type="password" class="form-control ipt-dark" id="adminInfo-newPasswordInput"
+                               name="adminInfo-newPasswordInput">
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="adminInfo-newPasswordConfirm">确认密码</label>
+                        <input type="password" class="form-control ipt-dark" id="adminInfo-newPasswordConfirm"
+                               name="adminInfo-newPasswordConfirm">
+                    </div>
+                    <div class="modal-body-foot">
+                        <button type="button" class="btn btn-sec" data-dismiss="modal">取消</button>
+                        <button type="submit" class="btn btn-main" data-loading-text="正在修改...">保存修改</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="adminInfo-resetEmail-modal" tabindex="-1" role="dialog"
+     aria-labelledby="adminInfo-email-editModal-title"
+     aria-describedby="管理员邮箱修改">
+    <!--
+     作者: lwh
+     时间: 2020.4.26
+     描述: 修改邮箱的模态框
+    -->
+    <div class="modal-dialog modal-sm" role="document" aria-hidden="true">
+        <div class="modal-content modal-content-dark">
+            <div class="modal-header modal-header-green">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="adminInfo-email-editModal-title">修改邮箱</h4>
+            </div>
+            <div class="modal-body">
+                <form id="adminInfo-resetEmail-modal-form">
+                    <div class="form-group">
+                        <label class="control-label" for="adminInfo-newEmailInput">邮箱地址</label>
+                        <input type="email" class="form-control ipt-dark" id="adminInfo-newEmailInput"
+                               name="adminInfo-newEmailInput"
+                               placeholder="username@example.com">
+                    </div>
+                    <div class="modal-body-foot">
+                        <button type="button" class="btn btn-sec right" data-dismiss="modal">取消</button>
+                        <button type="submit" class="btn btn-main right" data-loading-text="正在修改...">保存修改</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

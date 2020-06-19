@@ -1,0 +1,20 @@
+/**
+ * 作者: lwh
+ * 时间: 2020.4.13
+ * 描述：页脚定制css
+ */
+
+/*页脚*/
+#index-foot {
+    margin: 0;
+    padding: 0;
+    border: none;
+    height: 70px;
+    font-size: 16px;
+    line-height: 70px;
+    color: #939393;
+}
+/*页脚字体*/
+#index-foot p {
+    margin-bottom: 0;
+}

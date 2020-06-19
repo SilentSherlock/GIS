@@ -1,0 +1,202 @@
+/**
+ * 作者: lwh
+ * 时间: 2020.5.20
+ * 描述：侧边栏样式
+ */
+
+/*阿里巴巴开源文字图标库，文字图标字体定义*/
+@font-face {
+    font-family: "iconfont";  /* project id 1823585 */
+    src: url("//at.alicdn.com/t/font_1823585_0k6x4h10nbxs.eot");
+    src: url("//at.alicdn.com/t/font_1823585_0k6x4h10nbxs.eot?#iefix") format("embedded-opentype"),
+    url("//at.alicdn.com/t/font_1823585_0k6x4h10nbxs.woff2") format("woff2"),
+    url("//at.alicdn.com/t/font_1823585_0k6x4h10nbxs.woff") format("woff"),
+    url("//at.alicdn.com/t/font_1823585_0k6x4h10nbxs.ttf") format("truetype"),
+    url("//at.alicdn.com/t/font_1823585_0k6x4h10nbxs.svg#iconfont") format("svg");
+}
+
+/*侧边栏主体，默认隐藏*/
+.sidebar {
+    position: fixed;
+    /*top,left,right,bottom:相对网页屏幕位置*/
+    /*maring-*:相对父级元素位置*/
+    margin-top: 0;
+    margin-left: -200px;
+    width: 200px;
+    height: 710px;
+    background-color: #282841;
+    color: #dddddd;
+    transition: all 0.5s;
+}
+
+/*展开*/
+.side {
+    margin-left: 0;
+}
+
+/*菜单项列表*/
+.sidebar > ul {
+    margin: 0;
+    padding: 0;
+    border: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 200px;
+}
+
+.sidebar ul li {
+    list-style-type: none;
+}
+
+
+.sidebar > ul ul {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    border: none;
+}
+
+/*子菜单项的坍塌墙*/
+.sidebar > ul > li .well {
+    padding: 0 0 0 20px;
+    border: none;
+    border-radius: 2px;
+    background-color: #383855;
+    color: #dddddd;
+}
+
+.sidebar > ul li a {
+    height: 40px;
+    width: 100%;
+    padding-left: 20px;
+    font-size: 20px;
+    line-height: 40px;
+    text-decoration: none;
+    text-align: left;
+    color: #dddddd;
+    display: block;
+    transition: all 0.3s;
+}
+
+.sidebar ul li a:hover {
+    color: white;
+    background-color: #2f734e;
+}
+
+/*侧边栏标题*/
+.sidebar > ul > li:first-of-type {
+    margin-bottom: 15px;
+}
+
+.sidebar > ul > li:first-of-type a {
+    height: 50px;
+    font-size: 25px;
+    line-height: 50px;
+    color: white;
+    background-color: #2f734e;
+    display: block;
+    cursor: default;
+}
+
+.sidebar > ul > li:first-of-type a:hover {
+    color: white;
+    background-color: #2f734e;
+}
+
+/*子菜单项大小*/
+.sidebar ul li ul li a {
+    height: 30px;
+    font-size: 15px;
+    line-height: 30px;
+}
+
+.sidebar ul li ul li.active {
+    color: white;
+    background-color: #2f734e;
+}
+
+/*侧边栏开关按钮*/
+.sidebar .btn-sidebar {
+    position: absolute;
+    left: 200px;
+    top: 13px;
+    margin: 0;
+    padding: 0;
+    border: none;
+    border-top-right-radius: 7px;
+    border-bottom-right-radius: 7px;
+    width: 35px;
+    height: 24px;
+    line-height: 20px;
+    font-size: 12px;
+    font-family: iconfont, sans-serif;
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+    color: #dddddd;
+    background-color: #474769;
+    transition: all 0.3s;
+}
+
+.sidebar .btn-sidebar:hover {
+    color: white;
+}
+
+.sidebar .btn-sidebar:focus {
+    color: white;
+}
+
+.sidebar .btn-sidebar:before {
+    /*打开菜单文字图标对应的16进制Unicode*/
+    content: '\e60a';
+}
+
+.sidebar .btn-side:before {
+    /*关闭菜单文字图标对应的16进制Unicode*/
+    content: '\e605';
+}
+
+/*菜单打开时隐藏按钮*/
+.sidebar.side .btn-side {
+    width: 0;
+    opacity: 0;
+}
+
+/*菜单关闭时显示按钮*/
+.sidebar.side .btn-side:focus,
+.sidebar.side:hover .btn-side {
+    width: 35px;
+    opacity: 100%;
+}
+
+/*菜单栏隐藏时右边的提示滚动条*/
+.sidebar .sidebar-prompt {
+    position: absolute;
+    left: 200px;
+    top: 0;
+    width: 10px;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    border-radius: 2px;
+    background: repeating-linear-gradient(-45deg, #828783 1%, #474769 2%);
+    background-size: 1000%;
+    cursor: pointer;
+    transition: box-shadow 0.8s;
+}
+
+.sidebar:hover .sidebar-prompt {
+    box-shadow: 0 0 20px rgba(189, 189, 189, 0.6) inset;
+    animation: siderbar linear 2s infinite;
+}
+
+/*提示滚动条动画*/
+@keyframes siderbar {
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: 100% 100%;
+    }
+}

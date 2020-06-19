@@ -1,0 +1,71 @@
+/**
+ * 作者: lwh
+ * 时间: 2020.4.12
+ * 描述：管理员信息定制css
+ */
+
+/*panel高度*/
+#index-body-adminInfo {
+    height: 750px;
+}
+
+/*panel标题*/
+#index-body-adminInfo .mypanel-header .media .media-right .media-heading {
+    margin-top: 7px;
+}
+
+#index-body-adminInfo .mypanel-header .media .media-right h4 {
+    color: #dddddd;
+}
+
+/*卡片边距*/
+#index-body-adminInfo .card {
+    margin-top: 20px;
+}
+
+/*修改选项的卡片样式类*/
+/*卡片*/
+#index-body-adminInfo .card {
+    padding-right: 30px;
+    border-radius: 5px;
+    background-color: #383855;
+    transition: all 0.3s;
+}
+
+#index-body-adminInfo .card:hover {
+    margin-top: 15px;
+    margin-bottom: 5px;
+    box-shadow: 5px 5px 5px 5px rgba(0, 0, 0, 0.3);
+}
+
+/*卡片左边图标*/
+#index-body-adminInfo .card-left {
+    background-color: #2f734e;
+    width: 140px;
+    height: 140px;
+}
+
+#index-body-adminInfo .card-left-img {
+    width: 60px;
+    height: 60px;
+    margin-top: 40px;
+    margin-left: 40px;
+}
+
+/*卡片右边内容*/
+#index-body-adminInfo .card-right {
+    padding-top: 10px;
+    padding-left: 20px;
+}
+
+#index-body-adminInfo .card-right-title {
+    color: white;
+}
+
+#index-body-adminInfo .card-right-detail {
+    color: #dddddd;
+}
+
+#index-body-adminInfo .card-right a {
+    color: #35875c;
+}

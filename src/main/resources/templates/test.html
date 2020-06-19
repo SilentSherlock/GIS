@@ -1,76 +1,774 @@
-<!--
- 作者: lwh
- 时间: 2020.2.27
- 描述: 单个模块测试
--->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <!-- 设置页面初始化大小和缩放值 -->
+    <!--bootstrap针对移动设备优化，设置页面宽度和初始缩放-->
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- 页面标题 -->
-    <title>登录</title>
-    <!-- 网页图标 -->
-    <link rel="icon" href="../static/src/adminLogin_icon.png" sizes="32x32">
+    <title>管理界面</title>
     <!-- 引入bootstrap默认css样式 -->
-    <link href="../static/extlib/bootstrap-3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../static/extlib/bootstrap-3.3.7/css/bootstrap.min.css"
+          th:href="@{/extlib/bootstrap-3.3.7/css/bootstrap.min.css}">
     <!-- 引入bootstrapValidator默认css样式 -->
-    <link href="../static/extlib/bootstrapvalidator-0.5.3/css/bootstrapValidator.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../static/extlib/bootstrapvalidator-0.5.3/css/bootstrapValidator.min.css"
+          th:href="@{/extlib/bootstrapvalidator-0.5.3/css/bootstrapValidator.min.css}">
     <!-- 引入jquery和bootstrap的js插件 -->
     <!-- 注意：因为bootstrap和bootstrapValidator的js插件使用了jquery，所以jquery的引用必须放到bootstrap的js插件引用之前 -->
-    <script type="text/javascript" src="../static/extlib/jquery-3.4.1/jquery-3.4.1.min.js"></script>
-    <script type="text/javascript" src="../static/extlib/bootstrap-3.3.7/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="../static/extlib/bootstrapvalidator-0.5.3/js/bootstrapValidator.min.js"></script>
-    <!-- 引入jquery的md5加密插件 -->
-    <!-- <script src="./extlib/jquerymd5/md5.pro.js"></script> -->
-    <!-- 引入自己的js/css库文件-->
-    <link href="../static/css/adminLogin.css" rel="stylesheet">
-    <script type="text/javascript" src="../static/js/adminLogin.js"></script>
-    <!-- <script src="./js/myLib.js"></script> -->
+    <script type="text/javascript" src="../static/extlib/jquery-3.4.1/jquery-3.4.1.min.js"
+            th:src="@{/extlib/jquery-3.4.1/jquery-3.4.1.min.js}"></script>
+    <script type="text/javascript" src="../static/extlib/bootstrap-3.3.7/js/bootstrap.min.js"
+            th:src="@{/extlib/bootstrap-3.3.7/js/bootstrap.min.js}"></script>
+    <script type="text/javascript" src="../static/extlib/bootstrapvalidator-0.5.3/js/bootstrapValidator.min.js"
+            th:src="@{/extlib/bootstrapvalidator-0.5.3/js/bootstrapValidator.min.js}"></script>
+    <!--    引入Echarts-->
+    <script type="text/javascript" src="../static/extlib/echarts/echarts.js"
+            th:src="@{/extlib/echarts/echarts.js}"></script>
+    <script type="text/javascript" src="../static/extlib/echarts/theme/purple.js"
+            th:src="@{/extlib/echarts/theme/purple.js}"></script>
+    <style rel="stylesheet">
+        /*  样式中使用颜色
+        背景色: #1e1e2f
+        侧边栏色: #389466
+        文字色: #cccccc
+        高亮色: #ffffff
+        选项色: #e14eca
+        分块内容背景色: #27293d
+        */
+        /*其他页面可复用样式*/
+        body {
+            padding-top: 60px;
+            background: #1e1e2f;
+            font-family: 'Roboto', sans-serif;
+            font-size: 16px;
+            color: #cccccc;
+        }
+
+        ::-webkit-scrollbar {
+            background-color: #1c1e1f;
+            color: #c5c1b9;
+        }
+
+        ::-webkit-scrollbar-corner {
+            background-color: #181a1b;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: #2a2c2e;
+        }
+
+        /*顶端导航栏样式*/
+        ._topbar {
+            background: #1e1e2f;
+            border-bottom-color: #389466;
+        }
+
+        ._topbar .navbar-nav > li > a {
+            color: #cccccc;
+        }
+
+        ._topbar .navbar-nav > li > a:hover, ._topbar .navbar-nav > li > a:focus {
+            background: none;
+            color: #ffffff;
+        }
+
+        ._topbar .navbar-brand {
+            color: #389466;
+        }
+
+        ._topbar .navbar-brand:hover, :focus {
+            color: #389466;
+        }
+
+        ._topbar .navbar-nav .open > a {
+            background: none;
+            color: #cccccc;
+        }
+
+        ._topbar .navbar-nav .open > a:focus {
+            background: none;
+            color: #ffffff;
+            /*border: ;*/
+        }
+
+        ._topbar .dropdown-menu {
+            background: #1e1e2f;
+        }
+
+        ._topbar .dropdown-menu a {
+            color: #cccccc;
+        }
+
+        ._topbar .dropdown-menu a:hover {
+            background: none;
+            color: #ffffff;
+        }
+
+        /*侧边栏样式*/
+        ._sidebar {
+            position: fixed;
+            z-index: 10;
+            width: 17%;
+            height: 85%;
+            margin-top: 10px;
+            margin-left: 20px;
+            border-radius: 6px;
+            background: #389466;
+            overflow-y: scroll;
+            box-shadow: rgba(0, 0, 0, 0.1) 0 1px 20px 0;
+        }
+
+        ._sidebar .nav a {
+            color: #cccccc;
+            border-bottom: 1px solid #222a42;
+            padding: 16px 24px;
+            font-size: 14px;
+            display: block;
+        }
+
+        ._sidebar .nav a:hover {
+            background: none;
+            color: #ffffff;
+        }
+
+        ._sidebar .nav a:focus {
+            background: none;
+            color: #ffffff;
+        }
+
+        ._sidebar .nav ._sidebar-header {
+            font-size: 16px;
+            text-align: center;
+            line-height: 32px;
+            color: #ffffff;
+        }
+
+        /*页脚样式*/
+        .footer {
+            padding: 18px 0 18px 250px;
+        }
+
+        .copyright {
+            text-align: right;
+            margin-right: 15px;
+            font-size: 1.25rem;
+            line-height: 1.8;
+        }
+
+        /*内容块*/
+        ._content-block {
+            background: #27293d;
+            border-radius: 6px;
+            box-shadow: rgba(0, 0, 0, 0.1) 0 1px 20px 0;
+        }
+
+        /*表格区域样式*/
+        ._chart-row {
+            margin-left: 20%;
+            margin-top: 10px;
+            position: relative;
+            height: 100%;
+            padding-right: 20px;
+        }
+
+        ._chart-row .nav .dropdown-menu {
+            background: #1e1e2f;
+        }
+
+        ._chart-row .nav .dropdown-menu li a {
+            color: #cccccc;
+        }
+
+        ._chart-row .nav .dropdown-menu li a:hover, ._chart-row .nav .dropdown-menu li a:focus {
+            background: none;
+            color: #ffffff;
+        }
+
+        ._chart-row .navbar-right {
+            padding: 13px 0 0 0;
+        }
+
+        .nav .navbar-right ._attr-choose {
+            background: #27293d;
+            color: #cccccc;
+        }
+
+        .nav .navbar-right .open a:hover, .nav .navbar-right .open a:focus {
+            background: #27293d;
+            color: #cccccc;
+        }
+
+        ._chart-row .nav-tabs h3 {
+            color: #ced4da;
+        }
+
+        ._card-title h5 {
+            padding: 15px 15px 0 15px;
+        }
+
+        /*本页面独有样式*/
+        ._chart-show-part {
+            height: 400px;
+        }
+
+        ._chart-show-HandCh-chart {
+            margin: 10px 0;
+        }
+
+        #chart-show-HandCh-chart-1, #chart-show-HandCh-chart-2, #chart-show-HandCh-chart-3 {
+            height: 350px;
+        }
+
+        ._chart-show-leaf-chart {
+            margin: 10px 0;
+            height: 390px;
+        }
+
+        #_chart-show-yield-chart {
+            margin: 10px;
+            height: 380px;
+            overflow: scroll;
+            line-height: 1.5;
+            color: #cccccc;
+        }
+
+    </style>
+    <!--获取图表-->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            chartInit();
+
+            addCornHandChListener();
+            addCornLeafListener();
+
+        });
+
+        /*初始化界面图表，获取默认图表数据*/
+        function chartInit() {
+            cornLeafChart2();
+            cornHeightAndChloChart();
+            cornYieldChart();
+        }
+
+        /*玉米叶TRT选择监听*/
+        function addCornLeafListener() {
+            $('._chart-show-leaf ._menu-item').click(function () {
+                //直接使用this并不能获得触发事件的对象，需要使用$(this)
+                let innerText = $(this).text();
+                let attrChooseNode = $(this).parent().parent().prev().children();//获得属性选择中第二个span
+                $(attrChooseNode[1]).text(innerText);//使用$表明这是一个jquery对象,防止使用方法时冲突
+
+                cornLeafChart2(innerText);
+            });
+        }
+
+        /*玉米株高和叶绿素选择监听*/
+        function addCornHandChListener() {
+            $('._chart-show-cornHandCh ._menu-item').click(function () {
+                let innerText = $(this).text();
+                let attrChooseNode = $(this).parent().parent().prev().children();
+                $(attrChooseNode[1]).text(innerText);
+
+                let attrChooseButtons = $("._chart-show-cornHandCh ._attr-choose");
+                let dOYValue = $($(attrChooseButtons[0]).children()[1]).text();
+                let tRTValue = $($(attrChooseButtons[1]).children()[1]).text();
+                console.log("DOY: " + dOYValue + "\nTRT: " + tRTValue);
+                cornHeightAndChloChart(dOYValue, tRTValue);
+            })
+        }
+
+        /*画玉米株高和叶绿素图
+        * 函数根据DOY属性一次获得多条数据
+        * 画图时则根据TRT属性,确定一个扇形地块,分为三部分,画三个图*/
+        function cornHeightAndChloChart(DOY = "177", TRT = "1") {
+
+            let chartData = getChartData("corn/cornHeightAndChloDOY", JSON.stringify({DOY: DOY}), 1);//从后端取数据
+            let screenChartData = screenDataByAttr(chartData, "tRT", TRT);//提取出所需地块
+            let xAxisData = extractCol(screenDataByAttr(screenChartData, "nUM_1", TRT + ".1"), "nUM_3");//提取数据NUM_3列数据作为x轴
+            let partData1 = screenDataByAttr(screenChartData, "nUM_1", TRT + ".1");//提取第一部分
+            let partData2 = screenDataByAttr(screenChartData, "nUM_1", TRT + ".2");//提取第二部分
+            let partData3 = screenDataByAttr(screenChartData, "nUM_1", TRT + ".3");//提取第三部分
+
+            let partOption1 = {
+                legend: {
+                    show: true,
+                    /*id:*/
+                },
+                tooltip: {},
+                xAxis: {
+                    type: "category",
+                    data: xAxisData
+                },
+                yAxis: {},
+                series: [
+                    {
+                        type: "line",
+                        name: "Height",
+                        data: extractCol(partData1, "height")
+                    },
+                    {
+                        type: "line",
+                        name: "Chlorophyll",
+                        data: extractCol(partData1, "chlorophyll")
+                    }
+                ]
+            };
+            let partOption2 = {
+                legend: {},
+                tooltip: {},
+                xAxis: {
+                    type: "category",
+                    data: xAxisData
+                },
+                yAxis: {},
+                series: [
+                    {
+                        type: "line",
+                        name: "Height",
+                        data: extractCol(partData2, "height")
+                    },
+                    {
+                        type: "line",
+                        name: "Chlorophyll",
+                        data: extractCol(partData2, "chlorophyll")
+                    }
+                ]
+            };
+            let partOption3 = {
+                legend: {},
+                tooltip: {},
+                xAxis: {
+                    type: "category",
+                    data: xAxisData
+                },
+                yAxis: {},
+                series: [
+                    {
+                        type: "line",
+                        name: "Height",
+                        data: extractCol(partData3, "height")
+                    },
+                    {
+                        type: "line",
+                        name: "Chlorophyll",
+                        data: extractCol(partData3, "chlorophyll")
+                    }
+                ]
+            };
+
+            let cornHandChChart1 = getAndInitChart("chart-show-HandCh-chart-1");
+            let cornHandChChart2 = getAndInitChart("chart-show-HandCh-chart-2");
+            let cornHandChChart3 = getAndInitChart("chart-show-HandCh-chart-3");
+
+            cornHandChChart1.setOption(partOption1);
+            cornHandChChart2.setOption(partOption2);
+            cornHandChChart3.setOption(partOption3);
+        }
+
+        /*画玉米叶数据
+        * 函数根据TRT一次获得多条数据并画图*/
+        function cornLeafChart(TRT = "1-1") {
+            let extractData = extractAll(getChartData("corn/cornLeafTRT", JSON.stringify({TRT: TRT}), 1));
+            let cornLeafOption = {
+                legend: {},
+                tooltip: {},
+                xAxis: {type: "category"},
+                yAxis: {},
+                dataset: {
+                    source: extractData
+                },
+                series: [
+                    {
+                        type: "line",
+                        name: "LeafPerimeter",
+                        encode: {
+                            x: 0,
+                            y: 3
+                        }
+                    },
+                    {
+                        type: "line",
+                        name: "LeafArea",
+                        encode: {
+                            x: 0,
+                            y: 1
+                        }
+                    },
+                    {
+                        type: "line",
+                        name: "LeafNumber",
+                        encode: {
+                            x: 0,
+                            y: 2
+                        }
+                    }
+                ]
+            };
+            let cornLeafChart = getAndInitChart("chart-show-leaf-chart");
+            cornLeafChart.setOption(cornLeafOption);
+        }
+
+        /*画玉米叶数据
+        * 通过DOY获取数据*/
+        function cornLeafChart2(DOY = "177") {
+            let extractData = extractAll(getChartData("corn/cornLeafDOY", JSON.stringify({DOY: DOY}), 1));
+            let cornLeafOption = {
+                legend: {},
+                tooltip: {},
+                xAxis: {type: "category"},
+                yAxis: {},
+                dataset: {
+                    source: extractData
+                },
+                series: [
+                    {
+                        type: "line",
+                        name: "LeafPerimeter",
+                        encode: {
+                            x: 5,
+                            y: 3
+                        }
+                    },
+                    {
+                        type: "line",
+                        name: "LeafArea",
+                        encode: {
+                            x: 5,
+                            y: 1
+                        }
+                    },
+                    {
+                        type: "line",
+                        name: "LeafNumber",
+                        encode: {
+                            x: 5,
+                            y: 2
+                        }
+                    }
+                ]
+            };
+            let cornLeafChart = getAndInitChart("chart-show-leaf-chart");
+            cornLeafChart.setOption(cornLeafOption);
+        }
+
+        /*js动态生成玉米产量表格*/
+        function cornYieldChart() {//通过循环逐列添加数据
+            let chartData = getChartData("corn/cornYield", null, 0);
+
+            $("#_chart-show-yield-chart").append("<table></table>");
+            let tableDom = $("#_chart-show-yield-chart").children();
+            $(tableDom[0]).addClass("table");
+            $(tableDom[0]).append("<thead></thead><tbody></tbody>");
+
+            let tableChildren = $(tableDom[0]).children();
+
+            /*设置表头*/
+            $(tableChildren[0]).append("<tr></tr>");
+            for (let i = 0; i < Object.keys(chartData[0]).length; i++) {
+                $(tableChildren[0]).children().append("<th></th>");
+            }
+            let thDoms = $(tableChildren[0]).children().children();
+            $(thDoms[0]).text("编号");
+            $(thDoms[1]).text("产量（湿重）kg/hm2");
+            $(thDoms[2]).text("盒重g");
+            $(thDoms[3]).text("湿重g");
+            $(thDoms[4]).text("干重g");
+            $(thDoms[5]).text("含水率");
+            $(thDoms[6]).text("产量（干重）kg/hm2");
+
+            /*设置数据*/
+            function setData(trDoms, colData) {
+                for (let row = 0; row < colData.length; row++) {
+                    let content = "<td>" + colData[row] + "</td>";
+                    $(trDoms[row]).append(content);
+                }
+            }
+
+            for (let row = 0; row < chartData.length; row++) $(tableChildren[1]).append("<tr></tr>");
+            for (let col = 0; col < Object.keys(chartData[0]).length; col++) {
+                let colData = [];
+                let trDoms = $(tableChildren[1]).children();
+                switch (col) {
+                    case 0:
+                        colData = extractCol(chartData, "cornFieldId");
+                        break;
+                    case 1:
+                        colData = extractCol(chartData, "moistureYield");
+                        break;
+                    case 2:
+                        colData = extractCol(chartData, "boxWeight");
+                        break;
+                    case 3:
+                        colData = extractCol(chartData, "beforeDehydration");
+                        break;
+                    case 4:
+                        colData = extractCol(chartData, "afterDehydration");
+                        break;
+                    case 5:
+                        colData = extractCol(chartData, "moistureContent");
+                        break;
+                    case 6:
+                        colData = extractCol(chartData, "dryYield");
+                        break;
+                }
+                setData(trDoms, colData);
+            }
+        }
+
+        /*初始化图表节点*/
+        function getAndInitChart(chartDomId, theme = "purple") {
+            let chartDom = document.getElementById(chartDomId);
+            return echarts.init(chartDom, theme)
+        }
+
+        /*向后台发送请求获取数据,默认带请求数据*/
+        function getChartData(requestUrl, jsonStr, flag = 1) {
+            let chartData = [];
+            if (requestUrl != null && flag === 1) {//带请求参数
+                $.ajax({
+                    url: requestUrl,
+                    type: "post",
+                    data: jsonStr,
+                    dataType: "text",
+                    contentType: "application/json;charset=UTF-8",
+                    async: false,
+                    success: data => {
+                        if (data === "0") {
+                            alert("获取图表数据失败");
+                        } else {
+                            //alert(data);
+                            chartData = JSON.parse(data);
+                        }
+                    }
+                })
+            } else if (requestUrl != null && flag === 0) {
+                $.ajax({
+                    url: requestUrl,
+                    type: "post",
+                    contentType: "application/json;charset=UTF-8",
+                    async: false,
+                    success: data => {
+                        if (data === "0") {//获取数据失败
+                            alert("图表数据获取失败");
+                        } else {
+                            //alert(data);
+                            chartData = JSON.parse(data);
+                        }
+                    }
+                })
+            }
+
+            return chartData ? chartData : null;
+        }
+
+        /*提取JSON数组对象中的某一列数据*/
+        function extractCol(chartData, colName) {
+            let colData = [];
+            for (let row = 0; row < chartData.length; row++) {
+                for (let x in chartData[row]) {
+                    if (x === colName) {
+                        colData.push(chartData[row][x]);
+                    }
+                }
+            }
+            return colData;
+        }
+
+        /*提取JSON数组对象中所有数据*/
+        function extractAll(chartData) {
+            let allData = [];
+            //alert(chartData);
+            for (let row = 0; row < chartData.length; row++) {
+                let rowData = [];
+                for (let x in chartData[row]) {
+                    rowData.push(chartData[row][x]);
+                }
+                allData.push(rowData);
+            }
+            return allData;
+        }
+
+        /*从JSON数组对象中根据某个属性值筛选部分对象*/
+        function screenDataByAttr(chartData, attrName, attrValue) {//attrValue传递进来的是String要转换为Number
+            let result = [];
+            for (let row = 0; row < chartData.length; row++) {
+                for (let x in chartData[row]) {
+                    if (chartData[row][x] != null && Number(attrValue) === chartData[row][x]) {
+                        result[row] = chartData[row];
+                    }
+                }
+            }
+            return result;
+        }
+    </script>
 </head>
 <body>
-<div class="container">
-    <!-- 登陆表单区域 -->
-    <div class="row">
-        <div class="col-lg-3 col-lg-offset-8
-                    col-md-4 col-md-offset-8
-                    col-xs-7 col-xs-offset-2" id="loginFormArea">
+<!--导航条-->
+<nav class="navbar navbar-default navbar-fixed-top _topbar">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">Brand</a>
+        </div>
 
-            <div id="loginFormTitle">
-                <h4 id="loginFormTitleText">
-                    <strong>玉米的生长及环境数据管理系统</strong>
-                </h4>
-            </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="#">首页</a></li>
+                <li><a href="#">地图</a></li>
+                <li><a href="#">图表</a></li>
+                <li class="dropdown">
+                    <a role="button" href="#" class="dropdown-toggle" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">其他<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">新建用户</a></li>
+                        <li><a href="#">添加数据</a></li>
+                    </ul>
+                </li>
+            </ul>
 
-            <form id="loginForm">
-
-                <div class="form-group">
-                    <label for="userNameInput">用户名</label>
-                    <input type="text" class="form-control" id="userNameInput" name="userNameInput">
-                </div>
-
-                <div class="form-group">
-                    <label for="passwordInput">密码</label>
-                    <input type="password" class="form-control" id="passwordInput" name="passwordInput">
-                </div>
-
-                <div class="checkbox">
-                    <label data-toggle="tooltip" data-placement="right" title="退出浏览器后失效">
-                        <input type="checkbox" name="rememberCheckbox" value="1">记住我
-                    </label>
-                </div>
-
-                <button type="submit" class="btn btn-primary">登录</button>
-                <button type="button" class="btn btn-primary" id="resetButton">重置</button>
-
-            </form>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a role="button" href="#" class="dropdown-toggle" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">用户名<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">用户信息</a></li>
+                        <li><a href="#">退出登录</a></li>
+                    </ul>
+                </li>
+            </ul>
         </div>
     </div>
+</nav>
 
-    <!-- 动态载入模态框 -->
-
+<!--左侧竖直导航栏-->
+<div class="_sidebar">
+    <ul class="nav">
+        <li role="presentation"><a href="#" class="_sidebar-header">类 别</a></li>
+        <li role="presentation"><a href="#">玉米作物</a></li>
+        <li role="presentation"><a href="#">气象相关</a></li>
+        <li role="presentation"><a href="#">土壤相关</a></li>
+    </ul>
 </div>
+
+<!--内容区域-->
+<div class=" _chart-row">
+    <div>
+        <!--右侧图表区域-->
+        <!--玉米株高和叶绿素-->
+        <div class="container-fluid _chart-show-cornHandCh" id="chart-show-cornHandCh">
+            <!--内容块信息头和选项-->
+            <div class="row">
+                <ul class="nav nav-tabs col-md-12">
+                    <li><H3>株高和叶绿素</H3></li>
+                    <li class="navbar-right">
+                        <div class="dropdown btn-group ">
+                            <a type="button" href="#" class="btn dropdown-toggle _attr-choose" data-toggle="dropdown"
+                               aria-haspopup="true" aria-expanded="false">
+                                <span>DOY:</span>
+                                <span>177</span>
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="_menu-item">177</a></li><!--下拉标签均仅作测试，后续添加js根据数据动态生成-->
+                                <li><a class="_menu-item">185</a></li>
+                            </ul>
+                        </div>
+                        <div class="dropdown btn-group ">
+                            <a type="button" href="#" class="btn dropdown-toggle _attr-choose" data-toggle="dropdown"
+                               aria-haspopup="true" aria-expanded="false">
+                                <span>TRT:</span>
+                                <span>1</span>
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="_menu-item">1</a></li>
+                                <li><a class="_menu-item">2</a></li>
+                                <li><a class="_menu-item">3</a></li>
+                                <li><a class="_menu-item">4</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <!--表格区域-->
+            <div class="row _chart-show-part" id="chart-show-HandCh-chart">
+                <div class="col-md-4 ">
+                    <div class="_content-block _chart-show-HandCh-chart">
+                        <div class="_card-title"><h5>Part 1</h5></div>
+                        <div id="chart-show-HandCh-chart-1"></div>
+                    </div>
+                </div>
+                <div class="col-md-4 ">
+                    <div class="_content-block _chart-show-HandCh-chart">
+                        <div class="_card-title"><h5>Part 2</h5></div>
+                        <div id="chart-show-HandCh-chart-2"></div>
+                    </div>
+                </div>
+                <div class="col-md-4 ">
+                    <div class="_content-block _chart-show-HandCh-chart">
+                        <div class="_card-title"><h5>Part 3</h5></div>
+                        <div id="chart-show-HandCh-chart-3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--玉米叶-->
+        <div class="container-fluid _chart-show-leaf" id="_chart-show-leaf">
+            <!--信息头-->
+            <div class="row">
+                <ul class="col-md-12 nav nav-tabs">
+                    <li><H3>玉米叶</H3></li>
+                    <div class="navbar-right">
+                        <div class="dropdown btn-group ">
+                            <a type="button" href="#" class="btn dropdown-toggle _attr-choose" data-toggle="dropdown"
+                               aria-haspopup="true" aria-expanded="false">
+                                <span>DOY:</span>
+                                <span>177</span>
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="_menu-item">177</a></li>
+                                <li><a class="_menu-item">185</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </ul>
+            </div>
+            <!--表格-->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="_chart-show-part">
+                        <div class="_content-block _chart-show-leaf-chart" id="chart-show-leaf-chart"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--玉米产量-->
+        <div class="container-fluid _chart-show-yield" id="_chart-show-yield">
+            <!--信息头-->
+            <div class="row">
+                <ul class="col-md-12 nav nav-tabs">
+                    <li><H3>玉米产量</H3></li>
+                </ul>
+            </div>
+            <!--表格-->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="_chart-show-part">
+                        <!--js动态生成表格-->
+                        <div class="_content-block _chart-show-yield-chart">
+                            <div id="_chart-show-yield-chart" class="table-responsive">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--页脚-->
+<footer class="footer">
+    <div class="container-fluid">
+        <div class="copyright">&copy; 2020 Made by SilentSherlock</div>
+    </div>
+</footer>
 </body>
 </html>
-

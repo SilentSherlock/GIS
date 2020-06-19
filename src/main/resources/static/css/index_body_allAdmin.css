@@ -1,0 +1,16 @@
+/**
+ * 作者: lwh
+ * 时间: 2020.6.2
+ * 描述：管理员列表定制css
+ */
+
+/*高度*/
+#index-body-allAdmin {
+    min-height: 750px;
+}
+
+/*标题*/
+#index-body-allAdmin #allAdmin-title-text {
+    height: 72px;
+    line-height: 72px;
+}

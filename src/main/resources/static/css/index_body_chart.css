@@ -1,0 +1,107 @@
+/**
+ * 作者: lwh
+ * 时间: 2020.5.20
+ * 描述：图表展示页面定制css
+ */
+
+/*图表展示页面*/
+#index-body-chart {
+    min-height: 800px;
+    margin: 0;
+    padding: 0;
+    color: #dddddd;
+    background-color: #1b1b2d;
+}
+
+#index-body-chart-container {
+    float: right;
+    width: calc(100% - 25px);
+    padding: 20px 10px 10px 10px;
+    transition: all 0.5s;
+}
+
+/*图表展示区标题*/
+#index-body-chart-container .navbar {
+    border-bottom: 1px solid #2f734e;
+    color: #dddddd;
+}
+
+/*标题区域超链接*/
+#index-body-chart-container .navbar .navbar-right li a {
+    color: #dddddd;
+    transition: all 0.3s;
+}
+
+#index-body-chart-container .navbar .navbar-right li a:hover,
+#index-body-chart-container .navbar .navbar-right li a:active {
+    background-color: #2f734e;
+    color: white;
+}
+
+/*标题区下拉菜单*/
+#index-body-chart-container .navbar .open .dropdown-menu {
+    border: none;
+    padding: 0;
+    background: #282841;
+}
+
+/*标题区数据选择按钮位置*/
+#index-body-chart-container .navbar .navbar-right {
+    height: 56px;
+    margin: 0;
+    padding: 0;
+}
+
+#index-body-chart-container .navbar .navbar-right ul.nav-pills {
+    margin-top: 16px;
+    margin-bottom: 8px;
+}
+
+#index-body-chart-container .navbar .navbar-right ul.nav-pills li.dropdown {
+    margin-left: 10px;
+}
+
+/*图表显示区域*/
+#index-body-chart-container .chart-show {
+    min-height: 500px;
+    padding: 10px;
+}
+
+/*父元素中不设置padding和border时，父元素和子元素的外边距重合。当只设置子元素的margin-top，父子元素发生外边距合并，整体下移。*/
+#index-body-chart-container .chart-show .row > div {
+    padding-top: 1px;
+}
+
+/*单个表格显示区域*/
+#index-body-chart-container .chart-show .chart-show-panel {
+    margin-top: 20px;
+    padding: 0 10px;
+    border-radius: 5px;
+    background-color: #282841;
+    transition: all 0.3s;
+}
+
+#index-body-chart-container .chart-show .chart-show-panel:hover {
+    margin-top: 15px;
+    margin-bottom: 5px;
+    box-shadow: 5px 5px 5px 5px rgba(0, 0, 0, 0.3);
+}
+
+/*图表标题区域*/
+#index-body-chart-container .chart-show .chart-show-panel .chart-show-panel-title {
+    padding-top: 10px;
+    padding-left: 20px;
+    font-size: large;
+}
+
+/*图表内容区域*/
+#index-body-chart-container .chart-show .chart-show-panel .chart-show-panel-content {
+    min-height: 400px;
+    padding-top: 20px;
+}
+
+/*针对某个图表的定制css*/
+#index-body-chart-container #chart-yield-2 {
+    min-height: 650px;
+    padding: 50px;
+}

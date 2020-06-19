@@ -1,0 +1,51 @@
+<div class="container mypanel" id="index-body-adminInfo" xmlns:th="http://www.thymeleaf.org">
+    <!--
+     作者: lwh
+     时间: 2020.4.12
+     描述：我的账号信息
+    -->
+    <div class="mypanel-header">
+        <div class="media">
+            <div class="media-left">
+                <img src="../static/src/smile.png" th:src="@{/src/smile.png}" alt="(*^_^*)">
+            </div>
+            <div class="media-right">
+                <h2 class="media-heading" id="adminInfo-hello-adminName">您好，管理员！</h2>
+                <h4 class="media-body" id="adminInfo-hello-email">999999999@email.com</h4>
+            </div>
+        </div>
+    </div>
+    <div class="mypanel-title-content-split"></div>
+    <div class="mypanel-content">
+        <div class="row">
+            <div class="col-lg-6
+                    col-md-6
+                    col-xs-11">
+                <div class="media card">
+                    <div class="media-left card-left">
+                        <img class="card-left-img" src="../static/src/lock.png" th:src="@{/src/lock.png}" alt="locked">
+                    </div>
+                    <div class="media-right card-right">
+                        <h3 class="card-right-title">修改密码</h3>
+                        <p class="card-right-detail">请定期修改密码以确保账户安全</p>
+                        <a href="javascript:void(0)" onclick="resetAdminInfo(0)">立即修改 ></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6
+                    col-md-6
+                    col-xs-11">
+                <div class="media card">
+                    <div class="media-left card-left">
+                        <img class="card-left-img" src="../static/src/lock.png" th:src="@{/src/lock.png}" alt="locked">
+                    </div>
+                    <div class="media-right card-right">
+                        <h3 class="card-right-title">修改邮箱</h3>
+                        <p class="card-right-detail">修改您的邮箱地址</p>
+                        <a href="javascript:void(0)" onclick="resetAdminInfo(1)">立即修改 ></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
