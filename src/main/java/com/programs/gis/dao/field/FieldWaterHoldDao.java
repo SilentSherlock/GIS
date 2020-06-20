@@ -1,6 +1,7 @@
 package com.programs.gis.dao.field;
 
 import com.programs.gis.entity.field.FieldWaterHold;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -15,5 +16,5 @@ public interface FieldWaterHoldDao {
     void save(FieldWaterHold fieldWaterHold) throws Exception;
     void deleteByPrimaryKey(String NUM_2) throws Exception;
     List<FieldWaterHold> getAll() throws Exception;
-    List<FieldWaterHold> getByAttr(String attrName, Object attrValue) throws Exception;
+    List<FieldWaterHold> getByAttr(@Param("attrName") String attrName, @Param("attrValue") Object attrValue) throws Exception;
 }

@@ -11,18 +11,18 @@
         <result property="dryYield" column="dryYield"></result>
     </resultMap>
     <insert id="save" >
-        insert into cornYield (cornFieldId,moistureYield, boxWeight, beforeDehydration, afterDehydration, moistureContent, dryYield)
+        insert into cornyield (cornFieldId,moistureYield, boxWeight, beforeDehydration, afterDehydration, moistureContent, dryYield)
         values (#{cornFieldId},#{moistureYield}, #{boxWeight}, #{beforeDehydration}, #{afterDehydration}, #{moistureContent}, #{dryYield});
     </insert>
     <select id="getAll" resultMap="cornYieldMap">
-        select * from cornYield
+        select * from cornyield
     </select>
     <select id="getById" resultMap="cornYieldMap">
-        select * from cornYield
+        select * from cornyield
         where cornFieldId = #{cornFieldId}
     </select>
     <delete id="deleteById">
-        delete from cornYield
+        delete from cornyield
         where cornFieldId = #{cornFieldId}
     </delete>
 </mapper>

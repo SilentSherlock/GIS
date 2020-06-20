@@ -11,22 +11,22 @@
         <result property="rainfall" column="rainfall"/>
     </resultMap>
     <insert id="save">
-        insert into climaticStation(dataId,recordDate,airTemperature,airHumidity,radiationAmount,windSpeed,rainfall)
+        insert into climaticstation(dataId,recordDate,airTemperature,airHumidity,radiationAmount,windSpeed,rainfall)
         values (#{dataId},#{recordDate},#{airTemperature},#{airHumidity},#{radiationAmount},#{windSpeed},#{rainfall})
     </insert>
     <select id="getAll" resultMap="climaticStationMap">
-        select * from climaticStation
+        select * from climaticstation
     </select>
     <delete id="deleteById">
-        delete from climaticStation
+        delete from climaticstation
         where dataId = #{dataId}
     </delete>
     <select id="getById" resultMap="climaticStationMap">
-        select * from climaticStation
+        select * from climaticstation
         where dataId = #{dataId}
     </select>
     <select id="getByAttr" resultMap="climaticStationMap">
-        select * from climaticStation
+        select * from climaticstation
         where ${attrName} = #{attrValue}
     </select>
 </mapper>

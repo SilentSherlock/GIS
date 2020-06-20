@@ -1,4 +1,4 @@
-package com.gis.controller;
+package com.programs.gis.control;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

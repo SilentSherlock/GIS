@@ -10,23 +10,23 @@
         <result property="recordDay" column="recordDay"/>
     </resultMap>
     <insert id="save">
-        insert into cornLeaf(DOY, TRT, leafArea, leafPerimeter, leafNumber, recordDay)
+        insert into cornleaf(DOY, TRT, leafArea, leafPerimeter, leafNumber, recordDay)
         values (#{DOY},#{TRT},#{leafArea},#{leafPerimeter},#{leafNumber},#{recordDay})
     </insert>
     <delete id="deleteByPrimaryKey">
-        delete from cornLeaf
+        delete from cornleaf
         where DOY = #{DOY} and TRT = #{TRT}
     </delete>
     <select id="getAll" resultMap="cornLeafMap">
-        select * from cornLeaf
+        select * from cornleaf
     </select>
     <select id="getByPrimaryKey" resultMap="cornLeafMap">
-        select * from cornLeaf
+        select * from cornleaf
         where DOY = #{DOY} and TRT = #{TRT}
     </select>
     <!--${parameter}会被直接替换成参数值,#{Parameter}则会被替换成？预处理-->
     <select id="getByAttr" resultMap="cornLeafMap">
-        select * from cornLeaf
+        select * from cornleaf
         where ${attrName} = #{attr}
     </select>
 </mapper>

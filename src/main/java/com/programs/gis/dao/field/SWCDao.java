@@ -1,6 +1,7 @@
 package com.programs.gis.dao.field;
 
 import com.programs.gis.entity.field.SWC;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.List;
 public interface SWCDao {
 
     void save(SWC swc) throws Exception;
-    void deleteByPrimaryKey(Integer DOY, String NUM_2) throws Exception;
+    void deleteByPrimaryKey(@Param("DOY") Integer DOY, @Param("NUM_2") String NUM_2) throws Exception;
     List<SWC> getAll() throws Exception;
-    List<SWC> getByAttr(String attrName, Object attrValue) throws Exception;
+    List<SWC> getByAttr(@Param("attrName") String attrName, @Param("attrValue") Object attrValue) throws Exception;
 }

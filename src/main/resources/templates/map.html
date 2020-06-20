@@ -2,9 +2,199 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>$Title$</title>
+    <!--bootstrap针对移动设备优化，设置页面宽度和初始缩放-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--引入bootstrap文件-->
+    <link rel="stylesheet" href="../static/extlib/bootstrap-3.3.7/css/bootstrap.css">
+    <link rel="stylesheet" href="../static/extlib/bootstrap-3.3.7/css/bootstrap-theme.css">
+    <!--js插件引用-->
+    <script type="text/javascript" src="../static/extlib/jquery-3.4.1/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" src="../static/extlib/bootstrap-3.3.7/js/bootstrap.js"></script>
+
+    <!--leaflet--CDN引用-->
+    <!--<link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+          integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+          crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+            integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+            crossorigin=""></script>-->
+    <!--本地引用-->
+    <link rel="stylesheet" href="../static/extlib/leaflet/leaflet.css">
+    <script type="text/javascript" src="../static/extlib/leaflet/leaflet-src.js"></script>
+    <script type="text/javascript" src="../static/extlib/leaflet/leaflet.ChineseTmsProviders.js"></script>
+    <title>Map</title>
+    <style rel="stylesheet">
+        /*  样式中使用颜色
+        背景色: #1e1e2f
+        侧边栏色: #389466
+        文字色: #cccccc
+        高亮色: #ffffff
+        选项色: #e14eca
+        分块内容背景色: #27293d
+        */
+        /*其他页面可复用样式*/
+        html, body{
+            height: 100%;
+        }
+        body {
+            padding-top: 50px;
+            background: #1e1e2f;
+            font-family: 'Roboto', sans-serif;
+            font-size: 16px;
+            color: #cccccc;
+            margin: 0;
+        }
+        ::-webkit-scrollbar {
+            background-color: #1c1e1f;
+            color: #c5c1b9;
+        }
+        ::-webkit-scrollbar-corner {
+            background-color: #181a1b;
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: #2a2c2e;
+        }
+        /*顶端导航栏样式*/
+        ._topbar {
+            background: #1e1e2f;
+            border-bottom-color: #389466;
+        }
+        ._topbar .navbar-nav > li > a {
+            color: #cccccc;
+        }
+        ._topbar .navbar-nav > li > a:hover , ._topbar .navbar-nav > li > a:focus{
+            background: none;
+            color: #ffffff;
+        }
+        ._topbar .navbar-brand {
+            color: #389466;
+        }
+        ._topbar .navbar-brand:hover, :focus{
+            color: #389466;
+        }
+        ._topbar .navbar-nav .open > a{
+            background: none;
+            color: #cccccc;
+        }
+        ._topbar .navbar-nav .open > a:focus{
+            background: none;
+            color: #ffffff;
+            /*border: ;*/
+        }
+        ._topbar .dropdown-menu {
+            background: #1e1e2f;
+        }
+        ._topbar .dropdown-menu a {
+            color: #cccccc;
+        }
+        ._topbar .dropdown-menu a:hover{
+            background: none;
+            color: #ffffff;
+        }
+
+
+        /*页脚样式*/
+        .footer {
+            padding: 18px 0 18px 250px;
+        }
+        .copyright {
+            text-align: right;
+            margin-right: 15px;
+            font-size: 1.25rem;
+            line-height: 1.8;
+        }
+
+        /*内容块*/
+        ._content-block {
+            background: #27293d;
+            border-radius: 6px;
+            box-shadow: rgba(0, 0, 0, 0.1) 0 1px 20px 0;
+        }
+
+        /*地图样式*/
+        #testMap {
+            height: 100%;
+        }
+    </style>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            const normalm = L.tileLayer.chinaProvider('TianDiTu.Normal.Map', {
+                    maxZoom: 20,
+                    minZoom: 5
+                }),
+                normala = L.tileLayer.chinaProvider('TianDiTu.Normal.Annotion', {
+                    maxZoom: 20,
+                    minZoom: 5
+                }),
+                imgm = L.tileLayer.chinaProvider('TianDiTu.Satellite.Map', {
+                    maxZoom: 20,
+                    minZoom: 5
+                }),
+                imga = L.tileLayer.chinaProvider('TianDiTu.Satellite.Annotion', {
+                    maxZoom: 20,
+                    minZoom: 5
+                });
+
+            const normal = L.layerGroup([normalm, normala]),
+                image = L.layerGroup([imgm, imga]);
+
+            const baseLayers = {
+                "Map": normal,
+                "Satellite": image,
+            };
+
+            const overlayLayers = {};
+
+            const map = L.map("testMap", {
+                center: [40.271171, 109.363286],
+                zoom: 15,
+                layers: [normal],
+                zoomControl: false
+            });
+
+            L.control.layers(baseLayers, overlayLayers).addTo(map);
+            L.control.zoom({
+                zoomInTitle: '放大',
+                zoomOutTitle: '缩小'
+            }).addTo(map);
+        })
+    </script>
 </head>
 <body>
-$END$
+    <nav class="navbar navbar-default navbar-fixed-top _topbar">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">Brand</a>
+        </div>
+
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="#">首页</a></li>
+                <li><a href="#">地图</a></li>
+                <li><a href="#">图表</a></li>
+                <li class="dropdown">
+                    <a role="button" href="#" class="dropdown-toggle" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">其他<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">新建用户</a></li>
+                        <li><a href="#">添加数据</a></li>
+                    </ul>
+                </li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a role="button" href="#" class="dropdown-toggle" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">用户名<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">用户信息</a></li>
+                        <li><a href="#">退出登录</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+    <div id="testMap"></div>
 </body>
 </html>

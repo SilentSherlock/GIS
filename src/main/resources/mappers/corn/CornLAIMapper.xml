@@ -11,18 +11,18 @@
     </resultMap>
 
     <insert id="save">
-        insert into cornLAI(DOY, TRT, NUM_1, NUM_2, NUM_3, LAI)
+        insert into cornlai(DOY, TRT, NUM_1, NUM_2, NUM_3, LAI)
         values (#{DOY}, #{TRT}, #{NUM_1}, #{NUM_2}, #{NUM_3}, #{LAI})
     </insert>
     <delete id="deleteByPrimaryKey">
-        delete from cornLAI
+        delete from cornlai
         where DOY = #{DOY} and NUM_2 = #{NUM_2}
     </delete>
     <select id="getAll" resultMap="cornLAIMap">
-        select * from cornLAI
+        select * from cornlai
     </select>
     <select id="getByAttr" resultMap="cornLAIMap">
-        select * from cornLAI
+        select * from cornlai
         where ${attrName} = #{attrValue}
     </select>
 </mapper>

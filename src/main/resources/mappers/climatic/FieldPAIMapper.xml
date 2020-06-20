@@ -9,18 +9,18 @@
         <result property="recordDate" column="recordDate"/>
     </resultMap>
     <insert id="save">
-        insert into fieldPAI(DOY, TRT, precipitation, irrigation, recordDate)
+        insert into fieldpai(DOY, TRT, precipitation, irrigation, recordDate)
         values (#{DOY}, #{TRT}, #{precipitation}, #{irrigation}, #{recordDate});
     </insert>
     <select id="getAll" resultMap="fieldPAIMapper">
-        select * from fieldPAI;
+        select * from fieldpai;
     </select>
     <select id="getByAttr" resultMap="fieldPAIMapper">
-        select * from fieldPAI
+        select * from fieldpai
         where ${attrName} = #{attrValue}
     </select>
     <delete id="deleteByPrimaryKey">
-        delete from fieldPAI
+        delete from fieldpai
         where DOY = #{DOY} and TRT = #{TRT}
     </delete>
 </mapper>

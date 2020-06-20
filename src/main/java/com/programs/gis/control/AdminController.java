@@ -5,7 +5,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.programs.gis.entity.admin.Admin;
 import com.programs.gis.service.AdminService;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -24,14 +23,13 @@ public class AdminController {
     public String getEcharts(){
         return "chartShow";
     }
+    /*地图测试*/
+    @RequestMapping(value = "/map")
+    public String getMap() {return "map";}
+    /*小功能测试*/
+    @RequestMapping(value = "/testFunction")
+    public String getTest() {return "testFunction"; }
 
-    /*登录请求*/
-    @RequestMapping("/adminLogin")
-    public String adminLogin(Model model){
-        Admin admin = new Admin();
-        model.addAttribute("loginAdmin", admin);
-        return "adminLogin";
-    }
 
     /*登录验证*/
     @RequestMapping("/adminValidate")
@@ -45,21 +43,18 @@ public class AdminController {
 
         Admin admin = adminService.adminValidate(adminName, password);
         if (admin!=null){
-            //session.setAttribute("adminInCharge", admin);
+            session.setAttribute("adminInCharge", admin);
             session.setAttribute("loginState", "success");/*也可以转换为json字符串返回给前端*/
             System.out.println("admin login success");
+            admin.setAdminName(adminService.base64Encoder(admin.getAdminName()));
+            admin.setPassword(adminService.base64Encoder(admin.getPassword()));
+            // admin.setEmail(adminService.base64Encoder(admin.getEmail()));
             return JSON.toJSONString(admin);
         }
         session.setAttribute("loginState", "failure");
         return "0";
     }
 
-    /*测试*/
-    @RequestMapping("/index")
-    public String index(HttpSession session) throws Exception{
-        getAllAdmins(session);
-        return "index";
-    }
     //以下方法的返回值有待修改
     /*增加管理员*/
     @RequestMapping("/addAdmin")

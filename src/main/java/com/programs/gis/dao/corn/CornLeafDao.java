@@ -1,6 +1,7 @@
 package com.programs.gis.dao.corn;
 
 import com.programs.gis.entity.corn.CornLeaf;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -12,5 +13,5 @@ public interface CornLeafDao {
     void deleteByPrimaryKey(Integer DOY, Float TRT) throws Exception;
     List<CornLeaf> getAll() throws Exception;
     CornLeaf getByPrimaryKey(Integer DOY, Float TRT) throws Exception;
-    List<CornLeaf> getByAttr(Object attr, String attrName) throws Exception;
+    List<CornLeaf> getByAttr(@Param("attr") Object attr, @Param("attrName") String attrName) throws Exception;
 }

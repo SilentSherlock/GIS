@@ -55,4 +55,11 @@ public class AdminService {
         System.out.println(result);
         return result;
     }
+    public String base64Encoder(String decodeString) {
+        System.out.println("Encode The decodeString");
+        System.out.println(decodeString);
+        String result = Base64.getEncoder().encodeToString(decodeString.getBytes());
+        System.out.println(result);
+        return result;
+    }
 }

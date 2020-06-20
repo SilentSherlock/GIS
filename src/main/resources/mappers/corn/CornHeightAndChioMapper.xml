@@ -11,22 +11,22 @@
         <result property="chlorophyll" column="chlorophyll"/>
     </resultMap>
     <insert id="save">
-        insert into cornHeightAndChlo(DOY, TRT, NUM_1, NUM_2, NUM_3, height, chlorophyll)
+        insert into cornheightandchlo(DOY, TRT, NUM_1, NUM_2, NUM_3, height, chlorophyll)
         values (#{DOY},#{TRT},#{NUM_1},#{NUM_2},#{NUM_3},#{height},#{chlorophyll})
     </insert>
     <select id="getAll" resultMap="cornHeightAndChloMap">
-        select * from cornHeightAndChlo
+        select * from cornheightandchlo
     </select>
     <delete id="deleteByPrimaryKey">
-        delete from cornHeightAndChlo
+        delete from cornheightandchlo
         where DOY = #{DOY} and NUM_2 = #{NUM_2}
     </delete>
     <select id="getByPrimaryKey" resultMap="cornHeightAndChloMap">
-        select * from cornHeightAndChlo
+        select * from cornheightandchlo
         where DOY = #{DOY} and NUM_2 = #{NUM_2}
     </select>
     <select id="getByAttr" resultMap="cornHeightAndChloMap">
-        select * from cornHeightAndChlo
+        select * from cornheightandchlo
         where ${attrName} = #{attr}
     </select>
 </mapper>

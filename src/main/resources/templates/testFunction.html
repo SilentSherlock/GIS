@@ -6,13 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>管理界面</title>
     <!--引入bootstrap文件-->
-    <link rel="stylesheet" href="../static/extlib/bootstrap-3.3.7/css/bootstrap.css">
-    <link rel="stylesheet" href="../static/extlib/bootstrap-3.3.7/css/bootstrap-theme.css">
+    <link rel="stylesheet" href="../static/extlib/bootstrap-3.3.7/css/bootstrap.css"
+    th:href="@{/extlib/bootstrap-3.3.7/css/bootstrap.css}">
+    <link rel="stylesheet" href="../static/extlib/bootstrap-3.3.7/css/bootstrap-theme.css"
+    th:href="@{/extlib/bootstrap-3.3.7/css/bootstrap-theme.css}">
     <!--js插件引用-->
-    <script type="text/javascript" src="../static/extlib/jquery-3.4.1/jquery-3.4.1.min.js"></script>
-    <script type="text/javascript" src="../static/extlib/bootstrap-3.3.7/js/bootstrap.js"></script>
+    <script type="text/javascript" src="../static/extlib/jquery-3.4.1/jquery-3.4.1.min.js"
+    th:href="@{/extlib/jquery-3.4.1/jquery-3.4.1.min.js}"></script>
+    <script type="text/javascript" src="../static/extlib/bootstrap-3.3.7/js/bootstrap.js"
+    th:href="@{/extlib/bootstrap-3.3.7/js/bootstrap.js}"></script>
 
-    <script type="text/javascript" src="../static/extlib/echarts/echarts.js"></script>
+    <script type="text/javascript" src="../static/extlib/echarts/echarts.js"
+    th:href="@{/extlib/echarts/echarts.js}"></script>
     <!--jquery提交测试-->
     <script type="text/javascript">
         $(document).ready(function () {
@@ -204,10 +209,43 @@
         <button type="submit">上传数据文件</button>
     </form>
     <br>
+    <p>测试保持数据</p>
     <input type="text" id="saveFile">
     <button id="saveToDatabase" type="button">保存数据文件</button>
+    <p>测试读取数据</p>
+    <input type="text" id="dataName">
+    <button id="data-button" type="button">获取数据</button>
     <div id="testChart" style="width: 1000px;height: 600px"></div>
-</div>
 
+</div>
+<script>
+    $("#data-button").click(function () {
+        let dataName = $("#dataName").val();
+        let url = null;
+        switch (dataName) {
+            case "station":
+            case "fieldpai":
+                url = "climatic/" + dataName;
+                break;
+            case "fwh":
+            case "swc":
+                url = "field/" + dataName;
+        }
+        $.ajax({
+            url: url,
+            type: "post",
+            dataType: "text",
+            contentType: "application/json;charset=UTF-8",
+            async: false,
+            success: data => {
+                if (data === "0")
+                    alert("图表获取失败");
+                else {
+                    alert(JSON.parse(data));
+                }
+            }
+        })
+    })
+</script>
 </body>
 </html>

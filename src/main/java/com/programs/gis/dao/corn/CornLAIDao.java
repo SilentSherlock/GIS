@@ -1,6 +1,8 @@
 package com.programs.gis.dao.corn;
 
 import com.programs.gis.entity.corn.CornLAI;
+import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 
 /**
@@ -13,5 +15,5 @@ public interface CornLAIDao {
     void save(CornLAI cornLAI) throws Exception;
     void deleteByPrimaryKey(Integer DOY, Float NUM_2) throws Exception;
     List<CornLAI> getAll() throws Exception;
-    List<CornLAI> getByAttr(Object attrValue, String attrName) throws Exception;
+    List<CornLAI> getByAttr(@Param("attrValue") Object attrValue, @Param("attrName") String attrName) throws Exception;
 }

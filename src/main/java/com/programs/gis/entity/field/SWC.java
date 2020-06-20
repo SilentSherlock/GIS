@@ -6,7 +6,7 @@ import java.util.Date;
  * Date: 2020/5/13
  * Description: soil water content
  */
-public class SWC {//土壤持水量
+public class SWC {//土壤含水量
 
     private Integer DOY;//primary key
     private Integer TRT;

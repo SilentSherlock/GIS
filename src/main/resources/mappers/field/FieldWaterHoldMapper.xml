@@ -10,19 +10,19 @@
         <result property="contentWeight" column="contentWeight"/>
     </resultMap>
     <insert id="save">
-        insert into fieldWaterHold(TRT, NUM_1, NUM_2, massWaterContent, volumeWaterContent, contentWeight)
+        insert into fieldwaterhold(TRT, NUM_1, NUM_2, massWaterContent, volumeWaterContent, contentWeight)
         values (#{TRT}, #{NUM_1}, #{NUM_2}, #{massWaterContent}, #{volumeWaterContent}, #{contentWeight});
     </insert>
     <delete id="deleteByPrimaryKey">
-        delete from fieldWaterHold
+        delete from fieldwaterhold
         where NUM_2 = #{NUM_2};
     </delete>
     <select id="getAll" resultMap="fieldWaterHoldMapper">
         select *
-        from fieldWaterHold;
+        from fieldwaterhold;
     </select>
     <select id="getByAttr" resultMap="fieldWaterHoldMapper">
-        select * from fieldWaterHold
+        select * from fieldwaterhold
         where ${attrName} = #{attrValue}
     </select>
 </mapper>

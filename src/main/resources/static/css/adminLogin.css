@@ -1,9 +1,10 @@
 /**
  * 作者: lwh
  * 时间: 2020.3.6
+ * 描述：登陆页面定制css
  */
 
-/*设置页面背景图片*/
+/*页面背景图片*/
 body {
     background-image: url("../src/adminLogin_bg.jpg");
     background-position: center center;
@@ -11,24 +12,29 @@ body {
     background-attachment: fixed;
     background-size: cover;
 }
-/*设置登录框所在区域*/
+
+/*登录框所在区域*/
 #loginFormArea {
     margin-top: 50px;
-    background-color: white;
-    box-shadow:5px 5px 10px 5px rgba(0,0,0,0.3);
     border-radius: 5px;
     padding-bottom: 20px;
     padding-left: 30px;
     padding-right: 30px;
+    background-color: #1b1b2d;
+    color: #dddddd;
+    box-shadow: 5px 5px 10px 5px rgba(0, 0, 0, 0.3);
 }
-/*设置登录框标题*/
+
+/*登录框标题*/
 #loginFormTitle {
-    border-bottom: 1px solid #e6e6e6;
-    margin-bottom: 20px;
-    margin-left: -20px;
-    margin-right: -20px;
+    margin: 20px -20px 20px -20px;
+    height: 30px;
+    border-bottom: 1px solid #cccccc;
+    text-align: center;
+    color: white;
 }
-/*设置按钮*/
+
+/*登录、重置按钮*/
 #loginForm button {
     width: 100%;
     margin-top: 10px;

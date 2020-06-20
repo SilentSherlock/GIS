@@ -1,213 +1,80 @@
+<!--
+ 作者: lwh
+ 时间: 2020.4.10
+-->
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<!-- 此处采用了html原生的引入方式并结合thymeleaf的引入方式：
+    1.html原生的引入方式:相对路径，方便直接打开html进行设计.
+    2.thymeleaf的引入方式:动态生成引入路径(相当于Jsp的老方法${pageContext.request.contextPath})，
+方便部署到服务器中运行时自动获取引入的静态资源路径而不用考虑静态资源匹配路径static-path-pattern.
+-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <!--bootstrap针对移动设备优化，设置页面宽度和初始缩放-->
+    <!-- 设置页面初始化大小和缩放值 -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>管理界面</title>
-    <!--引入bootstrap文件-->
-    <link rel="stylesheet" href="../static/extlib/bootstrap-3.3.7/css/bootstrap.css">
-    <link rel="stylesheet" href="../static/extlib/bootstrap-3.3.7/css/bootstrap-theme.css">
-    <!--js插件引用-->
-    <script type="text/javascript" src="../static/extlib/jquery-3.4.1/jquery-3.4.1.min.js"></script>
-    <script type="text/javascript" src="../static/extlib/bootstrap-3.3.7/js/bootstrap.js"></script>
-
-    <script type="text/javascript" src="../static/extlib/echarts/echarts.js"></script>
-    <!--jquery提交测试-->
-    <script type="text/javascript">
-        $(document).ready(function () {
-
-            //测试添加用户功能
-            $("#add").click(function () {
-                let model = {
-                    adminName: "dick",
-                    password: "123456",
-                    email: "shit"
-                };
-                let jsonStr = JSON.stringify(model);
-                alert(jsonStr);
-                $.ajax({
-                    url: "addAdmin",
-                    type: "post",
-                    data: jsonStr,
-                    dataType: "text",
-                    contentType: "application/json;charset=UTF-8",
-                    async: false,
-                    success: function () {
-                        alert("添加成功");
-                    }
-                })
-            });
-
-            //测试用户删除功能
-            $("#delete").click(function () {
-                let model = {
-                    adminName: "Tom",
-                    password: "123456"
-                };
-                let jsonStr = JSON.stringify(model);
-                alert(jsonStr);
-                $.ajax({
-                    url: "deleteAdmin",
-                    type: "post",
-                    data: jsonStr,
-                    dataType: "text",
-                    contentType: "application/json;charset=UTF-8",
-                    async: false,
-                    success: function () {
-                        alert("删除成功");
-                    }
-                })
-            });
-
-            //测试读取excel文件内容
-            $("#saveToDatabase").click(function () {
-                let fileName = $("#saveFile").val();
-                $.ajax({
-                    url: "addToDatabaseByFile",
-                    type: "post",
-                    data: fileName,
-                    dataType: "text",
-                    contentType: "application/json;charset=UTF-8",
-                    async: false
-                })
-            });
-        })
-    </script>
-    <!--echarts图表测试-->
-    <script type="text/javascript">
-        //图表渲染
-        $(document).ready(function () {
-            let chartDom = $("#testChart");
-            let testChart = echarts.init(chartDom[0], "dark");
-            testChart.setOption({
-                legend: {},
-                tooltip: {},
-                grid: [
-                    {bottom: "55%"},//第一个坐标系在echarts容器中的相对位置
-                    {top: "55%"}//第二个坐标系在echarts容器中的相对位置
-                ],
-                xAxis: [
-                    {type: "category", gridIndex: 0, name: "week", nameLocation: "end"},//指定第一个坐标系的x轴
-                    {type: "category", gridIndex: 1}//指定第二个坐标系的x轴
-                ],
-                yAxis: [
-                    {gridIndex: 0},//指定坐标系的y轴
-                    {gridIndex: 1}
-                ],
-                dataset: {
-                    source: [
-                        ["Mon", 345],
-                        ["Thu", 383],
-                        ["Wed", 897],
-                        ["The", 645],
-                        ["Fri", 244],
-                        ["Sta", 989],
-                        ["Sun", 235]
-                    ]
-                },
-                series: [
-                    {
-                        name: "barChart",
-                        type: "bar",
-                        encode: {
-                            x: 0,
-                            y: 1
-                        },
-                        xAxisIndex: 0,//指定图在哪个坐标系中
-                        yAxisIndex: 0
-                    },
-                    {
-                        name: "lineChart",
-                        type: "line",
-                        encode: {
-                            x: 0,
-                            y: 1
-                        },
-                        xAxisIndex: 1,
-                        yAxisIndex: 1
-                    }
-                ]
-            });
-            testChart.dispatchAction({
-
-            })
-        })
-    </script>
-
-    <style rel="stylesheet">
-        body {
-            padding-top: 70px;
-        }
-
-        iframe {
-            width: 100%;
-            height: 70px;
-        }
-    </style>
+    <!-- 页面标题 -->
+    <title>首页 — 玉米的生长及环境数据管理系统</title>
+    <!-- 引入网页图标 -->
+    <link rel="icon" href="../static/src/icon.png" th:href="@{/src/icon.png}" sizes="32x32">
+    <!-- 引入bootstrap默认css样式 -->
+    <link rel="stylesheet" href="../static/extlib/bootstrap-3.3.7/css/bootstrap.min.css"
+          th:href="@{/extlib/bootstrap-3.3.7/css/bootstrap.min.css}">
+    <!-- 引入bootstrapValidator默认css样式 -->
+    <link rel="stylesheet" href="../static/extlib/bootstrapvalidator-0.5.3/css/bootstrapValidator.min.css"
+          th:href="@{/extlib/bootstrapvalidator-0.5.3/css/bootstrapValidator.min.css}">
+    <!-- 引入jquery和bootstrap的js插件 -->
+    <!-- 注意：因为bootstrap和bootstrapValidator的js插件使用了jquery，所以jquery的引用必须放到bootstrap的js插件引用之前 -->
+    <script type="text/javascript" src="../static/extlib/jquery-3.4.1/jquery-3.4.1.min.js"
+            th:src="@{/extlib/jquery-3.4.1/jquery-3.4.1.min.js}"></script>
+    <script type="text/javascript" src="../static/extlib/bootstrap-3.3.7/js/bootstrap.min.js"
+            th:src="@{/extlib/bootstrap-3.3.7/js/bootstrap.min.js}"></script>
+    <script type="text/javascript" src="../static/extlib/bootstrapvalidator-0.5.3/js/bootstrapValidator.min.js"
+            th:src="@{/extlib/bootstrapvalidator-0.5.3/js/bootstrapValidator.min.js}"></script>
+    <!--引入echarts-->
+    <script type="text/javascript" src="../static/extlib/echarts/echarts.js"
+            th:src="@{/extlib/echarts/echarts.js}"></script>
+    <script type="text/javascript" src="../static/extlib/echarts/theme/purple.js"
+            th:src="@{/extlib/echarts/theme/purple.js}"></script>
+    <!-- 引入自己的css库文件-->
+    <link rel="stylesheet" href="../static/css/index.css" th:href="@{/css/index.css}">
+    <link rel="stylesheet" href="../static/css/index_navbar.css" th:href="@{/css/index_navbar.css}">
+    <link rel="stylesheet" href="../static/css/index_foot.css" th:href="@{/css/index_foot.css}">
+    <link rel="stylesheet" href="../static/css/index_body_adminInfo.css" th:href="@{/css/index_body_adminInfo.css}">
+    <link rel="stylesheet" href="../static/css/index_body_addAdmin.css" th:href="@{/css/index_body_addAdmin.css}">
+    <link rel="stylesheet" href="../static/css/index_body_chart.css" th:href="@{/css/index_body_chart.css}">
+    <link rel="stylesheet" href="../static/css/index_body_sidebar.css" th:href="@{/css/index_body_sidebar.css}">
+    <link rel="stylesheet" href="../static/css/index_body_allAdmin.css" th:href="@{/css/index_body_allAdmin.css}">
+    <!-- 引入自己的js库文件 -->
+    <script type="text/javascript" src="../static/js/myLib.js" th:src="@{/js/myLib.js}"></script>
+    <script type="text/javascript" src="../static/js/index.js" th:src="@{/js/index.js}"></script>
+    <script type="text/javascript" src="../static/js/index_navbar.js" th:src="@{/js/index_navbar.js}"></script>
+    <script type="text/javascript" src="../static/js/index_body_adminInfo.js"
+            th:src="@{/js/index_body_adminInfo.js}"></script>
+    <script type="text/javascript" src="../static/js/index_body_addAdmin.js"
+            th:src="@{/js/index_body_addAdmin.js}"></script>
+    <script type="text/javascript" src="../static/js/index_body_chart.js"
+            th:src="@{/js/index_body_chart.js}"></script>
+    <script type="text/javascript" src="../static/js/index_body_sidebar.js"
+            th:src="@{/js/index_body_sidebar.js}"></script>
+    <script type="text/javascript" src="../static/js/index_body_allAdmin.js"
+            th:src="@{/js/index_body_allAdmin.js}"></script>
 </head>
 <body>
-    <!--导航条-->
-    <nav class="navbar navbar-default navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="#">Brand</a>
-            </div>
-
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li><a href="#">首页</a></li>
-                    <li><a href="#">地图</a></li>
-                    <li><a href="#">图表</a></li>
-                    <li class="dropdown">
-                        <a role="button" href="#" class="dropdown-toggle" data-toggle="dropdown"
-                       aria-haspopup="true" aria-expanded="false">其他<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">新建用户</a></li>
-                            <li><a href="#">添加数据</a></li>
-                        </ul>
-                    </li>
-                </ul>
-
-                <ul class="nav navbar-nav navbar-right">
-                    <li class="dropdown">
-                        <a role="button" href="#" class="dropdown-toggle" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">用户名<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">用户信息</a></li>
-                            <li><a href="#">退出登录</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
-<div>
-    <h1>This is a fucking manage html</h1>
-    <ul th:each="tmpAdmin, adminStat:${session.allAdmins}">
-        <!--/*@thymesVar id="tmpAdmin" type=""*/-->
-        <!--<li th:text="${tmpAdmin.adminName}"></li>
-        <li th:text="${tmpAdmin.email}"></li>-->
-    </ul>
-    <button id="add">添加</button>
-    <br>
-    <button id="delete">删除</button>
-    <form enctype="multipart/form-data" method="post" action="/templateUpload">
-        <input type="file" name="template">
-        <button type="submit">上传模板</button>
-    </form>
-    <br>
-    <a href="/templateDownload">下载模板</a>
-    <form enctype="multipart/form-data" method="post" action="/dataFileUpload">
-        <input type="file" name="dataFile">
-        <button type="submit">上传数据文件</button>
-    </form>
-    <br>
-    <input type="text" id="saveFile">
-    <button id="saveToDatabase" type="button">保存数据文件</button>
-    <div id="testChart" style="width: 1000px;height: 600px"></div>
+<!-- 网页基本容器-->
+<div class="container-fluid">
+    <!-- 网页上部导航栏容器 -->
+    <div class="row" id="index-navbar-container">
+        <!-- 动态加载 -->
+    </div>
+    <!-- 网页主体容器 -->
+    <div class="row" id="index-body-container">
+        <!-- 动态加载 -->
+    </div>
+    <!-- 页脚 -->
+    <div class="row" id="index-foot-container">
+        <!-- 动态加载 -->
+    </div>
 </div>
-
 </body>
 </html>
