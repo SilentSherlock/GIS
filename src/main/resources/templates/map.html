@@ -1,15 +1,20 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <!--bootstrap针对移动设备优化，设置页面宽度和初始缩放-->
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Map</title>
     <!--引入bootstrap文件-->
-    <link rel="stylesheet" href="../static/extlib/bootstrap-3.3.7/css/bootstrap.css">
-    <link rel="stylesheet" href="../static/extlib/bootstrap-3.3.7/css/bootstrap-theme.css">
+    <link rel="stylesheet" href="../static/extlib/bootstrap-3.3.7/css/bootstrap.css"
+    th:href="@{/extlib/bootstrap-3.3.7/css/bootstrap.css}">
+    <link rel="stylesheet" href="../static/extlib/bootstrap-3.3.7/css/bootstrap-theme.css"
+    th:href="@{/extlib/bootstrap-3.3.7/css/bootstrap-theme.css}">
     <!--js插件引用-->
-    <script type="text/javascript" src="../static/extlib/jquery-3.4.1/jquery-3.4.1.min.js"></script>
-    <script type="text/javascript" src="../static/extlib/bootstrap-3.3.7/js/bootstrap.js"></script>
+    <script type="text/javascript" src="../static/extlib/jquery-3.4.1/jquery-3.4.1.min.js"
+    th:src="@{/extlib/jquery-3.4.1/jquery-3.4.1.min.js}"></script>
+    <script type="text/javascript" src="../static/extlib/bootstrap-3.3.7/js/bootstrap.js"
+    th:src="@{/extlib/bootstrap-3.3.7/js/bootstrap.js}"></script>
 
     <!--leaflet--CDN引用-->
     <!--<link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
@@ -19,13 +24,27 @@
             integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
             crossorigin=""></script>-->
     <!--本地引用-->
-    <link rel="stylesheet" href="../static/extlib/leaflet/leaflet.css">
-    <script type="text/javascript" src="../static/extlib/leaflet/leaflet-src.js"></script>
-    <script type="text/javascript" src="../static/extlib/leaflet/leaflet.ChineseTmsProviders.js"></script>
-    <title>Map</title>
+    <link rel="stylesheet" href="../static/extlib/leaflet/leaflet.css"
+    th:href="@{/extlib/leaflet/leaflet.css}">
+    <script type="text/javascript" src="../static/extlib/leaflet/leaflet-src.js"
+    th:src="@{/extlib/leaflet/leaflet-src.js}"></script>
+    <!--leaflet插件-->
+    <script type="text/javascript" src="../static/extlib/leaflet/leaflet.ChineseTmsProviders.js"
+    th:src="@{/extlib/leaflet/leaflet.ChineseTmsProviders.js}"></script>
+    <link rel="stylesheet" href="../static/extlib/leaflet/leaflet-geoman.css"
+          th:href="@{/extlib/leaflet/leaflet-geoman.css}">
+    <script type="text/javascript" src="../static/extlib/leaflet/leaflet-geoman.min.js"
+            th:src="@{/extlib/leaflet/leaflet-geoman.min.js}"></script>
+    <script type="text/javascript" src="../static/extlib/leaflet/semiCircle.js"
+            th:src="@{/extlib/leaflet/semiCircle.js}"></script>
+    <!--echart-->
+    <script type="text/javascript" src="../static/extlib/echarts/echarts.js"
+            th:src="@{/extlib/echarts/echarts.js}"></script>
+    <script type="text/javascript" src="../static/extlib/echarts/theme/purple.js"
+            th:src="@{/extlib/echarts/theme/purple.js}"></script>
     <style rel="stylesheet">
         /*  样式中使用颜色
-        背景色: #1e1e2f
+        背景色: #1b1b2d
         侧边栏色: #389466
         文字色: #cccccc
         高亮色: #ffffff
@@ -38,7 +57,7 @@
         }
         body {
             padding-top: 50px;
-            background: #1e1e2f;
+            background: #1b1b2d;
             font-family: 'Roboto', sans-serif;
             font-size: 16px;
             color: #cccccc;
@@ -54,9 +73,17 @@
         ::-webkit-scrollbar-thumb {
             background-color: #2a2c2e;
         }
+        .nav li a {
+            color: #cccccc;
+        }
+        .nav li a:hover, .nav li a:focus {
+            background: none;
+            color: #ffffff;
+            border: none;
+        }
         /*顶端导航栏样式*/
         ._topbar {
-            background: #1e1e2f;
+            background: #1b1b2d;
             border-bottom-color: #389466;
         }
         ._topbar .navbar-nav > li > a {
@@ -92,73 +119,82 @@
             color: #ffffff;
         }
 
-
-        /*页脚样式*/
-        .footer {
-            padding: 18px 0 18px 250px;
-        }
-        .copyright {
-            text-align: right;
-            margin-right: 15px;
-            font-size: 1.25rem;
-            line-height: 1.8;
-        }
-
-        /*内容块*/
-        ._content-block {
-            background: #27293d;
-            border-radius: 6px;
-            box-shadow: rgba(0, 0, 0, 0.1) 0 1px 20px 0;
-        }
-
         /*地图样式*/
         #testMap {
             height: 100%;
         }
+
+        /*侧边信息框*/
+        .fixed-info {
+            position: fixed;
+            right: 0;
+            width: 64px;
+            background: rgba(0,0,0,.3);
+            z-index: 1031;
+            border-radius: 8px 0 0 8px;
+            text-align: center;
+            top: 150px;
+        }
+
+        .info-window {
+            position: fixed;
+            height: 450px;
+            right: 80px;
+            left: auto!important;
+            top: 100px!important;
+            width: 360px;
+            background-color: #1b1b2d;
+            border-radius: .1875rem;
+            padding: 0 10px;
+            transform-opacity: .5s;
+            box-shadow: rgba(0, 0, 0, 0.2) 0 10px 50px 0;
+            overflow: scroll;
+            font-family: "Roboto", helvetica, arial,sans-serif;
+        }
+
+        .fixed-info .info-window::before {
+            content: "";
+            display: inline-block;
+            position: absolute;
+            top: 64px;
+            width: 16px;
+            transform: translateY(-50%);
+            -webkit-transform: translateY(-50%);
+            border-bottom: .4em solid transparent;
+            border-left: .4em solid rgba(0,0,0,.2);
+            border-top: .4em solid transparent;
+            border-right: .4em solid transparent;
+            right: -16px;
+            margin-left: auto;
+            left: auto;
+            border-left-color: rgba(23, 30, 47, 1);
+            vertical-align: middle;
+            box-sizing: border-box;
+        }
+
+        .fixed-info .info-window .info-window-block {
+            margin-top: 20px;
+            background: #27293d;
+            padding: 0 5px;
+            border-radius: 7px;
+            transition: all 0.3s;
+        }
+        .info-window-block-header {
+            border-bottom: none;
+        }
+        .info-window-block-header li a {
+            margin-top: 7px;
+            padding-top: 13px;
+            padding-bottom: 7px;
+        }
+
+        .info-window .info-window-block-chart {
+            width: inherit;
+            height: 300px;
+            margin: 0;
+        }
     </style>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            const normalm = L.tileLayer.chinaProvider('TianDiTu.Normal.Map', {
-                    maxZoom: 20,
-                    minZoom: 5
-                }),
-                normala = L.tileLayer.chinaProvider('TianDiTu.Normal.Annotion', {
-                    maxZoom: 20,
-                    minZoom: 5
-                }),
-                imgm = L.tileLayer.chinaProvider('TianDiTu.Satellite.Map', {
-                    maxZoom: 20,
-                    minZoom: 5
-                }),
-                imga = L.tileLayer.chinaProvider('TianDiTu.Satellite.Annotion', {
-                    maxZoom: 20,
-                    minZoom: 5
-                });
 
-            const normal = L.layerGroup([normalm, normala]),
-                image = L.layerGroup([imgm, imga]);
-
-            const baseLayers = {
-                "Map": normal,
-                "Satellite": image,
-            };
-
-            const overlayLayers = {};
-
-            const map = L.map("testMap", {
-                center: [40.271171, 109.363286],
-                zoom: 15,
-                layers: [normal],
-                zoomControl: false
-            });
-
-            L.control.layers(baseLayers, overlayLayers).addTo(map);
-            L.control.zoom({
-                zoomInTitle: '放大',
-                zoomOutTitle: '缩小'
-            }).addTo(map);
-        })
-    </script>
 </head>
 <body>
     <nav class="navbar navbar-default navbar-fixed-top _topbar">
@@ -195,6 +231,526 @@
         </div>
     </div>
 </nav>
+    <!--信息窗口-->
+    <div class="fixed-info">
+        <div class="info-tip">
+            <a>info</a>
+        </div>
+        <div class="info-window">
+            <!--地块信息-->
+            <div class="info-window-block">
+                <ul class="nav nav-tabs info-window-block-header">
+                    <li><i></i><h3 title="地块信息">FieldInfo</h3></li>
+                </ul>
+                <div id="info-win-chart1">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>FieldId</th>
+                                <th title="经纬度">Location</th>
+                                <th title="面积">Area</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!--土壤含水量-->
+            <div class="info-window-block">
+                <ul class="nav nav-tabs info-window-block-header">
+                    <li><i></i><h3 title="土壤含水量">SWC</h3></li>
+                    <li class="navbar-right"><a href="#" >more</a></li>
+
+                </ul>
+                <div class="info-window-block-chart" id="info-win-chart2"></div>
+            </div>
+            <!--田间持水量-->
+            <div>
+                <div class="info-window-block">
+                    <ul class="nav nav-tabs info-window-block-header">
+                        <li><i></i><h3 title="田间持水量">FWH</h3></li>
+                        <li class="navbar-right"><a href="#">more</a></li>
+                    </ul>
+                    <div>
+                        <div class="info-window-block-chart" id="info-win-chart3"></div>
+
+                    </div>
+                </div>
+                <div class="info-window-block">
+                    <div class="info-window-block-chart" id="info-win-chart4"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
     <div id="testMap"></div>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            mapInitial();
+            chartInitial();
+        });
+
+        //初始化地图
+        function mapInitial() {
+            const normalm = L.tileLayer.chinaProvider('TianDiTu.Normal.Map', {
+                maxZoom: 20,
+                minZoom: 5
+            }), normala = L.tileLayer.chinaProvider('TianDiTu.Normal.Annotion', {
+                maxZoom: 20,
+                minZoom: 5
+            }), imgm = L.tileLayer.chinaProvider('TianDiTu.Satellite.Map', {
+                maxZoom: 20,
+                minZoom: 5
+            }), imga = L.tileLayer.chinaProvider('TianDiTu.Satellite.Annotion', {
+                maxZoom: 20,
+                minZoom: 5
+            });
+
+            const googleNormal = L.tileLayer.chinaProvider("Google.Normal.Map", {
+                maxZoom: 20,
+                minZoom: 5
+            }), googleSate = L.tileLayer.chinaProvider("Google.Satellite.Map", {
+                maxZoom: 20,
+                minZoom: 5
+            });
+
+            const normal = L.layerGroup([normalm, normala]),
+                image = L.layerGroup([imgm, imga]),
+                googleMap = L.layerGroup([googleSate]);
+
+            const baseLayers = {
+                "天地图": image,
+                "Google": googleMap
+            }, overlayLayers = {
+                //"行政地图": normal
+            };
+
+            /*天地图坐标定位 40.435071, 109.607786
+            * 正常地图定位 40.271171, 109.363286
+            * Google地块中心定位 LatLng(40.434209, 109.600875)
+            * 天地图地块中心定位 LatLng(40.433294, 109.595275)
+            * 1 LatLng(40.435552, 109.595409)
+            * 2 LatLng(40.433781, 109.598161)
+            * 3 LatLng(40.431398, 109.596847)
+            * 4 LatLng(40.431586, 109.593349)
+            * 5 LatLng(40.434128, 109.592528)
+            **/
+            const googleCenter = [40.434209, 109.600875];
+            const tianDiTuCenter = [40.433294, 109.595275];
+            const tianDiTuCenters = [
+                [40.433355, 109.595286],
+                [40.433322, 109.595361],
+                [40.433232, 109.595339],
+                [40.433249, 109.5952],
+                [40.43333, 109.595178]
+            ];
+            const markerLonLngs = [
+                [40.433349, 109.595275],
+                [40.433349, 109.595275],
+                [40.433253, 109.595321],
+                [40.433247, 109.595229],
+                [40.433311, 109.595208]
+            ];
+
+            const locationData = [40.435071, 109.607786];
+            const map = L.map("testMap", {
+                center: locationData,
+                zoom: 15,
+                layers: [image],
+                zoomControl: false
+            });
+
+            L.control.layers(baseLayers, overlayLayers).addTo(map);
+            L.control.zoom({
+                zoomInTitle: '放大',
+                zoomOutTitle: '缩小'
+            }).addTo(map);
+            L.control.scale().addTo(map);
+            map.pm.addControls({
+                position: "topleft"
+            });
+            //popTest(map);
+
+            drawField(tianDiTuCenter, map);
+            //let markers = addMarker(markerLonLngs, map);
+            //fieldOutline(tianDiTuCenter, startAngle, 250, map);
+            infoTipListener();
+        }
+        //初始化图表
+        function chartInitial() {
+            let id = "1-1";
+            let latlng = [40.43428, 109.595361];
+            fieldInfo(id, latlng);
+            swcChart(id);
+            fwhChart(id);
+        }
+        //绘制地块
+        function drawField(center, map) {
+            const startAngle = -30;
+            let radius = [390, 300, 200];
+            let infoGroup = [];
+            for (let i = 0;i < radius.length;i++) {
+                let tmpGroup = fieldOutline(center, startAngle, radius[i], map);
+                infoGroup.push.apply(infoGroup, tmpGroup);
+            }
+            window.sessionStorage.setItem("fieldInfos", JSON.stringify(infoGroup));
+        }
+        //绘制一圈地块
+        function fieldOutline(latLng, startAngle, radius, paramMap) {
+            let tmpAngle = startAngle;
+            let fieldInfos = [];//地块信息，放置在session中
+            for (let i = 0;i < 5;i++) {
+                drawSector(latLng, radius, [tmpAngle, tmpAngle + 72], paramMap);
+                let area = null;
+                let area1 = Math.PI * 390 * 390;
+                let area2 = Math.PI * 300 * 300;
+                let area3 = Math.PI * 200 * 200;
+                if (radius === 200) area = area3;
+                if (radius === 300) area = area2 - area3;
+                if (radius === 390) area = area1 - area2;
+
+                let fieldInfo = {
+                    id: calculateID(tmpAngle, radius),
+                    area: (area / 5).toString()
+                };
+                tmpAngle += 72;
+                fieldInfos.push(fieldInfo);
+            }
+            return fieldInfos;
+        }
+
+        //转换角度和半径为地块编号
+        function calculateID(angle, radius) {
+            let id = "";
+            switch (angle) {
+                case -30:
+                    id = "1";
+                    break;
+                case 42:
+                    id = "2";
+                    break;
+                case 114:
+                    id = "3";
+                    break;
+                case 186:
+                    id = "4";
+                    break;
+                case 258:
+                    id = "5";
+                    break;
+            }
+            switch (radius) {
+                case 200:
+                    id += "-1";
+                    break;
+                case 300:
+                    id += "-2";
+                    break;
+                case 390:
+                    id += "-3";
+                    break;
+            }
+            return id;
+        }
+        //添加标记
+        function addMarker(latLngs, paramMap) {
+            let markers = [];
+            for (let i = 0;i < latLngs.length;i++) {
+                markers.push(L.marker(latLngs[i], {
+                    title: "地块" + (i + 1) + "\n维经度: " + latLngs[i]
+                }).addTo(paramMap));
+                markers[i].on("click", function (event) {
+                    let pop = L.popup();
+                    pop.setLatLng(event.latlng).setContent(event.latlng.toString()).openOn(paramMap);
+                });
+            }
+            return markers;
+        }
+        //画圆
+        //@Param1 地块坐标
+        //@Param2 半径
+        //@Param3 地图
+        function drawMyCircle(latLng, radius, paramMap) {
+            return L.circle(latLng, {
+                radius: radius,
+                color: "#389466",
+                weight: 2
+            }).addTo(paramMap);
+        }
+        //画扇形
+        //@Param1 地块坐标
+        //@Param2 半径
+        //@Param3 起始终止角度
+        //@Param4 地图
+        function drawSector(latLng, radius, angles, paramMap) {
+
+            let sector = L.semiCircle(latLng, {
+                radius: radius,
+                color: "#389466",
+                weight: 2,
+                startAngle: angles[0],
+                stopAngle: angles[1]
+            }).addTo(paramMap);
+            sector.on("click", function (event) {
+                let pop = L.popup();
+                pop.setLatLng(latLng).setContent("angle: " + angles[0] + "\nradius: "+ radius).openOn(paramMap);
+                let fieldId = calculateID(angles[0], radius);
+                fieldInfo(fieldId, event.latlng);
+                swcChart(fieldId);
+                fwhChart(fieldId);
+            });
+            return sector;
+        }
+        //画线段或折线
+        //@Param1 点坐标
+        //@Param2 地图
+        function drawLine(latLngs, paramMap) {
+            return L.polyline(latLngs, {
+                color: "#389466",
+                weight: 2
+            }).addTo(paramMap);
+        }
+
+        //弹出气泡测试
+        //@Param1 地图
+        function popTest(paramMap) {
+            paramMap.on("click", function (event) {
+                let pop = L.popup();
+                pop.setLatLng(event.latlng).setContent(event.latlng.toString()).openOn(paramMap);
+            })
+        }
+
+        //info-tip监听
+        function infoTipListener() {
+            $(".info-tip").on("click", function () {
+                let infoWindow = $(".info-window");
+                if (infoWindow.css("display") === "none") $(infoWindow).fadeIn("normal", "linear");
+                else $(infoWindow).fadeOut("normal", "linear");
+            });
+        }
+
+        //控制info-window
+        function showInfoWin() {
+            let infoWindow = $(".info-window");
+            if (infoWindow.css("display") === "none") $(infoWindow).fadeIn("normal", "linear");
+            else $(infoWindow).fadeOut("normal", "linear");
+        }
+
+        //地块信息图表
+        function fieldInfo(fieldId, latLng) {
+            let infoData = window.sessionStorage.getItem("fieldInfos");
+            infoData = JSON.parse(infoData);
+
+            //div->table->tbody->tr->td
+            let tbody = $("#info-win-chart1").children().children()[1];
+            let tds = $(tbody).children().children();
+
+            $.each(infoData, function (index, value) {
+                if (value.id === fieldId) {
+                    $(tds[0]).text(value.id);
+                    $(tds[1]).text(latLng.toString().substring(6));
+                    $(tds[2]).text(value.area);
+                }
+            });
+        }
+
+        //swc简图
+        function swcChart(fieldId) {
+            let chartData = screenDataByAttr(getChartData("field/swcByDOY",
+            JSON.stringify({DOY: "177"})), "nUM_1", fieldId);
+            let xAxisData = extractCol(chartData, "nUM_3");
+            let yAxisData = extractCol(chartData, "sWC");
+            //console.log("yAxisData is " + yAxisData);
+            let swcOption = {
+                legend: {},
+                tooltip: {},
+                xAxis: {
+                    type: "category",
+                    name: "depth(cm)",
+                    nameLocation: "center",
+                    nameGap:20,
+                    data: xAxisData.sort(function (a, b) {
+                        return a - b;
+                    })
+                },
+                yAxis: {
+                    name: "%"
+                },
+                series: [
+                    {
+                        type: "bar",
+                        name: "SWC",
+                        data: yAxisData
+                    }
+                ]
+            };
+            getAndInitChart("info-win-chart2").setOption(swcOption);
+        }
+
+        //FWH简图
+        function fwhChart(fieldId) {
+            let chartData = screenDataByAttr(getChartData("field/fwh", null, 0), "nUM_1", fieldId);
+            let names = extractCol(chartData, "nUM_2");
+            let messFWH = extractCol(chartData, "massWaterContent");
+            let volumeFWH = extractCol(chartData, "volumeWaterContent");
+
+            let messData = [], volumeData = [];
+            for (let i = 0; i < names.length; i++) {
+                messData.push({
+                    name: names[i],
+                    value: messFWH[i]
+                });
+                volumeData.push({
+                    name: names[i],
+                    value: volumeFWH[i]
+                })
+            }
+
+            //图表在容器内部百分比，以宽高中较小的为基准
+            let labelCfg = {
+
+            };
+            let option1 = {
+                title: {
+                    subtext: "MessWaterContent",
+                    left: "50%",
+                    top: "80%",
+                    textAlign: "center"
+                },
+                legend: {},
+                tooltip:{},
+                series: {
+                    type: "pie",
+                    center: ["50%", "45%"],
+                    radius: "50%",
+                    data: messData,
+                    label: labelCfg
+                }
+            }, option2 = {
+                title: {
+                    subtext: "VolumeWaterContent",
+                    left: "50%",
+                    top: "85%",
+                    textAlign: "center"
+                },
+                legend: {
+                    top: "5%"
+                },
+                tooltip:{},
+                series: {
+                    type: "pie",
+                    center: ["50%", "50%"],
+                    radius: "50%",
+                    data: volumeData,
+                    label: labelCfg
+                }
+            };
+
+            getAndInitChart("info-win-chart3").setOption(option1);
+            getAndInitChart("info-win-chart4").setOption(option2);
+        }
+        /**
+         * 作者: SilentSherlock
+         * 描述：向后台发送请求获取数据,默认带请求数据
+         */
+        function getChartData(requestUrl, jsonStr, flag = 1) {
+            let chartData = null;
+
+            const tmpData = window.sessionStorage.getItem(requestUrl+jsonStr);
+            if (tmpData != null) {
+                chartData = JSON.parse(tmpData);
+                return chartData;
+            }
+            if (requestUrl != null) {
+                //图表数据获取成功回调函数
+                function callback(data) {
+                    if (data === "0")
+                        alert("获取图表数据失败");
+                    else {
+                        chartData = data;
+                        const dataStr = JSON.stringify(chartData);
+                        //console.log(dataStr);
+                        window.sessionStorage.setItem(requestUrl+jsonStr, dataStr);
+                    }
+                }
+
+                //根据请求类别发送请求
+                if (flag === 1) {
+                    $.ajax({
+                        url: requestUrl,
+                        type: "post",
+                        data: jsonStr,
+                        async: false,
+                        contentType: "application/json;charset=UTF-8",
+                        dataType: "json",   //dataType为json时得到的数据格式为json对象，但是后端发送数据时需发送json字符串
+                        success: callback,
+                        error: function (error) {
+                            alert("----ajax请求获取图表数据失败！错误信息如下：----\n" + error.responseText);
+                        }
+                    });
+                } else if (flag === 0) {
+                    $.ajax({
+                        url: requestUrl,
+                        type: "get",
+                        async: false,
+                        dataType: "json",
+                        success: callback,
+                        error: function (error) {
+                            alert("----ajax请求获取图表数据失败！错误信息如下：----\n" + error.responseText);
+                        }
+                    });
+                } else
+                    alert("图表数据请求类型出错");
+            } else
+                alert("图表数据请求url不能为空");
+
+            return chartData;
+        }
+
+        /**
+         * 作者: SilentSherlock
+         * 描述：初始化图表节点
+         */
+        function getAndInitChart(chartDomId, theme = "purple") {
+            let chartDom = document.getElementById(chartDomId);
+            return echarts.init(chartDom, theme)
+        }
+
+        /**
+         * 作者: SilentSherlock
+         * 描述：从JSON对象数组中根据某个属性值筛选部分对象
+         */
+        function screenDataByAttr(chartData, attrName, attrValue) {
+            let result = [];
+            let i = 0;
+            $.each(chartData, function (key, value) {
+                if (value[attrName] === attrValue) {
+                    result.push(value);
+                    i++
+                }
+            });
+            return result;
+        }
+
+        /**
+         * 作者: SilentSherlock
+         * 描述：提取JSON对象数组中的某一列数据
+         */
+        function extractCol(chartData, colName) {
+            let colData = [];
+            $.each(chartData, function (key, value) {
+                if (value.hasOwnProperty(colName))
+                    colData.push(value[colName]);
+            });
+            return colData;
+        }
+    </script>
 </body>
 </html>

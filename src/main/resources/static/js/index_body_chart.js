@@ -465,13 +465,23 @@ function chart_yield_generate(DOY = "177") {
  */
 function getChartData(requestUrl, jsonStr, flag = 1) {
     let chartData = null;
+
+    const tmpData = window.sessionStorage.getItem(requestUrl+jsonStr);
+    if (tmpData != null) {
+        chartData = JSON.parse(tmpData);
+        return chartData;
+    }
     if (requestUrl != null) {
         //图表数据获取成功回调函数
         function callback(data) {
             if (data === "0")
                 alert("获取图表数据失败");
-            else
+            else {
                 chartData = data;
+                const dataStr = JSON.stringify(chartData);
+                //console.log(dataStr);
+                window.sessionStorage.setItem(requestUrl+jsonStr, dataStr);
+            }
         }
 
         //根据请求类别发送请求
