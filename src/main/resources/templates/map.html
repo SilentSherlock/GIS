@@ -5,6 +5,9 @@
     <!--bootstrap针对移动设备优化，设置页面宽度和初始缩放-->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Map</title>
+    <!--引入字体css-->
+    <link rel="stylesheet" href="../static/extlib/font-awesome-4.7.0/css/font-awesome.min.css"
+    th:href="@{/extlib/font-awesome-4.7.0/css/font-awesome.min.css}">
     <!--引入bootstrap文件-->
     <link rel="stylesheet" href="../static/extlib/bootstrap-3.3.7/css/bootstrap.css"
     th:href="@{/extlib/bootstrap-3.3.7/css/bootstrap.css}">
@@ -37,6 +40,14 @@
             th:src="@{/extlib/leaflet/leaflet-geoman.min.js}"></script>
     <script type="text/javascript" src="../static/extlib/leaflet/semiCircle.js"
             th:src="@{/extlib/leaflet/semiCircle.js}"></script>
+    <link rel="stylesheet" href="../static/extlib/leaflet/leaflet-measure/leaflet-measure.css"
+            th:href="@{/extlib/leaflet/leaflet-measure/leaflet-measure.css}">
+    <script type="text/javascript" src="../static/extlib/leaflet/leaflet-measure/leaflet-measure.js"
+            th:src="@{/extlib/leaflet/leaflet-measure/leaflet-measure.js}"></script>
+    <link rel="stylesheet" href="../static/extlib/leaflet/leaflet-beautify-marker-icon.css"
+            th:href="@{/extlib/leaflet/leaflet-beautify-marker-icon.css}">
+    <script type="text/javascript" src="../static/extlib/leaflet/leaflet_beautify_marker_icon.js"
+            th:src="@{/extlib/leaflet/leaflet_beautify_marker_icon.js}"></script>
     <!--echart-->
     <script type="text/javascript" src="../static/extlib/echarts/echarts.js"
             th:src="@{/extlib/echarts/echarts.js}"></script>
@@ -136,6 +147,12 @@
             top: 150px;
         }
 
+        .fixed-info a i {
+            width: 64px;
+            height: 18px;
+            background-image: url("../static/src/more_small.png");
+        }
+
         .info-window {
             position: fixed;
             height: 450px;
@@ -152,30 +169,10 @@
             font-family: "Roboto", helvetica, arial,sans-serif;
         }
 
-        .fixed-info .info-window::before {
-            content: "";
-            display: inline-block;
-            position: absolute;
-            top: 64px;
-            width: 16px;
-            transform: translateY(-50%);
-            -webkit-transform: translateY(-50%);
-            border-bottom: .4em solid transparent;
-            border-left: .4em solid rgba(0,0,0,.2);
-            border-top: .4em solid transparent;
-            border-right: .4em solid transparent;
-            right: -16px;
-            margin-left: auto;
-            left: auto;
-            border-left-color: rgba(23, 30, 47, 1);
-            vertical-align: middle;
-            box-sizing: border-box;
-        }
-
         .fixed-info .info-window .info-window-block {
             margin-top: 20px;
             background: #27293d;
-            padding: 0 5px;
+            padding: 0 5px 1px 5px;
             border-radius: 7px;
             transition: all 0.3s;
         }
@@ -197,6 +194,9 @@
 
 </head>
 <body>
+    <!--地图其他思路
+        统计模式----地图图表，点击地块查看统计数据，进行距离测量，面积测算（给出坐标）
+        信息模式----以专题图形式，针对某一属性，如叶绿素，降雨量绘制地图，并提供相关工具-->
     <nav class="navbar navbar-default navbar-fixed-top _topbar">
     <div class="container">
         <div class="navbar-header">
@@ -243,20 +243,11 @@
                     <li><i></i><h3 title="地块信息">FieldInfo</h3></li>
                 </ul>
                 <div id="info-win-chart1">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>FieldId</th>
-                                <th title="经纬度">Location</th>
-                                <th title="面积">Area</th>
-                            </tr>
-                        </thead>
+                    <table class="table table-bordered">
                         <tbody>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
+                            <tr><td title="地块编号">FieldID</td><td></td></tr>
+                            <tr><td title="经纬度">LatLng</td><td></td></tr>
+                            <tr><td title="面积(M²)">Area(M²)</td><td></td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -372,7 +363,13 @@
                 zoomInTitle: '放大',
                 zoomOutTitle: '缩小'
             }).addTo(map);
+            /*比例尺*/
             L.control.scale().addTo(map);
+            /*地图测量*/
+            L.control.measure({
+                position: "topleft"
+            }).addTo(map);
+            /*地图交互*/
             map.pm.addControls({
                 position: "topleft"
             });
@@ -394,7 +391,7 @@
         //绘制地块
         function drawField(center, map) {
             const startAngle = -30;
-            let radius = [390, 300, 200];
+            let radius = [390, 320, 225];
             let infoGroup = [];
             for (let i = 0;i < radius.length;i++) {
                 let tmpGroup = fieldOutline(center, startAngle, radius[i], map);
@@ -410,15 +407,15 @@
                 drawSector(latLng, radius, [tmpAngle, tmpAngle + 72], paramMap);
                 let area = null;
                 let area1 = Math.PI * 390 * 390;
-                let area2 = Math.PI * 300 * 300;
-                let area3 = Math.PI * 200 * 200;
-                if (radius === 200) area = area3;
-                if (radius === 300) area = area2 - area3;
+                let area2 = Math.PI * 320 * 320;
+                let area3 = Math.PI * 225 * 225;
+                if (radius === 225) area = area3;
+                if (radius === 320) area = area2 - area3;
                 if (radius === 390) area = area1 - area2;
 
                 let fieldInfo = {
                     id: calculateID(tmpAngle, radius),
-                    area: (area / 5).toString()
+                    area: (area / 5).toFixed(3)
                 };
                 tmpAngle += 72;
                 fieldInfos.push(fieldInfo);
@@ -447,10 +444,10 @@
                     break;
             }
             switch (radius) {
-                case 200:
+                case 225:
                     id += "-1";
                     break;
-                case 300:
+                case 320:
                     id += "-2";
                     break;
                 case 390:
@@ -460,18 +457,14 @@
             return id;
         }
         //添加标记
-        function addMarker(latLngs, paramMap) {
-            let markers = [];
-            for (let i = 0;i < latLngs.length;i++) {
-                markers.push(L.marker(latLngs[i], {
-                    title: "地块" + (i + 1) + "\n维经度: " + latLngs[i]
-                }).addTo(paramMap));
-                markers[i].on("click", function (event) {
-                    let pop = L.popup();
-                    pop.setLatLng(event.latlng).setContent(event.latlng.toString()).openOn(paramMap);
-                });
-            }
-            return markers;
+        function addMarker(latLng, paramMap) {
+            L.marker(latLng, {
+                title: "fuck you",
+                icon: L.BeautifyIcon.icon({
+                    icon: "leaf",
+                    iconShape: "marker"
+                })
+            }).addTo(paramMap);
         }
         //画圆
         //@Param1 地块坐标
@@ -499,9 +492,8 @@
                 stopAngle: angles[1]
             }).addTo(paramMap);
             sector.on("click", function (event) {
-                let pop = L.popup();
-                pop.setLatLng(latLng).setContent("angle: " + angles[0] + "\nradius: "+ radius).openOn(paramMap);
                 let fieldId = calculateID(angles[0], radius);
+                addMarker(event.latlng, paramMap);
                 fieldInfo(fieldId, event.latlng);
                 swcChart(fieldId);
                 fwhChart(fieldId);
@@ -548,15 +540,14 @@
             let infoData = window.sessionStorage.getItem("fieldInfos");
             infoData = JSON.parse(infoData);
 
-            //div->table->tbody->tr->td
-            let tbody = $("#info-win-chart1").children().children()[1];
+            //div->table->tbody
+            let tbody = $("#info-win-chart1").children().children()[0];
             let tds = $(tbody).children().children();
-
             $.each(infoData, function (index, value) {
                 if (value.id === fieldId) {
-                    $(tds[0]).text(value.id);
-                    $(tds[1]).text(latLng.toString().substring(6));
-                    $(tds[2]).text(value.area);
+                    $(tds[1]).text(value.id);
+                    $(tds[3]).text(latLng.toString().substring(6));
+                    $(tds[5]).text(value.area);
                 }
             });
         }

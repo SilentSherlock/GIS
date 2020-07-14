@@ -29,7 +29,12 @@ public class AdminController {
     /*小功能测试*/
     @RequestMapping(value = "/testFunction")
     public String getTest() {return "testFunction"; }
-
+    /*test地图测试*/
+    @RequestMapping(value = "/testMap")
+    public String getTestMap() { return "testMap";}
+    /*fuck*/
+    @RequestMapping(value = "/fuck")
+    public String getFuck() { return "fuck";}
 
     /*登录验证*/
     @RequestMapping("/adminValidate")

@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/leaflet.css" rel="stylesheet">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/leaflet.js"></script>
+    <script type="text/javascript" src="https://iclient.supermap.io/dist/leaflet/iclient-leaflet.js"></script>
+    <title>fuck</title>
+</head>
+<body>
+<div id="map" style="position:absolute;left:0px;right:0px;width:800px;height:500px;"></div>
+<script>
+    var url ="https://iserver.supermap.io/iserver/services/map-world/rest/maps/World";
+    // 初始化地图信息
+    var map = L.map('map', {
+        crs: L.CRS.NonEarthCRS({
+            bounds: L.bounds([48.4, -7668.25],[8958.85, -55.58]),
+            origin: L.point(48.4,-55.58)
+        }),
+        center: [-4500, 4000],
+        maxZoom: 18,
+        zoom: 1
+    });
+    // 添加图层
+    L.supermap.tiledMapLayer(url, {noWrap: true}).addTo(map);
+</script>
+</body>
+</html>

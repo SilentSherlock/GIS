@@ -66,11 +66,11 @@ public class PageController {
         return "index_body_allAdmin";
     }
 
-    //加载测试页面
+    /*//加载测试页面
     @RequestMapping("/test")
     public String test() {
         return "test";
-    }
+    }*/
 
     //加载图表展示页面
     @RequestMapping("/index_body_chart")
