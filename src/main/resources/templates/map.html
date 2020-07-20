@@ -32,6 +32,7 @@
     <script type="text/javascript" src="../static/extlib/leaflet/leaflet-src.js"
     th:src="@{/extlib/leaflet/leaflet-src.js}"></script>
     <!--leaflet插件-->
+
     <script type="text/javascript" src="../static/extlib/leaflet/leaflet.ChineseTmsProviders.js"
     th:src="@{/extlib/leaflet/leaflet.ChineseTmsProviders.js}"></script>
     <link rel="stylesheet" href="../static/extlib/leaflet/leaflet-geoman.css"
@@ -139,7 +140,8 @@
         .fixed-info {
             position: fixed;
             right: 0;
-            width: 64px;
+            width: 60px;
+            height: 40px;
             background: rgba(0,0,0,.3);
             z-index: 1031;
             border-radius: 8px 0 0 8px;
@@ -147,12 +149,23 @@
             top: 150px;
         }
 
-        .fixed-info a i {
-            width: 64px;
-            height: 18px;
-            background-image: url("../static/src/more_small.png");
+        .info-tip {
+            width: 60px;
+            height: 40px;
+        }
+        .my-icon {
+            display: inline-block;
+            font: normal normal normal 1em/1 Nucleo;
+            vertical-align: middle;
+            speak: none;
+            text-transform: none;
+            -webkit-font-smoothing: antialiased;
         }
 
+        .icon-menu::before {
+            content: "";
+
+        }
         .info-window {
             position: fixed;
             height: 450px;
@@ -190,6 +203,38 @@
             height: 300px;
             margin: 0;
         }
+
+        .hamburger .line {
+            width: 30px;
+            height: 2px;
+            background-color: #ecf0f1;
+            display: block;
+            margin: 8px auto;
+            -webkit-transition: all 0.3s ease-in-out;
+            -o-transition: all 0.3s ease-in-out;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .hamburger:hover {
+            cursor: pointer;
+        }
+
+        #hamburger-1.is-active .line:nth-child(2) {
+            opacity: 0;
+        }
+
+        #hamburger-1.is-active .line:nth-child(1) {
+            -webkit-transform: translateY(10px) rotate(45deg);
+            transform: translateY(10px) rotate(45deg);
+        }
+
+        #hamburger-1.is-active .line:nth-child(3) {
+            -webkit-transform: translateY(-10px) rotate(-45deg);
+            -ms-transform: translateY(-10px) rotate(-45deg);
+            -o-transform: translateY(-13px) rotate(-45deg);
+            transform: translateY(-10px) rotate(-45deg);
+        }
+
     </style>
 
 </head>
@@ -234,7 +279,11 @@
     <!--信息窗口-->
     <div class="fixed-info">
         <div class="info-tip">
-            <a>info</a>
+            <div class="hamburger" id="hamburger-1">
+                <span class="line"></span>
+                <span class="line"></span>
+                <span class="line"></span>
+            </div>
         </div>
         <div class="info-window">
             <!--地块信息-->
@@ -285,7 +334,10 @@
     <script type="text/javascript">
         $(document).ready(function () {
             mapInitial();
-            chartInitial();
+            $(".hamburger").click(function(){
+                $(this).toggleClass("is-active");
+            });
+            //chartInitial();
         });
 
         //初始化地图
@@ -312,6 +364,7 @@
                 minZoom: 5
             });
 
+
             const normal = L.layerGroup([normalm, normala]),
                 image = L.layerGroup([imgm, imga]),
                 googleMap = L.layerGroup([googleSate]);
@@ -332,9 +385,11 @@
             * 3 LatLng(40.431398, 109.596847)
             * 4 LatLng(40.431586, 109.593349)
             * 5 LatLng(40.434128, 109.592528)
+            * 109.604545, 40.4379
             **/
             const googleCenter = [40.434209, 109.600875];
             const tianDiTuCenter = [40.433294, 109.595275];
+            const tianDiTuCenter2 = [40.437924, 109.604577];
             const tianDiTuCenters = [
                 [40.433355, 109.595286],
                 [40.433322, 109.595361],
@@ -357,7 +412,6 @@
                 layers: [image],
                 zoomControl: false
             });
-
             L.control.layers(baseLayers, overlayLayers).addTo(map);
             L.control.zoom({
                 zoomInTitle: '放大',
@@ -373,12 +427,14 @@
             map.pm.addControls({
                 position: "topleft"
             });
-            //popTest(map);
+            popTest(map);
 
             drawField(tianDiTuCenter, map);
+
             //let markers = addMarker(markerLonLngs, map);
             //fieldOutline(tianDiTuCenter, startAngle, 250, map);
             infoTipListener();
+            $(".hamburger").toggleClass("is-active");
         }
         //初始化图表
         function chartInitial() {
@@ -390,11 +446,14 @@
         }
         //绘制地块
         function drawField(center, map) {
-            const startAngle = -30;
+            let startAngle = [];
+            for (let i = 0;i < 15;i++) {
+                startAngle[i] = -30 + 24 * i;
+            }
             let radius = [390, 320, 225];
             let infoGroup = [];
             for (let i = 0;i < radius.length;i++) {
-                let tmpGroup = fieldOutline(center, startAngle, radius[i], map);
+                let tmpGroup = fieldOutline(center, startAngle[0], radius[i], map);
                 infoGroup.push.apply(infoGroup, tmpGroup);
             }
             window.sessionStorage.setItem("fieldInfos", JSON.stringify(infoGroup));
@@ -403,7 +462,7 @@
         function fieldOutline(latLng, startAngle, radius, paramMap) {
             let tmpAngle = startAngle;
             let fieldInfos = [];//地块信息，放置在session中
-            for (let i = 0;i < 5;i++) {
+            for (let i = 0;i < 5;i++) {//应为5
                 drawSector(latLng, radius, [tmpAngle, tmpAngle + 72], paramMap);
                 let area = null;
                 let area1 = Math.PI * 390 * 390;
@@ -417,7 +476,7 @@
                     id: calculateID(tmpAngle, radius),
                     area: (area / 5).toFixed(3)
                 };
-                tmpAngle += 72;
+                tmpAngle += 72;//
                 fieldInfos.push(fieldInfo);
             }
             return fieldInfos;
@@ -494,11 +553,37 @@
             sector.on("click", function (event) {
                 let fieldId = calculateID(angles[0], radius);
                 addMarker(event.latlng, paramMap);
+                //调试后取消注释
                 fieldInfo(fieldId, event.latlng);
                 swcChart(fieldId);
                 fwhChart(fieldId);
             });
             return sector;
+        }
+        //给定圆心，半径和角度，计算圆弧上点画折线来接近圆弧,clockwise
+        //但在leaflet地理坐标系中，坐标以经纬度表示，距离用m表示，直接计算加上并不对
+        //故在项目中特殊处理，先取定了圆弧上一个点，计算与圆心在坐标系中距离作为半径
+        //return 折线数组
+
+        function getArcPoints(center, radius, startAngle, angle, pointNum) {
+            let points = [];
+            console.log("center is " + center);
+            for (let i = 0; i <= pointNum; i++) {
+                let current = (startAngle + angle * i / pointNum) * Math.PI / 180;
+                let cos = Math.cos(current);
+                let sin = Math.sin(current);
+                points.push([center[0] + radius * cos, center[1] + radius * sin]);
+                console.log("radius is " + radius);
+                console.log("cos is " + cos + " sin is " + sin);
+            }
+            return points;
+        }
+
+        //calculate distance of two points
+        function getDistance(point1, point2) {
+            let x = point1[0] - point2[0];
+            let y = point1[1] - point2[1];
+            return Math.sqrt(x*x + y*y).toFixed(9);
         }
         //画线段或折线
         //@Param1 点坐标
@@ -512,27 +597,57 @@
 
         //弹出气泡测试
         //@Param1 地图
+        let strs = "";
+        let newStrs = "";
         function popTest(paramMap) {
             paramMap.on("click", function (event) {
-                let pop = L.popup();
-                pop.setLatLng(event.latlng).setContent(event.latlng.toString()).openOn(paramMap);
+                strs += event.latlng.toString();
+                // let pop = L.popup();
+                // pop.setLatLng(event.latlng).setContent(event.latlng.toString()).openOn(paramMap);
             })
         }
-
+        function transform() {
+            if (strs !== "") {
+                for (let i = 0;i < strs.length;i++) {
+                    if (strs.charAt(i) !== '(') continue;
+                    let secondPoint = i;
+                    while (strs.charAt(secondPoint) !== ')') {
+                        secondPoint++;
+                    }
+                    let latlng = strs.substring(i + 1, secondPoint);
+                    newStrs += "[" + latlng + "],\n";
+                    i = secondPoint;
+                }
+                console.log(newStrs);
+            }else alert("str is null");
+        }
         //info-tip监听
         function infoTipListener() {
             $(".info-tip").on("click", function () {
+                //transform();
                 let infoWindow = $(".info-window");
-                if (infoWindow.css("display") === "none") $(infoWindow).fadeIn("normal", "linear");
-                else $(infoWindow).fadeOut("normal", "linear");
+                if (infoWindow.css("display") === "none") {
+                    $(".hamburger").addClass("is-active");
+                    $(infoWindow).fadeIn("normal", "linear");
+                }
+                else {
+                    $(".hamburger").removeClass("is-active");
+                    $(infoWindow).fadeOut("normal", "linear");
+                }
             });
         }
 
         //控制info-window
         function showInfoWin() {
             let infoWindow = $(".info-window");
-            if (infoWindow.css("display") === "none") $(infoWindow).fadeIn("normal", "linear");
-            else $(infoWindow).fadeOut("normal", "linear");
+            if (infoWindow.css("display") === "none") {
+                $(".hamburger").addClass("is-active");
+                $(infoWindow).fadeIn("normal", "linear");
+            }
+            else {
+                $(".hamburger").removeClass("is-active");
+                $(infoWindow).fadeOut("normal", "linear");
+            }
         }
 
         //地块信息图表

@@ -86,7 +86,7 @@ public class FileController {
         return "success";
     }
     /*保存上传的数据文件到数据库
-    * 前端提供要保持的是哪个文件
+    * 前端提供要保存的是哪个文件
     * 对应调取service中的方法
     * */
     @RequestMapping("/addToDatabaseByFile")

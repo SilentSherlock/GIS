@@ -31,10 +31,10 @@ public class AdminController {
     public String getTest() {return "testFunction"; }
     /*test地图测试*/
     @RequestMapping(value = "/testMap")
-    public String getTestMap() { return "testMap";}
+    public String getTestMap() { return "";}
     /*fuck*/
-    @RequestMapping(value = "/fuck")
-    public String getFuck() { return "fuck";}
+    @RequestMapping(value = "/infoMap")
+    public String getFuck() { return "infoMap";}
 
     /*登录验证*/
     @RequestMapping("/adminValidate")
