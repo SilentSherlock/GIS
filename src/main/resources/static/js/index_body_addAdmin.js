@@ -3,7 +3,7 @@
  * 时间: 2020.4.13
  * 描述: 添加管理员页面初始化----------
  */
-function initAddAdmin() {
+function index_body_addAdmin_init() {
     //重置按钮的点击事件监听函数注册
     $("#addAdminResetButton").click(function () {
         $("#addAdmin-form").data("bootstrapValidator").resetForm(true);
@@ -113,9 +113,9 @@ function initAddAdmin() {
             dataType: "json",
             success: function (data) {
                 if (data === "0")
-                    myAlert("alert", "alert", "啊欧，添加管理员失败了(x_x)!");
+                    myAlert("啊欧，添加管理员失败了(x_x)!");
                 else
-                    myAlert("alert", "alert", "管理员添加成功(∩_∩)!");
+                    myAlert("管理员添加成功(∩_∩)!");
                 //更改添加按钮的修改状态
                 $("#addAdminButton").button("reset");
                 //初始化表单

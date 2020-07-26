@@ -637,19 +637,6 @@
             });
         }
 
-        //控制info-window
-        function showInfoWin() {
-            let infoWindow = $(".info-window");
-            if (infoWindow.css("display") === "none") {
-                $(".hamburger").addClass("is-active");
-                $(infoWindow).fadeIn("normal", "linear");
-            }
-            else {
-                $(".hamburger").removeClass("is-active");
-                $(infoWindow).fadeOut("normal", "linear");
-            }
-        }
-
         //地块信息图表
         function fieldInfo(fieldId, latLng) {
             let infoData = window.sessionStorage.getItem("fieldInfos");

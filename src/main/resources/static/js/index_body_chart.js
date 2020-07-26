@@ -1,115 +1,95 @@
-//显示图标页面需要用到的组件
+//所有图表组件
 let chart_components = {
-    c0: {
-        clfn: "loadSidebar()",
-        cname: "侧边导航栏",
-        cid: "index-body-sidebar",
-        curl: "index_body_sidebar"
-    },
     c1: {
-        clfn: "loadChAndChlChart()",
         cname: "株高和叶绿素",
         cid: "chart-chAndChl",
-        curl: "chart_chAndChl"
+        curl: "chart_chAndChl",
+        cinit: "chart_chAndChl_init()"
+    },
+    c2: {
+        cname: "体积含水量",
+        cid: "chart-vwc",
+        curl: "chart_vwc",
+        cinit: "chart_vwc_init()"
+    },
+    c3: {
+        cname: "叶面积指数",
+        cid: "chart-lai",
+        curl: "chart_lai",
+        cinit: "chart_lai_init()"
+    },
+    c4: {
+        cname: "叶面积仪数据",
+        cid: "chart-lam",
+        curl: "chart_lam",
+        cinit: "chart_lam_init()"
+    },
+    c5: {
+        cname: "降雨量和灌溉量",
+        cid: "chart-preAndIrr",
+        curl: "chart_preAndIrr",
+        cinit: "chart_preAndIrr_init()"
+    },
+    c6: {
+        cname: "气孔阻力",
+        cid: "chart-sr",
+        curl: "chart_sr",
+        cinit: "chart_sr_init()"
+    },
+    c7: {
+        cname: "土壤含水量",
+        cid: "chart-swc",
+        curl: "chart_swc",
+        cinit: "chart_swc_init()"
+    },
+    c8: {
+        cname: "标准气象站",
+        cid: "chart-sws",
+        curl: "chart_sws",
+        cinit: "chart_sws_init()"
+    },
+    c9: {
+        cname: "产量",
+        cid: "chart-yield",
+        curl: "chart_yield",
+        cinit: "chart_yield_init()"
     }
 };
 
-/*
-let chart_components = {
-    c0: {
-        clfn: "loadSidebar()",
-        cname: "侧边导航栏",
-        cid: "index-body-sidebar",
-        curl: "index_body_sidebar"
-    },
-    c1: {
-        clfn: "loadChAndChlChart()",
-        cname: "株高和叶绿素",
-        cid: "chart-chAndChl",
-        curl: "chart_chAndChl"
-    },
-    c2: {
-        clfn: "loadVWCChart()",
-        cname: "体积含水量",
-        cid: "chart-vwc",
-        curl: "chart_vwc"
-    },
-    c3: {
-        clfn: "loadLAIChart()",
-        cname: "叶面积指数",
-        cid: "chart-lai",
-        curl: "chart_lai"
-    },
-    c4: {
-        clfn: "loadLAMChart()",
-        cname: "叶面积仪数据",
-        cid: "chart-lam",
-        curl: "chart_lam"
-    },
-    c5: {
-        clfn: "loadPreAndIrrChart()",
-        cname: "降雨量和灌溉量",
-        cid: "chart-preAndIrr",
-        curl: "chart_preAndIrr"
-    },
-    c6: {
-        clfn: "loadSRChart()",
-        cname: "气孔阻力",
-        cid: "chart-sr",
-        curl: "chart_sr"
-    },
-    c7: {
-        clfn: "loadSWCChart()",
-        cname: "土壤含水量",
-        cid: "chart-swc",
-        curl: "chart_swc"
-    },
-    c8: {
-        clfn: "loadSWSChart()",
-        cname: "标准气象站",
-        cid: "chart-sws",
-        curl: "chart_sws"
-    },
-    c9: {
-        clfn: "loadYieldChart()",
-        cname: "产量",
-        cid: "chart-yield",
-        curl: "chart_yield"
-    }
-};
-*/
 /**
  * 作者: lwh
  * 时间: 2020.5.20
  * 描述: 图表展示主页初始化
  */
-function indexBodyChartInit() {
-    //加载图表
-    $.each(chart_components, function (key, value) {
-        eval(value.clfn);
-    });
-
+function index_body_chart_init() {
+    //加载侧边导航栏
+    loadSidebar();
+    //注册侧边栏监听函数
+    registListenerForSidebar();
+    //展示图标首页
+    loadChartIndex();
 }
 
 /**
  * 作者: lwh
- * 时间: 2020.5.20
+ * 时间: 2020.7.7
  * 描述: 加载侧边导航栏
  */
 function loadSidebar() {
-    if (!isLoaded(chart_components.c0.cid)) {
+    //是否已经加载
+    if (!isLoaded("index-body-sidebar")) {
         $.ajax({
-            url: chart_components.c0.curl,
+            url: "index_body_sidebar",
             type: "get",
             async: false,
             dataType: "html",
             success: function (data) {
                 $("#index-body-chart").append(data);
-                //初始化侧边栏
+                //初始化侧边导航栏
                 initSidebar();
             },
             error: function (error) {
-                alert("----ajax请求加载侧边导航栏执行出错！错误信息如下：----\n" + error.responseText);
+                alert("----ajax请求加载侧边栏执行出错！错误信息如下：----\n" + error.responseText);
             }
         });
     }
@@ -117,30 +97,14 @@ function loadSidebar() {
 
 /**
  * 作者: lwh
- * 时间: 2020.5.28
- * 描述: 加载株高和叶绿素的图表
+ * 时间: 2020.7.7
+ * 描述: 加载图表首页
  */
-function loadChAndChlChart() {
-    if (!isLoaded(chart_components.c1.cid)) {
-        $.ajax({
-            url: chart_components.c1.curl,
-            type: "get",
-            async: true,
-            dataType: "html",
-            success: function (data) {
-                $("#index-body-chart #index-body-chart-container").append(data);
-                //初始化株高和叶绿素含量图表
-                chart_chAndChl_init();
-                //初始化叶面积仪数据表
-                chart_lam_init();
-                //初始化叶面积仪数据表
-                chart_yield_init();
-            },
-            error: function (error) {
-                alert("----ajax请求加载株高和叶绿素图表执行出错！错误信息如下：----\n" + error.responseText);
-            }
-        });
-    }
+function loadChartIndex() {
+    //遍历组件列表加载所有组件
+    $.each(chart_components, function (key, value) {
+        loadSingleComponent(value, "#index-body-chart #index-body-chart-container");
+    });
 }
 
 /**
@@ -163,44 +127,10 @@ function chart_chAndChl_init() {
             $(clickedBtn[1]).text(clickedItemValue);
             let newDOY = $("#chart-chAndChl .nav-pills .dropdown button span:eq(1)").text();
             let newTRT = $("#chart-chAndChl .nav-pills .dropdown button span:eq(4)").text();
-            console.log("DOY: " + newDOY + "\nTRT: " + newTRT);
             //更新图表
             chart_chAndChl_generate(newDOY, newTRT);
         }
     });
-}
-
-/**
- * 作者: SilentSherlock
- * 描述：玉米叶面积仪数据图表初始化
- */
-function chart_lam_init() {
-    //加载默认样区的数据
-    chart_lam_generate();
-    //样区选择按钮监听事件注册
-    $("#chart-lam .nav-pills .dropdown-menu li a").click(function () {
-        //直接使用this并不能获得触发事件的对象，需要使用$(this)
-        let clickedItemValue = $(this).text();
-        //获得属性选择中第二个span
-        let clickedBtn = $(this).parent().parent().prev().children();
-        let preAttrValue = $(clickedBtn[1]).text();
-        //是否改变了样区
-        if (preAttrValue !== clickedItemValue) {
-            //使用$表明这是一个jquery对象,防止使用方法时冲突
-            $(clickedBtn[1]).text(clickedItemValue);
-            console.log("DOY: " + clickedItemValue);
-            //更新图表
-            chart_lam_generate(clickedItemValue);
-        }
-    });
-}
-
-/**
- * 作者: SilentSherlock
- * 描述：玉米产量图表初始化
- */
-function chart_yield_init() {
-    chart_yield_generate();
 }
 
 /**
@@ -210,8 +140,9 @@ function chart_yield_init() {
  * 画图时则根据TRT属性,确定一个扇形地块,分为三部分,画三个图
  */
 function chart_chAndChl_generate(DOY = "177", TRT = "1") {
-//从后端取数据
+    //从后端取数据
     let chartData = getChartData("corn/cornHeightAndChloDOY", JSON.stringify({DOY: DOY}), 1);
+
     //提取出所需地块
     let screenChartData = screenDataByAttr(chartData, "tRT", TRT);
     //提取数据NUM_3列数据作为x轴
@@ -304,16 +235,38 @@ function chart_chAndChl_generate(DOY = "177", TRT = "1") {
     cornHandChChart2.setOption(partOption2);
     cornHandChChart3.setOption(partOption3);
 
-    addSidebarClickEventHandlerFunction(function () {
-        setTimeout(resize, 500);
-    });
-    $(window).resize(resize);
-
+    //用于更改图标大小以适应屏幕的resize函数
     function resize() {
         cornHandChChart1.resize();
         cornHandChChart2.resize();
         cornHandChChart3.resize();
     }
+    //隐藏/展开侧边栏的监听函数注册
+    addSidebarClickEventHandlerFunction(resize);
+}
+
+/**
+ * 作者: SilentSherlock
+ * 描述：玉米叶面积仪数据图表初始化
+ */
+function chart_lam_init() {
+    //加载默认样区的数据
+    chart_lam_generate();
+    //样区选择按钮监听事件注册
+    $("#chart-lam .nav-pills .dropdown-menu li a").click(function () {
+        //直接使用this并不能获得触发事件的对象，需要使用$(this)
+        let clickedItemValue = $(this).text();
+        //获得属性选择中第二个span
+        let clickedBtn = $(this).parent().parent().prev().children();
+        let preAttrValue = $(clickedBtn[1]).text();
+        //是否改变了样区
+        if (preAttrValue !== clickedItemValue) {
+            //使用$表明这是一个jquery对象,防止使用方法时冲突
+            $(clickedBtn[1]).text(clickedItemValue);
+            //更新图表
+            chart_lam_generate(clickedItemValue);
+        }
+    });
 }
 
 /**
@@ -366,14 +319,20 @@ function chart_lam_generate(DOY = "177") {
 
     chart.setOption(chartOption);
 
-    addSidebarClickEventHandlerFunction(function () {
-        setTimeout(resize, 500);
-    });
-    $(window).resize(resize);
-
     function resize() {
         chart.resize();
     }
+
+    addSidebarClickEventHandlerFunction(resize);
+}
+
+/**
+ * 作者: lwh
+ * 时间: 2020.6.2
+ * 描述: 产量图表初始化
+ */
+function chart_yield_init() {
+    chart_yield_generate();
 }
 
 /**
@@ -418,15 +377,13 @@ function chart_yield_generate(DOY = "177") {
 
     chart.setOption(chartOption);
 
-    addSidebarClickEventHandlerFunction(function () {
-        setTimeout(resize, 500);
-    });
-    $(window).resize(resize);
-
     function resize() {
         chart.resize();
     }
 
+    addSidebarClickEventHandlerFunction(resize);
+
+    //动态生成表格
     let html =
         "<table class='table table-hover'>" +
         "<thead>" +
@@ -460,28 +417,646 @@ function chart_yield_generate(DOY = "177") {
 }
 
 /**
+ * 作者: lwh
+ * 时间: 2020.7.6
+ * 描述: 体积含水量图表初始化
+ */
+function chart_vwc_init() {
+    chart_vwc_generate();
+    //样区选择按钮监听事件注册
+    $("#chart-vwc .nav-pills .dropdown-menu li a").click(function () {
+        //直接使用this并不能获得触发事件的对象，需要使用$(this)
+        let clickedItemValue = $(this).text();
+        //获得属性选择中第二个span
+        let clickedBtn = $(this).parent().parent().prev().children();
+        let preAttrValue = $(clickedBtn[1]).text();
+        //是否改变了样区
+        if (preAttrValue !== clickedItemValue) {
+            //使用$表明这是一个jquery对象,防止使用方法时冲突
+            $(clickedBtn[1]).text(clickedItemValue);
+            //更新图表
+            chart_vwc_generate(clickedItemValue);
+        }
+    });
+}
+
+/**
+ * 作者: lwh
+ * 时间: 2020.7.6
+ * 描述: 体积含水量图表绘制
+ */
+function chart_vwc_generate(TRT = "1") {
+    //从后端取数据
+    let chartData = getChartData("field/fwh", null, 0);
+
+    //获取指定样区的数据
+    let plotData = screenDataByAttr(chartData, "tRT", TRT);
+    let plot1Data = screenDataByAttr(plotData, "nUM_1", TRT + "-1");
+    let plot2Data = screenDataByAttr(plotData, "nUM_1", TRT + "-2");
+    let plot3Data = screenDataByAttr(plotData, "nUM_1", TRT + "-3");
+
+    let chartOption1 = {
+        legend: {},
+        tooltip: {},
+        dataset: {
+            source: plot1Data
+        },
+        xAxis: {
+            type: "category"
+        },
+        yAxis: {},
+        series: [
+            {
+                type: "line",
+                name: "ContentWeight",
+                encode: {
+                    x: 3,
+                    y: 0
+                }
+            },
+            {
+                type: "line",
+                name: "massWaterContent",
+                encode: {
+                    x: 3,
+                    y: 1
+                }
+            },
+            {
+                type: "line",
+                name: "volumeWaterContent",
+                encode: {
+                    x: 3,
+                    y: 5
+                }
+            }
+        ]
+    };
+
+    let chartOption2 = {
+        legend: {},
+        tooltip: {},
+        dataset: {
+            source: plot2Data
+        },
+        xAxis: {
+            type: "category"
+        },
+        yAxis: {},
+        series: [
+            {
+                type: "line",
+                name: "ContentWeight",
+                encode: {
+                    x: 3,
+                    y: 0
+                }
+            },
+            {
+                type: "line",
+                name: "massWaterContent",
+                encode: {
+                    x: 3,
+                    y: 1
+                }
+            },
+            {
+                type: "line",
+                name: "volumeWaterContent",
+                encode: {
+                    x: 3,
+                    y: 5
+                }
+            }
+        ]
+    };
+
+    let chartOption3 = {
+        legend: {},
+        tooltip: {},
+        dataset: {
+            source: plot3Data
+        },
+        xAxis: {
+            type: "category"
+        },
+        yAxis: {},
+        series: [
+            {
+                type: "line",
+                name: "ContentWeight",
+                encode: {
+                    x: 3,
+                    y: 0
+                }
+            },
+            {
+                type: "line",
+                name: "massWaterContent",
+                encode: {
+                    x: 3,
+                    y: 1
+                }
+            },
+            {
+                type: "line",
+                name: "volumeWaterContent",
+                encode: {
+                    x: 3,
+                    y: 5
+                }
+            }
+        ]
+    };
+
+    let chart1 = getAndInitChart("chart-vwc-1");
+    let chart2 = getAndInitChart("chart-vwc-2");
+    let chart3 = getAndInitChart("chart-vwc-3");
+
+    chart1.setOption(chartOption1);
+    chart2.setOption(chartOption2);
+    chart3.setOption(chartOption3);
+
+    function resize() {
+        chart1.resize();
+        chart2.resize();
+        chart3.resize();
+    }
+
+    addSidebarClickEventHandlerFunction(resize);
+}
+
+/**
+ * 作者: lwh
+ * 时间: 2020.7.6
+ * 描述: 叶面积指数图表初始化
+ */
+function chart_lai_init() {
+    chart_lai_generate();
+    //样区选择按钮监听事件注册
+    $("#chart-lai .nav-pills .dropdown-menu li a").click(function () {
+        //直接使用this并不能获得触发事件的对象，需要使用$(this)
+        let clickedItemValue = $(this).text();
+        //获得属性选择中第二个span
+        let clickedBtn = $(this).parent().parent().prev().children();
+        let preAttrValue = $(clickedBtn[1]).text();
+        //是否改变了样区
+        if (preAttrValue !== clickedItemValue) {
+            //使用$表明这是一个jquery对象,防止使用方法时冲突
+            $(clickedBtn[1]).text(clickedItemValue);
+            let newDOY = $("#chart-lai .nav-pills .dropdown button span:eq(1)").text();
+            let newTRT = $("#chart-lai .nav-pills .dropdown button span:eq(4)").text();
+            //更新图表
+            chart_lai_generate(newDOY, newTRT);
+        }
+    });
+}
+
+/**
+ * 作者: lwh
+ * 时间: 2020.7.6
+ * 描述: 体积含水量图表绘制
+ */
+function chart_lai_generate(DOY = "177", TRT = "1") {
+    //从后端取数据
+    let chartData = getChartData("corn/cornLAIDOY", JSON.stringify({DOY: DOY}), 1);
+
+    //获取指定样区的数据
+    let plotData = screenDataByAttr(chartData, "tRT", TRT);
+    let plot1Data = screenDataByAttr(plotData, "nUM_1", TRT + "-1");
+    let plot2Data = screenDataByAttr(plotData, "nUM_1", TRT + "-2");
+    let plot3Data = screenDataByAttr(plotData, "nUM_1", TRT + "-3");
+
+    let chartOption1 = {
+        legend: {},
+        tooltip: {},
+        dataset: {
+            source: plot1Data
+        },
+        xAxis: {
+            type: "category"
+        },
+        yAxis: {},
+        series: [
+            {
+                type: "line",
+                name: "LAI",
+                encode: {
+                    x: 4,
+                    y: 1
+                }
+            }
+        ]
+    };
+
+    let chartOption2 = {
+        legend: {},
+        tooltip: {},
+        dataset: {
+            source: plot2Data
+        },
+        xAxis: {
+            type: "category"
+        },
+        yAxis: {},
+        series: [
+            {
+                type: "line",
+                name: "LAI",
+                encode: {
+                    x: 4,
+                    y: 1
+                }
+            }
+        ]
+    };
+
+    let chartOption3 = {
+        legend: {},
+        tooltip: {},
+        dataset: {
+            source: plot3Data
+        },
+        xAxis: {
+            type: "category"
+        },
+        yAxis: {},
+        series: [
+            {
+                type: "line",
+                name: "LAI",
+                encode: {
+                    x: 4,
+                    y: 1
+                }
+            }
+        ]
+    };
+
+    let chart1 = getAndInitChart("chart-lai-1");
+    let chart2 = getAndInitChart("chart-lai-2");
+    let chart3 = getAndInitChart("chart-lai-3");
+
+    chart1.setOption(chartOption1);
+    chart2.setOption(chartOption2);
+    chart3.setOption(chartOption3);
+
+    function resize() {
+        chart1.resize();
+        chart2.resize();
+        chart3.resize();
+    }
+
+    addSidebarClickEventHandlerFunction(resize);
+}
+
+/**
+ * 作者: lwh
+ * 时间: 2020.7.7
+ * 描述: 降雨量和灌溉量图表初始化
+ */
+function chart_preAndIrr_init() {
+    chart_preAndIrr_generate();
+    //样区选择按钮监听事件注册
+    $("#chart-preAndIrr .nav-pills .dropdown-menu li a").click(function () {
+        //直接使用this并不能获得触发事件的对象，需要使用$(this)
+        let clickedItemValue = $(this).text();
+        //获得属性选择中第二个span
+        let clickedBtn = $(this).parent().parent().prev().children();
+        let preAttrValue = $(clickedBtn[1]).text();
+        //是否改变了样区
+        if (preAttrValue !== clickedItemValue) {
+            //使用$表明这是一个jquery对象,防止使用方法时冲突
+            $(clickedBtn[1]).text(clickedItemValue);
+            let newTRT = $("#chart-preAndIrr .nav-pills .dropdown button span:eq(1)").text();
+            //更新图表
+            chart_preAndIrr_generate(newTRT);
+        }
+    });
+}
+
+/**
+ * 作者: lwh
+ * 时间: 2020.7.7
+ * 描述: 降雨量和灌溉量图表绘制
+ */
+function chart_preAndIrr_generate(TRT = "1") {
+    //从后端取数据
+    let chartData = getChartData("climatic/fieldpai", null, 0);
+    //获取指定样区的数据
+    let plotData = screenDataByAttr(chartData, "tRT", TRT);
+
+    //处理时间格式
+    $.each(plotData, function (key, value) {
+        value.recordDate = timestampToTime(value.recordDate).split(" ")[0];
+    });
+
+    let chartOption = {
+        legend: {},
+        tooltip: {},
+        dataset: {
+            source: plotData
+        },
+        xAxis: {
+            type: "category"
+        },
+        yAxis: {},
+        series: [
+            {
+                type: "line",
+                name: "Precipitation",
+                encode: {
+                    x: 3,
+                    y: 2
+                }
+            },
+            {
+                type: "line",
+                name: "Irrigation",
+                encode: {
+                    x: 3,
+                    y: 1
+                }
+            }
+        ]
+    };
+
+    let chart = getAndInitChart("chart-preAndIrr-1");
+
+    chart.setOption(chartOption);
+
+    function resize() {
+        chart.resize();
+    }
+
+    addSidebarClickEventHandlerFunction(resize);
+}
+
+/**
+ * 作者: lwh
+ * 时间: 2020.7.7
+ * 描述: 土壤含水量图表初始化
+ */
+function chart_swc_init() {
+    chart_swc_generate();
+    //样区选择按钮监听事件注册
+    $("#chart-swc .nav-pills .dropdown-menu li a").click(function () {
+        //直接使用this并不能获得触发事件的对象，需要使用$(this)
+        let clickedItemValue = $(this).text();
+        //获得属性选择中第二个span
+        let clickedBtn = $(this).parent().parent().prev().children();
+        let preAttrValue = $(clickedBtn[1]).text();
+        //是否改变了样区
+        if (preAttrValue !== clickedItemValue) {
+            //使用$表明这是一个jquery对象,防止使用方法时冲突
+            $(clickedBtn[1]).text(clickedItemValue);
+            let newDOY = $("#chart-swc .nav-pills .dropdown button span:eq(1)").text();
+            let newTRT = $("#chart-swc .nav-pills .dropdown button span:eq(4)").text();
+            //更新图表
+            chart_swc_generate(newDOY, newTRT);
+        }
+    });
+}
+
+/**
+ * 作者: lwh
+ * 时间: 2020.7.7
+ * 描述: 土壤含水量图表初绘制
+ */
+function chart_swc_generate(DOY = "177", TRT = "1") {
+    //从后端取数据
+    let chartData = getChartData("field/swc", null, 0);
+
+    //获取指定样区的数据
+    let plotData = screenDataByAttr(chartData, "dOY", DOY);
+    let plot1Data = screenDataByAttr(plotData, "nUM_1", TRT + "-1");
+    let plot2Data = screenDataByAttr(plotData, "nUM_1", TRT + "-2");
+    let plot3Data = screenDataByAttr(plotData, "nUM_1", TRT + "-3");
+
+    let chartOption1 = {
+        legend: {},
+        tooltip: {},
+        dataset: {
+            source: plot1Data
+        },
+        xAxis: {
+            type: "category"
+        },
+        yAxis: {},
+        series: [
+            {
+                type: "line",
+                name: "SWC",
+                encode: {
+                    x: 6,
+                    y: 8
+                }
+            }
+        ]
+    };
+
+    let chartOption2 = {
+        legend: {},
+        tooltip: {},
+        dataset: {
+            source: plot2Data
+        },
+        xAxis: {
+            type: "category"
+        },
+        yAxis: {},
+        series: [
+            {
+                type: "line",
+                name: "SWC",
+                encode: {
+                    x: 6,
+                    y: 8
+                }
+            }
+        ]
+    };
+
+    let chartOption3 = {
+        legend: {},
+        tooltip: {},
+        dataset: {
+            source: plot3Data
+        },
+        xAxis: {
+            type: "category"
+        },
+        yAxis: {},
+        series: [
+            {
+                type: "line",
+                name: "SWC",
+                encode: {
+                    x: 6,
+                    y: 8
+                }
+            }
+        ]
+    };
+
+    let chart1 = getAndInitChart("chart-swc-1");
+    let chart2 = getAndInitChart("chart-swc-2");
+    let chart3 = getAndInitChart("chart-swc-3");
+
+    chart1.setOption(chartOption1);
+    chart2.setOption(chartOption2);
+    chart3.setOption(chartOption3);
+
+    function resize() {
+        chart1.resize();
+        chart2.resize();
+        chart3.resize();
+    }
+
+    addSidebarClickEventHandlerFunction(resize);
+}
+
+/**
+ * 作者: lwh
+ * 时间: 2020.7.7
+ * 描述: 标准气象站图表初始化
+ */
+function chart_sws_init() {
+    chart_sws_generate();
+    //样区选择按钮监听事件注册
+    $("#chart-sws .nav-pills .dropdown-menu li a").click(function () {
+        //直接使用this并不能获得触发事件的对象，需要使用$(this)
+        let clickedItemValue = $(this).text();
+        //获得属性选择中第二个span
+        let clickedBtn = $(this).parent().parent().prev().children();
+        let preAttrValue = $(clickedBtn[1]).text();
+        //是否改变了样区
+        if (preAttrValue !== clickedItemValue) {
+            //使用$表明这是一个jquery对象,防止使用方法时冲突
+            $(clickedBtn[1]).text(clickedItemValue);
+            let newDate = $("#chart-sws .nav-pills .dropdown button span:eq(1)").text();
+            //更新图表
+            chart_sws_generate(newDate);
+        }
+    });
+}
+
+/**
+ * 作者: lwh
+ * 时间: 2020.7.7
+ * 描述: 标准气象站图表绘制
+ */
+function chart_sws_generate(Date = "2018-06-23") {
+    //从后端取数据
+    let chartData = getChartData("climatic/station", null, 0);
+
+    let plotData = [];
+
+    //处理时间格式
+    $.each(chartData, function (key, value) {
+        value.recordDate = timestampToTime(value.recordDate);
+        if (value.recordDate.split(" ")[0] === Date) {
+            plotData.push(value);
+        }
+    });
+
+    let chartOption = {
+        legend: {},
+        tooltip: {},
+        dataset: {
+            source: plotData
+        },
+        xAxis: {
+            type: "category"
+        },
+        yAxis: {},
+        series: [
+            {
+                type: "line",
+                name: "AirTemperature",
+                encode: {
+                    x: 5,
+                    y: 1
+                }
+            },
+            {
+                type: "line",
+                name: "AirHummidity",
+                encode: {
+                    x: 5,
+                    y: 0
+                }
+            },
+            {
+                type: "line",
+                name: "WindSpeed",
+                encode: {
+                    x: 5,
+                    y: 6
+                }
+            },
+            {
+                type: "line",
+                name: "RainFall",
+                encode: {
+                    x: 5,
+                    y: 4
+                }
+            },
+            {
+                type: "line",
+                name: "RadiationAmount",
+                encode: {
+                    x: 5,
+                    y: 3
+                }
+            }
+        ]
+    };
+
+    let chart = getAndInitChart("chart-sws-1");
+
+    chart.setOption(chartOption);
+
+    function resize() {
+        chart.resize();
+    }
+
+    addSidebarClickEventHandlerFunction(resize);
+}
+
+/**
+ * 作者: lwh
+ * 时间: 2020.7.7
+ * 描述: 气孔阻力图表初始化--------------------
+ */
+function chart_sr_init() {
+    chart_sr_generate();
+
+}
+
+/**
+ * 作者: lwh
+ * 时间: 2020.7.7
+ * 描述: 气孔阻力图表绘制----------------------
+ */
+function chart_sr_generate() {
+
+}
+
+/**
  * 作者: SilentSherlock
  * 描述：向后台发送请求获取数据,默认带请求数据
  */
 function getChartData(requestUrl, jsonStr, flag = 1) {
     let chartData = null;
-
-    const tmpData = window.sessionStorage.getItem(requestUrl+jsonStr);
-    if (tmpData != null) {
-        chartData = JSON.parse(tmpData);
-        return chartData;
-    }
     if (requestUrl != null) {
         //图表数据获取成功回调函数
         function callback(data) {
             if (data === "0")
                 alert("获取图表数据失败");
-            else {
+            else
                 chartData = data;
-                const dataStr = JSON.stringify(chartData);
-                //console.log(dataStr);
-                window.sessionStorage.setItem(requestUrl+jsonStr, dataStr);
-            }
         }
 
         //根据请求类别发送请求
@@ -524,29 +1099,12 @@ function getChartData(requestUrl, jsonStr, flag = 1) {
 function extractCol(chartData, colName) {
     let colData = [];
     $.each(chartData, function (key, value) {
+        //hasOwnProperty(propertyName) 判断json对象是否有某个属性
         if (value.hasOwnProperty(colName))
+            //往json对象数组中添加json对象
             colData.push(value[colName]);
     });
     return colData;
-}
-
-/**
- * 作者: SilentSherlock
- * 描述：提取JSON对象数组中所有数据
- */
-function extractAll(chartData) {
-    let allData = [];
-    $.each(chartData, function (key, value) {
-
-    });
-    for (let row = 0; row < chartData.length; row++) {
-        let rowData = [];
-        for (let x in chartData[row]) {
-            rowData.push(chartData[row][x]);
-        }
-        allData.push(rowData);
-    }
-    return allData;
 }
 
 /**
@@ -556,12 +1114,10 @@ function extractAll(chartData) {
 function screenDataByAttr(chartData, attrName, attrValue) {
     //attrValue传递进来的是String要转换为Number
     let result = [];
-    let i = 0;
     $.each(chartData, function (key, value) {
-        if (value[attrName] === Number(attrValue)) {
+        //value[attrName]和attrValue的数据类型不能确定，所以不能用全等----------------
+        if (value[attrName] == attrValue)
             result.push(value);
-            i++
-        }
     });
     return result;
 }

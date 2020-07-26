@@ -3,7 +3,7 @@
  * 时间: 2020.6.2
  * 描述: 管理员列表页面初始化----------
  */
-function initAllAdmin() {
+function index_body_allAdmin_init() {
     $.ajax({
         url: "getAllAdmins",
         type: "get",
@@ -28,7 +28,7 @@ function initAllAdmin() {
             }
         },
         error: function (error) {
-            alert("----ajax请求加载显示管理员信息执行出错！错误信息如下：----\n" + error.responseText);
+            alert("----ajax请求加载显示管理员列表出错！错误信息如下：----\n" + error.responseText);
         }
     });
 }
@@ -55,14 +55,15 @@ function deleteAdmin(p) {
         dataType: "json",
         success: function (data) {
             if (data === "0")
-                alert("删除失败!");
+                myAlert("删除失败!");
             else {
-                alert("删除成功!");
-                initAllAdmin();
+                myAlert("删除成功!");
+                //重新加载显示
+                index_body_allAdmin_init();
             }
         },
         error: function (error) {
-            alert("----ajax请求加载显示管理员信息执行出错！错误信息如下：----\n" + error.responseText);
+            alert("----ajax请求加删除管理员出错！错误信息如下：----\n" + error.responseText);
         }
     });
 }

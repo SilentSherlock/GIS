@@ -108,7 +108,7 @@ $(document).ready(function () {
             success: function (data) {
                 if (data === "0") {
                     //验证失败，提示用户验证失败
-                    myAlert("alert", "alert", "用户名或密码错误(x_x)！");
+                    myAlert("用户名或密码错误(x_x)！");
                     /*更改用户名密码为未验证状态，对模态框的生命周期时间进行监听，当模态框消失时触发操作
                     loginErrorModal.on("hide.bs.modal", function (e) {
                         bv.updateStatus("userNameInput", "NOT_VALIDATED");
@@ -119,7 +119,11 @@ $(document).ready(function () {
                     $("#loginButton").button("reset");
                 } else {
                     //将用户信息保存到sessionStorage中
-                    saveData2Ses(data);
+                    let loggedAdminInfo = data.adminName + "_" + data.password + "_" + data.email;
+                    let jsonObj = {
+                        loggedAdminInfo: loggedAdminInfo
+                    };
+                    saveData2Ses(jsonObj);
                     //登陆成功
                     if ($("input[name='rememberCheckbox']").prop("checked")) {
                         //需要记住密码,判断是否已经设置cookie，有的话不必设置cookie
@@ -147,51 +151,3 @@ $(document).ready(function () {
         });
     });
 });
-
-/**
- * 作者: lwh
- * 时间: 2020.2.26
- * 描述: 设置或者删除cookie
- */
-function setCookie(cname, cvalue, exhours) {
-    /* ----------Cookie属性项说明----------
-     * NAME=VALUE	键值对，可以设置要保存的 Key/Value，注意这里的 NAME 不能和其他属性项的名字一样
-     * Expires	    过期时间，在设置的某个时间点(ms)后该 Cookie 就会失效（不指定该属性值或者属性值
-     *              小于0时，cookie生命周期为会话周期；指定为0时，cookie无效，代表立即删除该cookie）
-     * Domain	    生成该 Cookie 的域名，如 domain="www.baidu.com"
-     * Path	        该 Cookie 是在当前的哪个路径下生成的，如 path=/wp-admin/
-     * Secure	    如果设置了这个属性，那么只会在 SSH 连接时才会回传该 Cookie
-     */
-    let cookieStr = cname + "=" + cvalue;
-    //当hours>0时，该cookie存在指定时间；等于0时代表立即删除该cookie；小于0时该cookie会存在至会话结束
-    if (exhours === 0) {
-        cookieStr += "; expires=0";
-    } else if (exhours < 0) {
-        cookieStr += "; expires=-1";
-    } else {
-        //设置到期时间
-        let expires = new Date();
-        expires.setTime(expires.getTime() + exhours * 60 * 60 * 1000);
-        cookieStr += "; expires=" + expires.toUTCString();
-    }
-    //设置cookie
-    document.cookie = cookieStr;
-}
-
-/**
- * 作者: lwh
- * 时间: 2020.2.26
- * 描述: 获取指定名称的cookie的value值,失败返回null
- */
-function getCookie(cname) {
-    //读取cookie时cookie的字符串结构为“name1=value1; name2=value2”
-    let reg = new RegExp("(^| )" + cname + "=([^;]*)(;|$)");
-    let cookieStr = document.cookie;
-    if (cookieStr !== "") {
-        let arr = cookieStr.match(reg);
-        if (arr[2] !== "") {
-            return arr[2];
-        }
-    }
-    return null;
-}

@@ -3,15 +3,15 @@
 let adminInfoModalsUrl = "index_body_adminInfo_modal";
 //存储用户信息管理页面所有模态框的加载函数和名称、模态框id、初始化函数
 let adminInfoModals = {
-    "m0": {
-        "minit": "adminInfoModal0init()",          //初始化函数
-        "mn": "修改密码模态框",                     //模态框名称
-        "mid": "adminInfo-resetPassword-modal"     //模态框id
+    m0: {
+        mn: "修改密码模态框",                     //模态框名称
+        mid: "adminInfo-resetPassword-modal",    //模态框id
+        minit: "adminInfoModal0init()",          //初始化函数
     },
-    "m1": {
-        "minit": "adminInfoModal1init()",
-        "mn": "修改邮箱模态框",
-        "mid": "adminInfo-resetEmail-modal"
+    m1: {
+        mn: "修改邮箱模态框",
+        mid: "adminInfo-resetEmail-modal",
+        minit: "adminInfoModal1init()"
     }
 };
 
@@ -20,7 +20,7 @@ let adminInfoModals = {
  * 时间: 2020.4.12
  * 描述：显示登录管理员信息页面的初始化
  */
-function initAdminInfo() {
+function index_body_adminInfo_init() {
     //管理员信息显示页面的初始化相关工作
     $("#adminInfo-hello-adminName").text("您好，" + loggedAdminInfo.adminName + "!");
     $("#adminInfo-hello-email").text(loggedAdminInfo.email);
@@ -158,10 +158,10 @@ function adminInfoModal0init() {
             dataType: "json",
             success: function (data) {
                 if (data === "1") {
-                    myAlert("alert", "alert", "密码修改成功，请重新登陆(∩_∩)!");
+                    myAlert("密码修改成功，请重新登陆(∩_∩)!");
                     logout();
                 } else {
-                    myAlert("alert", "alert", "啊欧，密码修改失败(x_x)！");
+                    myAlert("啊欧，密码修改失败(x_x)！");
                     //更改修改按钮的修改状态
                     $("#adminInfo-resetPassword-modal-form :submit").button("reset");
                 }
@@ -221,11 +221,11 @@ function adminInfoModal1init() {
             dataType: "json",
             success: function (data) {
                 if (data === "1") {
-                    myAlert("alert", "alert", "邮箱修改成功(∩_∩)!");
+                    myAlert("邮箱修改成功(∩_∩)!");
                     //重新加载管理员信息
                     eval(systemComponents.c5.clfn);
                 } else {
-                    myAlert("alert", "alert", "啊欧，邮箱修改失败(x_x)！");
+                    myAlert("啊欧，邮箱修改失败(x_x)！");
                     //更改修改按钮的修改状态
                     $("#adminInfo-resetEmail-modal-form :submit").button("reset");
                 }

@@ -116,6 +116,10 @@
     background-color: #2f734e;
 }
 
+.sidebar ul li ul li.active a {
+    color: white;
+}
+
 /*侧边栏开关按钮*/
 .sidebar .btn-sidebar {
     position: absolute;

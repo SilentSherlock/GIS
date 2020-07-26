@@ -18,21 +18,6 @@ public class AdminController {
     @Resource
     private AdminService adminService;
 
-    /*echarts测试*/
-    @RequestMapping(value = "/echarts")
-    public String getEcharts(){
-        return "chartShow";
-    }
-    /*地图测试*/
-    @RequestMapping(value = "/map")
-    public String getMap() {return "map";}
-    /*小功能测试*/
-    @RequestMapping(value = "/testFunction")
-    public String getTest() {return "testFunction"; }
-    /*test地图测试*/
-    @RequestMapping(value = "/testMap")
-    public String getTestMap() { return "";}
-    /*fuck*/
     @RequestMapping(value = "/infoMap")
     public String getFuck() { return "infoMap";}
 

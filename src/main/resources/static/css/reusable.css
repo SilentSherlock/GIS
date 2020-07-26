@@ -1,0 +1,222 @@
+/**
+ * 作者: lwh
+ * 时间: 2020.7.7
+ * 描述：可复用css样式，基于bootstrap
+ */
+
+/**
+ * 样式中使用的颜色
+ * 背景色: #1b1b2d
+ * 背景色-浅: #282841
+ * 背景色-更浅：#383855
+ * 背景色-最浅：#474769
+ * 主题色：#2f734e
+ * 主题色-浅: #35875c
+ * 主题色-更浅: #3d9b68
+ * 主题色-深: #295f3d
+ * 文字-浅：#dddddd
+ * 文字-高亮: white
+ * 警告：#cd4f4d
+ */
+
+/****************************滚动条***********************/
+/*参数说明
+::-webkit-scrollbar 滚动条整体部分
+::-webkit-scrollbar-thumb  滚动条里面的小方块，能向上向下移动（或往左往右移动，取决于是垂直滚动条还是水平滚动条）
+::-webkit-scrollbar-track  滚动条的轨道（里面装有Thumb）
+::-webkit-scrollbar-button 滚动条的轨道的两端按钮，允许通过点击微调小方块的位置。
+::-webkit-scrollbar-track-piece 内层轨道，滚动条中间部分（除去）
+::-webkit-scrollbar-corner 边角，即两个滚动条的交汇处
+::-webkit-resizer 两个滚动条的交汇处上用于通过拖动调整元素大小的小控件
+*/
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: #282841;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background-color: #383855;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #474769;
+}
+
+/****************************输入框***********************/
+.ipt-dark {
+    border: 0;
+    outline: none;
+    background-color: #383855;
+    color: #dddddd;
+}
+
+/****************************按钮***********************/
+.btn-main {
+    border: none;
+    background-color: #2f734e;
+    color: #dddddd;
+}
+
+.btn-main:hover, .btn-main:active, .btn-main:focus {
+    outline: 0;
+    background-color: #35875c;
+    color: white;
+}
+
+.btn-sec {
+    border: none;
+    background-color: #282841;
+    color: #dddddd;
+}
+
+.btn-sec:hover, .btn-sec:active, .btn-sec:focus {
+    outline: 0;
+    background-color: #383855;
+    color: white;
+}
+
+/****************************表单类模态框***********************/
+.modal-content-dark {
+    background-color: #1b1b2d;
+    color: #dddddd;
+}
+
+.modal-header-green {
+    border: none;
+    background-color: #2f734e;
+    color: white;
+}
+
+.modal-header-green span {
+    color: white;
+}
+
+.modal-body-foot {
+    margin-left: -15px;
+    margin-right: -15px;
+    padding-top: 15px;
+    padding-right: 15px;
+    text-align: right;
+    border-top: 1px solid #32324b;
+}
+
+/****************************alert模态框***********************/
+.alert-modal-header {
+    border: none;
+    padding: 5px 15px 5px 15px;
+    background-color: #2f734e;
+    color: white;
+}
+
+.alert-modal-header span {
+    color: white;
+}
+
+.alert-modal-body {
+    padding: 10px;
+    background-color: #1b1b2d;
+    color: #dddddd;
+}
+
+.alert-modal-body-foot {
+    margin-top: 20px;
+    text-align: right;
+}
+
+/****************************验证信息颜色***********************/
+.has-error .form-control-feedback {
+    color: #cd4f4d;
+}
+
+.has-error .help-block {
+    color: #cd4d4b;
+}
+
+.has-error .control-label {
+    color: #cd4c4a;
+}
+
+.has-success .form-control-feedback {
+    color: #3d9b68;
+}
+
+.has-success .help-block {
+    color: #3d9b68;
+}
+
+.has-success .control-label {
+    color: #3d9b68;
+}
+
+/****************************自定义panel***********************/
+.mypanel {
+    margin: 80px auto;
+    padding: 50px 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.3);
+    background-color: #282841;
+}
+
+.mypanel .mypanel-header {
+    color: white;
+}
+
+.mypanel .mypanel-header .media-heading {
+    margin-bottom: 0;
+}
+
+.mypanel .mypanel-header .media .media-left img {
+    width: 72px;
+    height: 72px;
+}
+
+.mypanel .mypanel-header .media .media-right {
+    height: 72px;
+    padding: 0;
+}
+
+.mypanel .mypanel-title-content-split {
+    margin: 10px auto;
+    height: 4px;
+    border-radius: 2px;
+    background-color: #2f734e;
+}
+
+.mypanel .mypanel-content {
+    margin: 10px 0;
+    padding: 50px 10px;
+}
+
+.mypanel .mypanel-content .row > div {
+    padding-top: 1px;
+}
+
+/****************************自定义table***********************/
+.table {
+    background-color: #282841;
+    color: #dddddd;
+}
+
+.table tbody tr:hover {
+    background-color: #1b1b2d;
+    color: white;
+}
+
+.table thead tr th {
+    border: none;
+    background-color: #35875c;
+    color: white;
+}
+
+.table tbody tr td,
+.table tbody tr th {
+    border-left: none;
+    border-right: none;
+    border-top: 1px solid #35875c;
+    border-bottom: 1px solid #35875c;
+}
