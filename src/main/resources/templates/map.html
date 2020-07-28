@@ -333,15 +333,15 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-            mapInitial();
+            map_mapInitial();
             $(".hamburger").click(function(){
                 $(this).toggleClass("is-active");
             });
-            //chartInitial();
+            mapChartInitial();
         });
 
         //初始化地图
-        function mapInitial() {
+        function map_mapInitial() {
             const normalm = L.tileLayer.chinaProvider('TianDiTu.Normal.Map', {
                 maxZoom: 20,
                 minZoom: 5
@@ -429,7 +429,7 @@
             });
             popTest(map);
 
-            drawField(tianDiTuCenter, map);
+            mapDrawField(tianDiTuCenter, map);
 
             //let markers = addMarker(markerLonLngs, map);
             //fieldOutline(tianDiTuCenter, startAngle, 250, map);
@@ -437,7 +437,7 @@
             $(".hamburger").toggleClass("is-active");
         }
         //初始化图表
-        function chartInitial() {
+        function mapChartInitial() {
             let id = "1-1";
             let latlng = [40.43428, 109.595361];
             fieldInfo(id, latlng);
@@ -445,7 +445,7 @@
             fwhChart(id);
         }
         //绘制地块
-        function drawField(center, map) {
+        function mapDrawField(center, map) {
             let startAngle = [];
             for (let i = 0;i < 15;i++) {
                 startAngle[i] = -30 + 24 * i;
@@ -453,13 +453,13 @@
             let radius = [390, 320, 225];
             let infoGroup = [];
             for (let i = 0;i < radius.length;i++) {
-                let tmpGroup = fieldOutline(center, startAngle[0], radius[i], map);
+                let tmpGroup = mapFieldOutline(center, startAngle[0], radius[i], map);
                 infoGroup.push.apply(infoGroup, tmpGroup);
             }
             window.sessionStorage.setItem("fieldInfos", JSON.stringify(infoGroup));
         }
         //绘制一圈地块
-        function fieldOutline(latLng, startAngle, radius, paramMap) {
+        function mapFieldOutline(latLng, startAngle, radius, paramMap) {
             let tmpAngle = startAngle;
             let fieldInfos = [];//地块信息，放置在session中
             for (let i = 0;i < 5;i++) {//应为5
@@ -473,7 +473,7 @@
                 if (radius === 390) area = area1 - area2;
 
                 let fieldInfo = {
-                    id: calculateID(tmpAngle, radius),
+                    id: mapCalculateID(tmpAngle, radius),
                     area: (area / 5).toFixed(3)
                 };
                 tmpAngle += 72;//
@@ -483,7 +483,7 @@
         }
 
         //转换角度和半径为地块编号
-        function calculateID(angle, radius) {
+        function mapCalculateID(angle, radius) {
             let id = "";
             switch (angle) {
                 case -30:
@@ -518,7 +518,7 @@
         //添加标记
         function addMarker(latLng, paramMap) {
             L.marker(latLng, {
-                title: "fuck you",
+                title: "I'm a marker",
                 icon: L.BeautifyIcon.icon({
                     icon: "leaf",
                     iconShape: "marker"
@@ -551,7 +551,7 @@
                 stopAngle: angles[1]
             }).addTo(paramMap);
             sector.on("click", function (event) {
-                let fieldId = calculateID(angles[0], radius);
+                let fieldId = mapCalculateID(angles[0], radius);
                 addMarker(event.latlng, paramMap);
                 //调试后取消注释
                 fieldInfo(fieldId, event.latlng);
@@ -656,7 +656,7 @@
 
         //swc简图
         function swcChart(fieldId) {
-            let chartData = screenDataByAttr(getChartData("field/swcByDOY",
+            let chartData = screenDataByAttr(getChartDataByCache("field/swcByDOY",
             JSON.stringify({DOY: "177"})), "nUM_1", fieldId);
             let xAxisData = extractCol(chartData, "nUM_3");
             let yAxisData = extractCol(chartData, "sWC");
@@ -689,7 +689,7 @@
 
         //FWH简图
         function fwhChart(fieldId) {
-            let chartData = screenDataByAttr(getChartData("field/fwh", null, 0), "nUM_1", fieldId);
+            let chartData = screenDataByAttr(getChartDataByCache("field/fwh", null, 0), "nUM_1", fieldId);
             let names = extractCol(chartData, "nUM_2");
             let messFWH = extractCol(chartData, "massWaterContent");
             let volumeFWH = extractCol(chartData, "volumeWaterContent");
@@ -753,7 +753,7 @@
          * 作者: SilentSherlock
          * 描述：向后台发送请求获取数据,默认带请求数据
          */
-        function getChartData(requestUrl, jsonStr, flag = 1) {
+        function getChartDataByCache(requestUrl, jsonStr, flag = 1) {
             let chartData = null;
 
             const tmpData = window.sessionStorage.getItem(requestUrl+jsonStr);

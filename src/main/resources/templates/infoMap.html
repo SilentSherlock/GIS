@@ -2211,10 +2211,10 @@
         //地块作图后实例，三维数组[地块][组块][方块]
         const fieldInstances = [];
         $(document).ready(function () {
-            mapInitial();
+            infoMapInitial();
         });
 
-        function mapInitial() {
+        function infoMapInitial() {
             const normalm = L.tileLayer.chinaProvider('TianDiTu.Normal.Map', {
                 maxZoom: 20,
                 minZoom: 5
@@ -2301,19 +2301,19 @@
             };
             let barChartMarker = new L.BarChartMarker(new L.LatLng(40.435071, 109.607786), options);
             map.addLayer(barChartMarker);
-            drawField(tianDiTuCenter, map);
+            infoDrawField(tianDiTuCenter, map);
             timeLine(map);
         }
         //绘制地块
-        function drawField(center, map) {
+        function infoDrawField(center, map) {
             for (let i = 0;i < fields.length;i++) {
-                fieldInstances.push(fieldOutline(fields[i], center, map));
+                fieldInstances.push(infoFieldOutline(fields[i], center, map));
             }
         }
         //绘制一个地块，共9个方块，三组
         //@Param1 三维数组
         //@Return 二维数组
-        function fieldOutline(latLngGroups, center, paramMap) {
+        function infoFieldOutline(latLngGroups, center, paramMap) {
             let field = [];
             for (let i = 0; i < latLngGroups.length; i++) {
                 let group = [];
@@ -2370,7 +2370,7 @@
         changeMapListener = function ({label, value, map}) {
             //console.log("label is " + label);
             let choice = label.substring(0, label.length - 1);
-            let chartData = getChartData("corn/cornHeightAndChloDOY", JSON.stringify({DOY: choice}));
+            let chartData = getChartDataByCache("corn/cornHeightAndChloDOY", JSON.stringify({DOY: choice}));
             let props = extractCol(chartData, "chlorophyll");
             //console.log("props is " + props);
             let colors = calculateColor(props);
@@ -2394,7 +2394,7 @@
          * 作者: SilentSherlock
          * 描述：向后台发送请求获取数据,默认带请求数据
          */
-        function getChartData(requestUrl, jsonStr, flag = 1) {
+        function getChartDataByCache(requestUrl, jsonStr, flag = 1) {
             let chartData = null;
 
             const tmpData = window.sessionStorage.getItem(requestUrl+jsonStr);
