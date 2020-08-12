@@ -32,7 +32,6 @@
     <script type="text/javascript" src="../static/extlib/leaflet/leaflet-src.js"
     th:src="@{/extlib/leaflet/leaflet-src.js}"></script>
     <!--leaflet插件-->
-
     <script type="text/javascript" src="../static/extlib/leaflet/leaflet.ChineseTmsProviders.js"
     th:src="@{/extlib/leaflet/leaflet.ChineseTmsProviders.js}"></script>
     <link rel="stylesheet" href="../static/extlib/leaflet/leaflet-geoman.css"
@@ -49,6 +48,12 @@
             th:href="@{/extlib/leaflet/leaflet-beautify-marker-icon.css}">
     <script type="text/javascript" src="../static/extlib/leaflet/leaflet_beautify_marker_icon.js"
             th:src="@{/extlib/leaflet/leaflet_beautify_marker_icon.js}"></script>
+    <link rel="stylesheet" href="../static/extlib/leaflet/markerCluster/MarkerCluster.css"
+            th:href="@{/extlib/leaflet/markerCluster/MarkerCluster.css}">
+    <link rel="stylesheet" href="../static/extlib/leaflet/markerCluster/MarkerCluster.Default.css"
+            th:href="@{/extlib/leaflet/markerCluster/MarkerCluster.Default.css}">
+    <script type="text/javascript" src="../static/extlib/leaflet/markerCluster/leaflet.markercluster-src.js"
+            th:src="@{/extlib/leaflet/markerCluster/leaflet.markercluster-src.js}"></script>
     <!--echart-->
     <script type="text/javascript" src="../static/extlib/echarts/echarts.js"
             th:src="@{/extlib/echarts/echarts.js}"></script>
@@ -389,23 +394,34 @@
             **/
             const googleCenter = [40.434209, 109.600875];
             const tianDiTuCenter = [40.433294, 109.595275];
-            const tianDiTuCenter2 = [40.437924, 109.604577];
-            const tianDiTuCenters = [
-                [40.433355, 109.595286],
-                [40.433322, 109.595361],
-                [40.433232, 109.595339],
-                [40.433249, 109.5952],
-                [40.43333, 109.595178]
-            ];
-            const markerLonLngs = [
-                [40.433349, 109.595275],
-                [40.433349, 109.595275],
-                [40.433253, 109.595321],
-                [40.433247, 109.595229],
-                [40.433311, 109.595208]
-            ];
-
             const locationData = [40.435071, 109.607786];
+            const fieldLatlngs = [
+                [
+                    [40.434586, 109.595382],
+                    [40.435664, 109.595511],
+                    [40.43648, 109.59564]
+                ],
+                [
+                    [40.43364, 109.596927],
+                    [40.433868, 109.598365],
+                    [40.434064, 109.599352]
+                ],
+                [
+                    [40.432269, 109.596026],
+                    [40.43124, 109.596884],
+                    [40.430571, 109.597335]
+                ],
+                [
+                    [40.432397, 109.59424],
+                    [40.431484, 109.593247],
+                    [40.430846, 109.592528]
+                ],
+                [
+                    [40.433917, 109.593709],
+                    [40.434162, 109.592357],
+                    [40.434456, 109.591413]
+                ]
+            ];
             const map = L.map("testMap", {
                 center: locationData,
                 zoom: 15,
@@ -427,10 +443,12 @@
             map.pm.addControls({
                 position: "topleft"
             });
-            popTest(map);
-
+            console.log("before draw");
+            //popTest(map);
             mapDrawField(tianDiTuCenter, map);
-
+            console.log("after draw");
+            bindImage(fieldLatlngs, map);
+            console.log("after bind");
             //let markers = addMarker(markerLonLngs, map);
             //fieldOutline(tianDiTuCenter, startAngle, 250, map);
             infoTipListener();
@@ -440,9 +458,9 @@
         function mapChartInitial() {
             let id = "1-1";
             let latlng = [40.43428, 109.595361];
-            fieldInfo(id, latlng);
+            /*fieldInfo(id, latlng);
             swcChart(id);
-            fwhChart(id);
+            fwhChart(id);*/
         }
         //绘制地块
         function mapDrawField(center, map) {
@@ -515,15 +533,29 @@
             }
             return id;
         }
+        //为地图上标记绑定实际照片
+        function bindImage(latlngs, paramMap) {
+            for (let i = 0; i < latlngs.length; i++) {
+                let markers = L.markerClusterGroup();
+                for (let j = 0;j < latlngs[i].length;j++) {
+                    let marker = addMarker(latlngs[i][j]);
+                    let url = "/src/fieldImages/" + (i + 1) + "-" + (j + 1) + ".JPG";
+                    console.log("bind " + url);
+                    marker.bindPopup("<img src='"+url+"' style='width: 300px; height: 300px'/>");
+                    markers.addLayer(marker);
+                }
+                markers.addTo(paramMap);
+            }
+        }
         //添加标记
-        function addMarker(latLng, paramMap) {
-            L.marker(latLng, {
+        function addMarker(latLng) {
+            return L.marker(latLng, {
                 title: "I'm a marker",
                 icon: L.BeautifyIcon.icon({
                     icon: "leaf",
                     iconShape: "marker"
                 })
-            }).addTo(paramMap);
+            });
         }
         //画圆
         //@Param1 地块坐标
@@ -552,11 +584,11 @@
             }).addTo(paramMap);
             sector.on("click", function (event) {
                 let fieldId = mapCalculateID(angles[0], radius);
-                addMarker(event.latlng, paramMap);
+                //addMarker(event.latlng, paramMap);
                 //调试后取消注释
-                fieldInfo(fieldId, event.latlng);
+                /*fieldInfo(fieldId, event.latlng);
                 swcChart(fieldId);
-                fwhChart(fieldId);
+                fwhChart(fieldId);*/
             });
             return sector;
         }
@@ -601,12 +633,13 @@
         let newStrs = "";
         function popTest(paramMap) {
             paramMap.on("click", function (event) {
-                strs += event.latlng.toString();
-                // let pop = L.popup();
-                // pop.setLatLng(event.latlng).setContent(event.latlng.toString()).openOn(paramMap);
+                //strs += event.latlng.toString();
+                let pop = L.popup();
+                pop.setLatLng(event.latlng).setContent(event.latlng.toString()).openOn(paramMap);
             })
         }
-        function transform() {
+        //转换坐标时使用函数
+        /*function transform() {
             if (strs !== "") {
                 for (let i = 0;i < strs.length;i++) {
                     if (strs.charAt(i) !== '(') continue;
@@ -620,7 +653,7 @@
                 }
                 console.log(newStrs);
             }else alert("str is null");
-        }
+        }*/
         //info-tip监听
         function infoTipListener() {
             $(".info-tip").on("click", function () {

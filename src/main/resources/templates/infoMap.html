@@ -13,7 +13,7 @@
             th:src="@{/extlib/jquery-3.4.1/jquery-3.4.1.min.js}"></script>
     <script type="text/javascript" src="../static/extlib/bootstrap-3.3.7/js/bootstrap.js"
             th:src="@{/extlib/bootstrap-3.3.7/js/bootstrap.js}"></script>
-    <!--本地引用-->
+    <!--本地引用--><!--leaflet插件-->
     <link rel="stylesheet" href="../static/extlib/leaflet/leaflet.css"
           th:href="@{/extlib/leaflet/leaflet.css}">
     <script type="text/javascript" src="../static/extlib/leaflet/leaflet-src.js"
@@ -22,7 +22,6 @@
             th:src="@{/extlib/leaflet/dvf/leaflet-dvf.markers.min.js}"></script>
     <script type="text/javascript" src="../static/extlib/leaflet/leaflet.ChineseTmsProviders.js"
             th:src="@{/extlib/leaflet/leaflet.ChineseTmsProviders.js}"></script>
-    <!--leaflet插件-->
     <link rel="stylesheet" href="../static/extlib/leaflet/leaflet-geoman.css"
           th:href="@{/extlib/leaflet/leaflet-geoman.css}">
     <script type="text/javascript" src="../static/extlib/leaflet/leaflet-geoman.min.js"
@@ -50,10 +49,40 @@
         #themeMap {
             height: 100%;
         }
-
+        .fixed-choice {
+            position: fixed;
+            z-index: 1031;
+            width: 100px;
+            height: 40px;
+            background: rgba(0,0,0,.6);
+            border-radius: 8px;
+            text-align: center;
+            top: 130px;
+            left: 10px;
+        }
+        .fixed-choice .dropdown {
+            margin-top: 8px;
+        }
+        .fixed-choice a {
+            color: #cccccc;
+        }
+        .fixed-choice a:hover , .fixed-choice a:focus{
+            color: #ffffff;
+            text-decoration: none;
+        }
     </style>
 </head>
 <body>
+    <div class="fixed-choice">
+        <div class="dropdown">
+            <a role="button" href="#" class="dropdown-toggle" data-toggle="dropdown"
+           aria-haspopup="true" aria-expanded="false">Choices<span class="caret"></span></a>
+            <ul class="dropdown-menu">
+                <li><a class="choices">chlorophyll</a></li>
+                <li><a class="choices">height</a></li>
+            </ul>
+        </div>
+    </div>
     <div id="themeMap"></div>
     <script type="text/javascript">
         //地块边经纬度
@@ -2301,8 +2330,10 @@
             };
             let barChartMarker = new L.BarChartMarker(new L.LatLng(40.435071, 109.607786), options);
             map.addLayer(barChartMarker);
+            fieldInstances.length = 0;
             infoDrawField(tianDiTuCenter, map);
             timeLine(map);
+            infoChoiceListener();
         }
         //绘制地块
         function infoDrawField(center, map) {
@@ -2346,7 +2377,23 @@
 
         //根据属性计算映射颜色值
         function calculateColor(props) {
-            let calculator = new L.HSLHueFunction(new L.Point(30,120), new L.Point(60,0));
+            let values = [
+                {minChlo: 30, maxChlo: 60},
+                {minHeight: 40, maxHeight: 250}
+            ];
+            let minValue;
+            let maxValue;
+            switch (choiceItem) {
+                case "height":
+                    minValue = values[1].minHeight;
+                    maxValue = values[1].maxHeight;
+                    break;
+                case "chlorophyll":
+                    minValue = values[0].minChlo;
+                    maxValue = values[0].maxChlo;
+            }
+            let calculator = new L.HSLHueFunction(new L.Point(minValue,120),
+                new L.Point(maxValue,0));
             let colors = [];
             for (let i = 0;i < props.length;i++) {
                 colors.push(calculator.evaluate(props[i]));
@@ -2355,23 +2402,25 @@
         }
 
         //设置时间线并绑定监听函数
+        let choiceItem = "height";
         function timeLine(paramMap) {
-            let items = [177,185,189,193,198,202,207,214,221,234];//天数
+            let items = [177,185,189,193,198,202,207,214,221];//天数
             let timeItems = [];
-            for (let i = 0;i < items.length;i++)
+            for (let i = 0;i < items.length;i++) {
                 timeItems.push(String(items[i]) + '天');
-            L.control.timelineSlider({
+            }
+
+            return L.control.timelineSlider({
                 timelineItems: timeItems,
                 changeMap:changeMapListener
             }).addTo(paramMap);
-
         }
         //时间线监听函数
         changeMapListener = function ({label, value, map}) {
             //console.log("label is " + label);
             let choice = label.substring(0, label.length - 1);
             let chartData = getChartDataByCache("corn/cornHeightAndChloDOY", JSON.stringify({DOY: choice}));
-            let props = extractCol(chartData, "chlorophyll");
+            let props = extractCol(chartData, choiceItem);
             //console.log("props is " + props);
             let colors = calculateColor(props);
             /*console.log("FieldInstance: " + fieldInstances.length + " "
@@ -2386,9 +2435,15 @@
                 fieldInstances[fieldId][groupId][blockId].setStyle({
                     color: colors[i],
                     fillColor: colors[i]
-                }).bindPopup("Chlo: " + props[i]);
+                }).bindPopup(choiceItem + ": " + props[i]);
             }
         };
+        //选择按钮监听
+        function infoChoiceListener() {
+            $(".choices").click(function () {
+                choiceItem = $(this).text();
+            })
+        }
 
         /**
          * 作者: SilentSherlock
