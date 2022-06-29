@@ -72,7 +72,7 @@
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi</artifactId>
-            <version>3.9</version>
+            <version>4.1.1</version>
         </dependency>
         <!--以下为部署时配置-->
         <!--移除内置tomcat服务器-->
